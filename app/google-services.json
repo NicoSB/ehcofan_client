@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "423814156962",
+    "firebase_url": "https://ehcoltenfan.firebaseio.com",
+    "project_id": "ehcoltenfan",
+    "storage_bucket": "ehcoltenfan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423814156962:android:a4ac6650f044adff",
+        "android_client_info": {
+          "package_name": "com.nicosb.apps.ehcofan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423814156962-h5o556pr0f0kp1pcfls3tger3ikqp55d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcOli1rdNv3CJHTdeSBIwV_jkcgsCulYo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">EHCO Fan</string>
+    <string name="rest_interface">http://10.0.2.2:3000/</string>
+    <string name="action_refresh">aktualisieren</string>
+</resources>
