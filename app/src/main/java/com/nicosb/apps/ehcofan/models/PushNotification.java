@@ -1,4 +1,4 @@
-package models;
+package com.nicosb.apps.ehcofan.models;
 
 /**
  * Created by Nico on 05.07.2016.

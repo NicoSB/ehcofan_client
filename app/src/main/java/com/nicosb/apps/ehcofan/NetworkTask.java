@@ -1,5 +1,9 @@
 package com.nicosb.apps.ehcofan;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -12,20 +16,22 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Logger;
 
-import models.Article;
+import com.nicosb.apps.ehcofan.models.Article;
+import com.nicosb.apps.ehcofan.models.ArticleWrapper;
 
 /**
  * Created by Nico on 30.06.2016.
  */
-public class NetworkTask extends AsyncTask<String, Void, ArrayList<Article>> {
+public class NetworkTask extends AsyncTask<String, Void, ArticleWrapper[]> {
     Logger log = Logger.getLogger("NetworkTask");
     private PostExecuteListener postExecuteListener;
-
+    private ArrayList<Article> articles = new ArrayList<>();
     @Override
-    protected ArrayList<Article> doInBackground(String... strings) {
-        ArrayList<Article> articles = new ArrayList<>();
+    protected ArticleWrapper[] doInBackground(String... strings) {
+        log.warning("Start fetch articles");
         try{
             URL restAddress = new URL(strings[0]);
             HttpURLConnection urlConnection = (HttpURLConnection)restAddress.openConnection();
@@ -41,15 +47,12 @@ public class NetworkTask extends AsyncTask<String, Void, ArrayList<Article>> {
             String json = builder.toString();
 
             Gson gson = new Gson();
-            Article[] articlesArray = gson.fromJson(json, Article[].class);
-            for(Article a: articlesArray){
-                articles.add(a);
-            }
+            log.warning("Converting JSON");
+            return gson.fromJson(json, ArticleWrapper[].class);
         }catch (IOException mue){
             mue.printStackTrace();
         }
-
-        return articles;
+        return null;
     }
 
     public void setPostExecuteListener(PostExecuteListener postExecuteListener) {
@@ -57,7 +60,8 @@ public class NetworkTask extends AsyncTask<String, Void, ArrayList<Article>> {
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Article> articles) {
+    protected void onPostExecute(ArticleWrapper[] articles) {
+        log.warning("End of fetching articles");
         super.onPostExecute(articles);
         if(postExecuteListener != null){
             postExecuteListener.onPostExecute(articles);
@@ -65,6 +69,59 @@ public class NetworkTask extends AsyncTask<String, Void, ArrayList<Article>> {
     }
 
     public interface PostExecuteListener{
-        void onPostExecute(ArrayList<Article> articles);
+        void onPostExecute(ArticleWrapper[] wrappers);
+    }
+
+    public static class FetchImagesTask extends AsyncTask<ArticleWrapper, Void, ArrayList<Article>>{
+        FetchImagesListener fetchImagesListener;
+        private ArrayList<Article> articles = new ArrayList<>();
+        private Context context;
+        Logger log = Logger.getLogger("FetchImagesTask");
+
+        public FetchImagesTask(Context context) {
+            super();
+            this.context = context;
+        }
+
+        @Override
+        protected ArrayList<Article> doInBackground(ArticleWrapper... wrappers) {
+            try {
+                log.warning("Start fetching images");
+                for(ArticleWrapper aw: wrappers) {
+                    Drawable news_image = null;
+                    String rest = context.getString(R.string.rest_interface);
+                    String image_url = String.format(Locale.GERMANY, rest + "system/articles/news_images/000/000/00%d/original/%s", aw.getId(), aw.getNews_image_file_name());
+                    URL imageAddress = new URL(image_url);
+                    HttpURLConnection urlConnection = (HttpURLConnection) imageAddress.openConnection();
+                    InputStream input = urlConnection.getInputStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(input);
+
+                    Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), bitmap);
+                    articles.add(a);
+                }
+
+                log.warning("end fetching images");
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
+            return articles;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Article> articles) {
+            super.onPostExecute(articles);
+            if(fetchImagesListener != null){
+                fetchImagesListener.onImagesFetched(articles);
+            }
+        }
+
+        public void setFetchImagesListener(FetchImagesListener fetchImagesListener) {
+            this.fetchImagesListener = fetchImagesListener;
+        }
+
+        public interface FetchImagesListener {
+            void onImagesFetched(ArrayList<Article> articles);
+        }
     }
 }

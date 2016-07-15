@@ -8,14 +8,18 @@
         android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="TITLE"/>
-
-    <TextView
-        android:id="@+id/text_text"
+        android:text="@string/title_placeholder"/>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="LOREMIPSUMDOLORET"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="@string/text_placeholder"/>
+    </ScrollView>
 </LinearLayout>

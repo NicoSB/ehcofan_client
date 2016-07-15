@@ -1,23 +1,25 @@
-package models;
+package com.nicosb.apps.ehcofan.models;
 
-
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by Nico on 30.06.2016.
+ * Created by Nico on 15.07.2016.
  */
-public class Article implements Parcelable{
+public class Article implements Parcelable {
     String title;
     String text;
     String url;
     String date;
+    Bitmap news_image;
 
-    public Article(String title, String text, String url, String date) {
+    public Article(String title, String text, String url, String date, Bitmap news_image) {
         this.title = title;
         this.text = text;
         this.url = url;
         this.date = date;
+        this.news_image = news_image;
     }
 
     protected Article(Parcel in) {
@@ -25,6 +27,7 @@ public class Article implements Parcelable{
         text = in.readString();
         url = in.readString();
         date = in.readString();
+        news_image = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
     public static final Creator<Article> CREATOR = new Creator<Article>() {
@@ -55,6 +58,10 @@ public class Article implements Parcelable{
         return date;
     }
 
+    public Bitmap getNews_image() {
+        return news_image;
+    }
+
     public String getDisplayDate(){
         String day = date.substring(8,10);
         String month = date.substring(5,7);
@@ -73,5 +80,6 @@ public class Article implements Parcelable{
         parcel.writeString(text);
         parcel.writeString(url);
         parcel.writeString(date);
+        parcel.writeParcelable(news_image, i);
     }
 }

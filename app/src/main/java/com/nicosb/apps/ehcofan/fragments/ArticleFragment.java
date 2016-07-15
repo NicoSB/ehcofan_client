@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
 
-import models.Article;
+import com.nicosb.apps.ehcofan.models.Article;
 
 /**
  * Created by Nico on 01.07.2016.

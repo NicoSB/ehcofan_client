@@ -1,22 +1,19 @@
 package com.nicosb.apps.ehcofan.services;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 /**
- * Created by Nico on 05.07.2016.
+ * Created by Nico on 06.07.2016.
  */
-public class NotificationService extends FirebaseInstanceIdService {
+public class NotificationService extends FirebaseMessagingService {
 
+    private String TAG = "NotificationService";
     @Override
-    public void onTokenRefresh() {
-        super.onTokenRefresh();
-
-        sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken());
-
-    }
-
-    private void sendRegistrationToServer(String token) {
-
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.d(TAG, remoteMessage.getNotification().getTitle());
     }
 }

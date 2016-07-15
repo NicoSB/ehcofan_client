@@ -28,13 +28,15 @@ import com.nicosb.apps.ehcofan.views.BottomRefreshScrollView;
 
 import java.util.ArrayList;
 
-import models.Article;
+import com.nicosb.apps.ehcofan.models.Article;
+import com.nicosb.apps.ehcofan.models.ArticleWrapper;
 
 /**
  * Created by Nico on 01.07.2016.
  */
 public class ArticlesFragment extends Fragment
         implements NetworkTask.PostExecuteListener,
+        NetworkTask.FetchImagesTask.FetchImagesListener,
         BottomRefreshScrollView.ViewOnBottomListener{
     ProgressBar progressBar;
     ArrayList<Article> articles = new ArrayList<>();
@@ -64,6 +66,12 @@ public class ArticlesFragment extends Fragment
         BottomRefreshScrollView brsview = (BottomRefreshScrollView)getActivity().findViewById(R.id.scroll_view);
         brsview.setViewOnBottomListener(this);
         update();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
     }
 
     private void update() {
@@ -132,21 +140,15 @@ public class ArticlesFragment extends Fragment
     }
 
     @Override
-    public void onPostExecute(ArrayList<Article> articles) {
-        if(articles.size() == 0) {
+    public void onPostExecute(ArticleWrapper[] wrappers) {
+        if(wrappers.length == 0) {
             allArticlesLoaded = true;
             Toast.makeText(getActivity(), "All news loaded", Toast.LENGTH_SHORT).show();
         }
         else{
-            for (Article a : articles) {
-                this.articles.add(a);
-            }
-            LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.rl_articles);
-            rl.removeAllViews();
-            progressBar.setVisibility(View.GONE);
-            displayArticles();
-            swipeContainer.setRefreshing(false);
-            fetching = false;
+            NetworkTask.FetchImagesTask fetchImagesTask = new NetworkTask.FetchImagesTask(getContext());
+            fetchImagesTask.setFetchImagesListener(this);
+            fetchImagesTask.execute(wrappers);
         }
     }
 
@@ -163,6 +165,9 @@ public class ArticlesFragment extends Fragment
 
     private void refresh() {
         LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.rl_articles);
+        if(rl == null){
+            return;
+        }
         rl.removeAllViews();
         articles.clear();
         allArticlesLoaded = false;
@@ -182,5 +187,22 @@ public class ArticlesFragment extends Fragment
         else{
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onImagesFetched(ArrayList<Article> articles) {
+        for(Article a: articles){
+            this.articles.add(a);
+        }
+
+        LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.rl_articles);
+        if(rl == null){
+            return;
+        }
+        rl.removeAllViews();
+        progressBar.setVisibility(View.GONE);
+        displayArticles();
+        swipeContainer.setRefreshing(false);
+        fetching = false;
     }
 }
