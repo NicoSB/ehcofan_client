@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="mainGreen">#1d6e45</color>
-    <color name="mainGreenTransp">#CC1d6e45</color>
+    <color name="mainGreen">#174030</color>
+    <color name="mainGreenTransp">#CC174030</color>
+    <color name="secondaryGreen">#1d6e45</color>
+    <color name="secondaryGreenTransp">#CC1d6e45</color>
+    <color name="white">#FFFFFF</color>
 </resources>
