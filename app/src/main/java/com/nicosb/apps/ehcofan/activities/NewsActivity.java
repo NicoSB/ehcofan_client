@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.fragments.ArticlesFragment;
 
@@ -59,8 +59,13 @@ public class NewsActivity extends AppCompatActivity{
                             Log.w(TAG, "signInAnonymously", task.getException());
                             Toast.makeText(NewsActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
+                        else{
+                            FirebaseMessaging.getInstance().subscribeToTopic("news");
+                            Log.w(TAG, "subscribed to topic 'news'");
+                        }
                     }
                 });
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);

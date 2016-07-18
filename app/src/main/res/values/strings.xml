@@ -5,4 +5,5 @@
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
     <string name="text_placeholder">LOREMIPSUMDOLORET</string>
+    <string name="aws_url">https://s3.eu-central-1.amazonaws.com/ehcofan/</string>
 </resources>

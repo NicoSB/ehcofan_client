@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -85,12 +86,13 @@ public class NetworkTask extends AsyncTask<String, Void, ArticleWrapper[]> {
 
         @Override
         protected ArrayList<Article> doInBackground(ArticleWrapper... wrappers) {
-            try {
-                log.warning("Start fetching images");
-                for(ArticleWrapper aw: wrappers) {
+            log.warning("Start fetching images");
+            String image_url = "";
+            for (ArticleWrapper aw : wrappers) {
+                try {
                     Drawable news_image = null;
-                    String rest = context.getString(R.string.rest_interface);
-                    String image_url = String.format(Locale.GERMANY, rest + "system/articles/news_images/000/000/00%d/original/%s", aw.getId(), aw.getNews_image_file_name());
+                    String rest = context.getString(R.string.aws_url);
+                    image_url = String.format(Locale.GERMANY, rest + "articles/news_images/000/000/00%d/original/%s", aw.getId(), aw.getNews_image_file_name());
                     URL imageAddress = new URL(image_url);
                     HttpURLConnection urlConnection = (HttpURLConnection) imageAddress.openConnection();
                     InputStream input = urlConnection.getInputStream();
@@ -98,12 +100,16 @@ public class NetworkTask extends AsyncTask<String, Void, ArticleWrapper[]> {
 
                     Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), bitmap);
                     articles.add(a);
+                }catch (FileNotFoundException fnfe){
+                    Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder));
+                    articles.add(a);
+                    log.warning("Error with: " + image_url);
+                }catch(IOException ioe){
+                    ioe.printStackTrace();
                 }
-
-                log.warning("end fetching images");
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
             }
+
+            log.warning("end fetching images");
 
             return articles;
         }
