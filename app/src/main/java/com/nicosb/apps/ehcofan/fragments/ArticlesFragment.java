@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nicosb.apps.ehcofan.NetworkTask;
+import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.BottomRefreshScrollView;
@@ -35,8 +35,8 @@ import com.nicosb.apps.ehcofan.models.ArticleWrapper;
  * Created by Nico on 01.07.2016.
  */
 public class ArticlesFragment extends Fragment
-        implements NetworkTask.PostExecuteListener,
-        NetworkTask.FetchImagesTask.FetchImagesListener,
+        implements FetchArticlesTask.PostExecuteListener,
+        FetchArticlesTask.FetchImagesTask.FetchImagesListener,
         BottomRefreshScrollView.ViewOnBottomListener{
     ProgressBar progressBar;
     ArrayList<Article> articles = new ArrayList<>();
@@ -99,7 +99,7 @@ public class ArticlesFragment extends Fragment
     private void fetchArticles(){
         String link = getString(R.string.rest_interface) + "articles?offset=" + articles.size();
 
-        NetworkTask nwTask = new NetworkTask();
+        FetchArticlesTask nwTask = new FetchArticlesTask();
         nwTask.setPostExecuteListener(this);
         nwTask.execute(link);
 
@@ -146,7 +146,7 @@ public class ArticlesFragment extends Fragment
             Toast.makeText(getActivity(), "All news loaded", Toast.LENGTH_SHORT).show();
         }
         else{
-            NetworkTask.FetchImagesTask fetchImagesTask = new NetworkTask.FetchImagesTask(getContext());
+            FetchArticlesTask.FetchImagesTask fetchImagesTask = new FetchArticlesTask.FetchImagesTask(getContext());
             fetchImagesTask.setFetchImagesListener(this);
             fetchImagesTask.execute(wrappers);
         }

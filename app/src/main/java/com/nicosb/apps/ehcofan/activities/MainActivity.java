@@ -2,8 +2,6 @@ package com.nicosb.apps.ehcofan.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,5 +21,10 @@ public class MainActivity extends AppCompatActivity {
     public void openNewsActivity(View view) {
         Intent newsActivity = new Intent(this, NewsActivity.class);
         startActivity(newsActivity);
+    }
+
+    public void openScheduleActivity(View view) {
+        Intent scheduleActivity = new Intent(this, ScheduleActivity.class);
+        startActivity(scheduleActivity);
     }
 }

@@ -9,4 +9,11 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_news">News</string>
     <string name="news">News</string>
+    <string name="home_team_placeholder">HOME Team</string>
+    <string name="away_team_placeholder">AWAY Team</string>
+    <string name="zero">0</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_schedule">Spielplan</string>
 </resources>

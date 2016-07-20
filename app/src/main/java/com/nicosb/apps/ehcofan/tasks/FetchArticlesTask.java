@@ -1,4 +1,4 @@
-package com.nicosb.apps.ehcofan;
+package com.nicosb.apps.ehcofan.tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,14 +20,15 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Article;
 import com.nicosb.apps.ehcofan.models.ArticleWrapper;
 
 /**
  * Created by Nico on 30.06.2016.
  */
-public class NetworkTask extends AsyncTask<String, Void, ArticleWrapper[]> {
-    Logger log = Logger.getLogger("NetworkTask");
+public class FetchArticlesTask extends AsyncTask<String, Void, ArticleWrapper[]> {
+    Logger log = Logger.getLogger("FetchArticlesTask");
     private PostExecuteListener postExecuteListener;
     private ArrayList<Article> articles = new ArrayList<>();
     @Override
