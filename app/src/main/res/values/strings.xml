@@ -16,4 +16,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_schedule">Spielplan</string>
+    <string name="choose_competition">Wettbewerb wählen</string>
+    <string name="datetime_placeholder">01.01.2016 20:00</string>
 </resources>

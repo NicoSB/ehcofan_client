@@ -20,9 +20,6 @@ import java.util.logging.Logger;
 
 public class NewsActivity extends AppCompatActivity{
     Logger log = Logger.getLogger("NewsActivity");
-    // Firebase instance variables
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private String TAG = "NewsActivity";
 
     @Override
@@ -32,56 +29,9 @@ public class NewsActivity extends AppCompatActivity{
         ArticlesFragment af = new ArticlesFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, af).commit();
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
 
-        // Setup Listener
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                }
-                else{
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
-
-                        if(!task.isSuccessful()){
-                            Log.w(TAG, "signInAnonymously", task.getException());
-                            Toast.makeText(NewsActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            FirebaseMessaging.getInstance().subscribeToTopic("news");
-                            Log.w(TAG, "subscribed to topic 'news'");
-                        }
-                    }
-                });
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if(mAuthListener != null){
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 }

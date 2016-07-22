@@ -1,5 +1,7 @@
 package com.nicosb.apps.ehcofan.models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -24,7 +26,13 @@ public class MatchWrapper {
         int scores_home[] = {h1,h2,h3,h_ot};
         int scores_away[] = {a1,a2,a3,a_ot};
         // TODO: parse date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
         GregorianCalendar calendar = new GregorianCalendar();
+        try {
+            calendar.setTime(sdf.parse(datetime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return new Match(home_team, away_team, competition, calendar, scores_home, scores_away);
     }
 }

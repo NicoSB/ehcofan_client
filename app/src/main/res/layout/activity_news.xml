@@ -11,7 +11,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/mainGreen"
         android:elevation="4dp"
-        android:theme="@style/AppTheme.ToolbarStyle"/>
+        android:theme="@style/AppTheme.ToolbarStyle">
+    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
