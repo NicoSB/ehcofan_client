@@ -29,8 +29,6 @@ public class NewsActivity extends AppCompatActivity{
         ArticlesFragment af = new ArticlesFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, af).commit();
 
-
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
     }

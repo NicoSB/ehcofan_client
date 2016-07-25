@@ -93,7 +93,9 @@ public class FetchArticlesTask extends AsyncTask<String, Void, ArticleWrapper[]>
                 try {
                     Drawable news_image = null;
                     String rest = context.getString(R.string.aws_url);
-                    image_url = String.format(Locale.GERMANY, rest + "articles/news_images/000/000/00%d/original/%s", aw.getId(), aw.getNews_image_file_name());
+                    String id = ("00" + aw.getId());
+                    id = id.substring(id.length() - 3);
+                    image_url = String.format(Locale.GERMANY, rest + "articles/news_images/000/000/%s/original/%s", id, aw.getNews_image_file_name());
                     URL imageAddress = new URL(image_url);
                     HttpURLConnection urlConnection = (HttpURLConnection) imageAddress.openConnection();
                     InputStream input = urlConnection.getInputStream();

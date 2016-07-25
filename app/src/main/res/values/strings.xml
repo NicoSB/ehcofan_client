@@ -18,4 +18,9 @@
     <string name="title_activity_schedule">Spielplan</string>
     <string name="choose_competition">Wettbewerb wählen</string>
     <string name="datetime_placeholder">01.01.2016 20:00</string>
+    <string name="title_activity_roster">Kader</string>
+    <string name="placeholder_player_name">Max Mustermann</string>
+    <string name="placeholder_player_position">Verteidiger</string>
+    <string name="placeholder_player_number">13</string>
+    <string name="missing_connection">No connection to the internet!</string>
 </resources>

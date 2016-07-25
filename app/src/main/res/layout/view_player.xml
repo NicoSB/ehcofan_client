@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/img_player_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_account_circle_white_48dp"
+        app:civ_border_color="@color/mainGreen"
+        app:civ_border_width="1dp"
+        app:civ_shadow="false"/>
+
+    <TextView
+        android:id="@+id/txt_player_number"
+        android:layout_width="16dp"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:text="@string/placeholder_player_number"
+        android:layout_margin="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/txt_player_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_player_name"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/mainGreen"/>
+        <TextView
+            android:id="@+id/txt_player_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_player_position"
+            android:layout_marginStart="4dp"/>
+    </LinearLayout>
+
+</LinearLayout>
