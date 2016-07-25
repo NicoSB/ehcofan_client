@@ -1,11 +1,13 @@
 package com.nicosb.apps.ehcofan.models;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Nico on 25.07.2016.
  */
-public class Player {
+public class Player implements Parcelable{
     private int id;
     private String name;
     private String surname;
@@ -47,6 +49,33 @@ public class Player {
         this.birthdate = birthdate;
         this.playerImage = playerImage;
     }
+
+    protected Player(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        surname = in.readString();
+        position = in.readString();
+        contract = in.readString();
+        nationality = in.readString();
+        number = in.readInt();
+        weight = in.readInt();
+        height = in.readInt();
+        ep_id = in.readInt();
+        birthdate = in.readString();
+        playerImage = in.readParcelable(Bitmap.class.getClassLoader());
+    }
+
+    public static final Creator<Player> CREATOR = new Creator<Player>() {
+        @Override
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
+        }
+
+        @Override
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -148,4 +177,24 @@ public class Player {
         return name + " " + surname;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeInt(number);
+        parcel.writeInt(weight);
+        parcel.writeInt(height);
+        parcel.writeInt(ep_id);
+        parcel.writeString(name);
+        parcel.writeString(surname);
+        parcel.writeString(position);
+        parcel.writeString(contract);
+        parcel.writeString(nationality);
+        parcel.writeString(birthdate);
+        playerImage.writeToParcel(parcel, 0);
+    }
 }

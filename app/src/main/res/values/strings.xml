@@ -23,4 +23,8 @@
     <string name="placeholder_player_position">Verteidiger</string>
     <string name="placeholder_player_number">13</string>
     <string name="missing_connection">No connection to the internet!</string>
+    <string name="birthday">Geburtsdatum</string>
+    <string name="weight">Gewicht</string>
+    <string name="contract">Vertrag</string>
+    <string name="height">Grösse</string>
 </resources>

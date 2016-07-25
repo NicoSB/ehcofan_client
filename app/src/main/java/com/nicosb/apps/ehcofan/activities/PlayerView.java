@@ -1,6 +1,7 @@
 package com.nicosb.apps.ehcofan.activities;
 
 import android.content.Context;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,5 +33,5 @@ public class PlayerView extends LinearLayout{
         txt_player_number.setText(String.valueOf(player.getNumber()));
         txt_player_position.setText(player.getPosition());
         img_player_image.setImageBitmap(player.getPlayerImage());
-    }
+     }
 }
