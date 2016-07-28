@@ -27,4 +27,14 @@
     <string name="weight">Gewicht</string>
     <string name="contract">Vertrag</string>
     <string name="height">Grösse</string>
+    <string name="title_activity_standings">Tabelle</string>
+    <string name="rank">#</string>
+    <string name="team_name">Team</string>
+    <string name="goals">GF:GA</string>
+    <string name="points">P</string>
+    <string name="games">Sp</string>
+    <string name="wins">S</string>
+    <string name="ot_wins">OTS</string>
+    <string name="ot_losses">OTN</string>
+    <string name="losses">N</string>
 </resources>

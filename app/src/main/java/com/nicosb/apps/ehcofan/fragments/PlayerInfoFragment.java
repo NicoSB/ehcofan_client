@@ -32,11 +32,20 @@ public class PlayerInfoFragment extends DialogFragment {
         TextView txt_contract = (TextView)view.findViewById(R.id.txt_contract);
         WebView web_ep = (WebView)view.findViewById(R.id.web_ep);
 
-        txt_birthday.setText(player.getBirthdate());
-        txt_weight.setText(String.valueOf(player.getWeight()));
-        txt_height.setText(String.valueOf(player.getHeight()));
+        txt_birthday.setText(player.getGermanBirthdate());
+        txt_weight.setText(String.format("%s kg", String.valueOf(player.getWeight())));
+        txt_height.setText(String.format("%s cm", String.valueOf(player.getHeight())));
         txt_contract.setText(player.getContract());
-        web_ep.loadData("<iframe src=\"http://www.eliteprospects.com/iframe_player_stats_small.php?player=33601\" width=\"100%\" height=\"460\" scrolling=\"yes\" frameborder=\"0\" ></iframe>", "text/html", null);
+
+        getDialog().setTitle(player.getFullName());
+        getDialog().setCanceledOnTouchOutside(true);
+
+        if(player.getEp_id() == 0){
+            web_ep.setVisibility(View.GONE);
+        }
+        else {
+            web_ep.loadData("<iframe src=\"http://www.eliteprospects.com/iframe_player_stats_small.php?player=" + String.valueOf(player.getEp_id()) + "\" width=\"100%\" height=\"460\" scrolling=\"yes\" frameborder=\"0\" ></iframe>", "text/html", null);
+        }
         return view;
     }
 }

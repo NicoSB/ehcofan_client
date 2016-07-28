@@ -94,4 +94,9 @@ public class MainActivity extends AppCompatActivity {
         Intent scheduleActivity = new Intent(this, RosterActivity.class);
         startActivity(scheduleActivity);
     }
+
+    public void openStandingsActivity(View view) {
+        Intent standingsActivity = new Intent(this, StandingsActivity.class);
+        startActivity(standingsActivity);
+    }
 }

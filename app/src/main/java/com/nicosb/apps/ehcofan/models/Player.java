@@ -161,6 +161,10 @@ public class Player implements Parcelable{
         return birthdate;
     }
 
+    public String getGermanBirthdate() {
+        return birthdate.substring(8, 10) + "." + birthdate.substring(5, 7) + "." + birthdate.substring(0, 4);
+    }
+
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }

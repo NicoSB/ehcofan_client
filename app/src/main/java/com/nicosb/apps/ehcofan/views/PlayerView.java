@@ -1,4 +1,4 @@
-package com.nicosb.apps.ehcofan.activities;
+package com.nicosb.apps.ehcofan.views;
 
 import android.content.Context;
 import android.webkit.WebView;

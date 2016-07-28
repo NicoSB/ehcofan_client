@@ -20,6 +20,9 @@
         <activity
             android:name=".activities.RosterActivity"
             android:label="@string/title_activity_roster" />
+        <activity
+            android:name=".activities.StandingsActivity"
+            android:label="@string/title_activity_standings" />
 
         <service android:name=".services.CustomInstanceIdService">
             <intent-filter>

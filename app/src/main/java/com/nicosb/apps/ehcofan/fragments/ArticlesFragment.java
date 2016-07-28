@@ -59,26 +59,26 @@ public class ArticlesFragment extends Fragment
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refresh();
+                refresh(false);
             }
         });
 
         BottomRefreshScrollView brsview = (BottomRefreshScrollView)getActivity().findViewById(R.id.scroll_view);
         brsview.setViewOnBottomListener(this);
-        update();
+        update(true);
     }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        refresh();
+//    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        refresh();
-    }
-
-    private void update() {
+    private void update(boolean showProgessbar) {
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
-            fetchArticles();
+            fetchArticles(showProgessbar);
         }
         else{
             displayNoConnectionMessage();
@@ -96,7 +96,7 @@ public class ArticlesFragment extends Fragment
         tv.setVisibility(View.VISIBLE);
     }
 
-    private void fetchArticles(){
+    private void fetchArticles(boolean showProgessbar){
         String link = getString(R.string.rest_interface) + "articles?offset=" + articles.size();
 
         FetchArticlesTask nwTask = new FetchArticlesTask();
@@ -104,8 +104,12 @@ public class ArticlesFragment extends Fragment
         nwTask.execute(link);
 
         LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.rl_articles);
-        progressBar = new ProgressBar(getActivity());
-        rl.addView(progressBar);
+        if(showProgessbar) {
+            if (progressBar == null) {
+                progressBar = new ProgressBar(getActivity());
+            }
+            rl.addView(progressBar);
+        }
     }
 
     private void displayArticles() {
@@ -156,14 +160,14 @@ public class ArticlesFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_refresh:
-                refresh();
+                refresh(true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void refresh() {
+    private void refresh(boolean showProgressbar) {
         LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.rl_articles);
         if(rl == null){
             return;
@@ -175,17 +179,18 @@ public class ArticlesFragment extends Fragment
         TextView textView = (TextView)getActivity().findViewById(R.id.txt_noconnection);
         textView.setVisibility(View.GONE);
 
-        update();
+        update(showProgressbar);
     }
 
     @Override
     public void onBottomReached() {
         if(!allArticlesLoaded && !fetching) {
             fetching = true;
-            update();
+            update(true);
         }
         else{
-            progressBar.setVisibility(View.GONE);
+            LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.rl_articles);
+            rl.removeView(progressBar);
         }
     }
 
@@ -200,7 +205,7 @@ public class ArticlesFragment extends Fragment
             return;
         }
         rl.removeAllViews();
-        progressBar.setVisibility(View.GONE);
+
         displayArticles();
         swipeContainer.setRefreshing(false);
         fetching = false;
