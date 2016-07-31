@@ -16,13 +16,19 @@
             android:label="@string/title_activity_news" />
         <activity
             android:name=".activities.ScheduleActivity"
-            android:label="@string/title_activity_schedule" />
+            android:label="@string/title_activity_schedule"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.RosterActivity"
-            android:label="@string/title_activity_roster" />
+            android:label="@string/title_activity_roster"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.StandingsActivity"
-            android:label="@string/title_activity_standings" />
+            android:label="@string/title_activity_standings"/>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
 
         <service android:name=".services.CustomInstanceIdService">
             <intent-filter>

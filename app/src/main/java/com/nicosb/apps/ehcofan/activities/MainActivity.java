@@ -1,7 +1,9 @@
 package com.nicosb.apps.ehcofan.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +17,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.nicosb.apps.ehcofan.FirebaseHandler;
 import com.nicosb.apps.ehcofan.R;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
-
-    // Firebase instance variables
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,53 +30,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
-        // Setup Listener
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                }
-                else{
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
-
-                        if(!task.isSuccessful()){
-                            Log.w(TAG, "signInAnonymously", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            FirebaseMessaging.getInstance().subscribeToTopic("news");
-                            Log.w(TAG, "subscribed to topic 'news'");
-                        }
-                    }
-                });
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        PreferenceManager.setDefaultValues(this, R.xml.preference_screen, false);
+        FirebaseHandler.signIn(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        if(FirebaseHandler.mAuth != null){
+            FirebaseHandler.mAuth.addAuthStateListener(FirebaseHandler.mAuthListener);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(mAuthListener != null){
-            mAuth.removeAuthStateListener(mAuthListener);
+        if(FirebaseHandler.mAuthListener != null){
+            FirebaseHandler.mAuth.removeAuthStateListener(FirebaseHandler.mAuthListener);
         }
     }
     public void openNewsActivity(View view) {
@@ -98,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
     public void openStandingsActivity(View view) {
         Intent standingsActivity = new Intent(this, StandingsActivity.class);
         startActivity(standingsActivity);
+    }
+
+    public void openSettingsActivity(View view) {
+        Intent settingsActivity = new Intent(this, SettingsActivity.class);
+        startActivity(settingsActivity);
     }
 }
