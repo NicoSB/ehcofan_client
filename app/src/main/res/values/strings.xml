@@ -6,7 +6,7 @@
     <string name="title_placeholder">TITLE</string>
     <string name="text_placeholder">LOREMIPSUMDOLORET</string>
     <string name="aws_url">https://s3.eu-central-1.amazonaws.com/ehcofan/</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">grüen-wiiss</string>
     <string name="title_activity_news">News</string>
     <string name="news">News</string>
     <string name="home_team_placeholder">HOME Team</string>
@@ -40,4 +40,5 @@
     <string name="pref_notifications">Benachrichtigungen</string>
     <string name="pref_notifications_summ">Du erhälst eine Nachricht, wenn ein neuer Newsartikel verfügbar ist.</string>
     <string name="title_activity_settings">Einstellungen</string>
+    <string name="loading_older_news">Ältere News-Einträge werden geladen</string>
 </resources>

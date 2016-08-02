@@ -34,9 +34,9 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
 
     @Override
     protected ArrayList<Match> doInBackground(String... strings) {
-        String rest_url = context.getString(R.string.rest_interface);
-        if(strings.length > 0) {
-            rest_url = rest_url + "matches?competition=" + strings[0].replace(" ", "%20");
+        String rest_url = context.getString(R.string.rest_interface) + "matches";
+        if(strings[0].length() > 0) {
+            rest_url = rest_url + "?competition=" + strings[0].replace(" ", "%20");
         }
 
         try{
@@ -60,7 +60,11 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
             ArrayList<Match> matches = new ArrayList<>();
             for(MatchWrapper w: wrappers){
                 matches.add(w.toMatch());
+                if(isCancelled()){
+                    return null;
+                }
             }
+
             return matches;
         }catch (IOException mue){
             mue.printStackTrace();
@@ -72,7 +76,7 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
     @Override
     protected void onPostExecute(ArrayList<Match> matches) {
         super.onPostExecute(matches);
-        if(onScheduleFetchedListener != null){
+        if(!isCancelled() && onScheduleFetchedListener != null){
             onScheduleFetchedListener.onScheduleFetched(matches);
         }
         else{

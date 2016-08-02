@@ -3,6 +3,7 @@ package com.nicosb.apps.ehcofan.fragments;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,7 @@ public class ScheduleFragment extends Fragment
     private Spinner spinner;
     private ProgressBar progressBar;
     private TextView tv;
+    private FetchMatchesTask fetchMatchesTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,9 +82,12 @@ public class ScheduleFragment extends Fragment
     }
 
     private void fetchMatches() {
-        FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(getContext());
+        if(fetchMatchesTask != null && fetchMatchesTask.getStatus() != AsyncTask.Status.FINISHED){
+            fetchMatchesTask.cancel(true);
+        }
+        fetchMatchesTask = new FetchMatchesTask(getContext());
         fetchMatchesTask.setOnScheduleFetchedListener(this);
-        if(spinner == null){
+        if(spinner == null || spinner.getSelectedItem().toString().equals("Alle")){
             fetchMatchesTask.execute("");
         }else {
             fetchMatchesTask.execute(spinner.getSelectedItem().toString());

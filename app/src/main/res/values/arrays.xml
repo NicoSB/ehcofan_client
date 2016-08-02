@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="competition_names">
-        <item>NLB 16/17</item>
+        <item>Alle</item>
         <item>Vorbereitung</item>
+        <item>NLB 16/17</item>
         <item>EHCO Cup 2016</item>
         <item>Cup 2016</item>
     </string-array>

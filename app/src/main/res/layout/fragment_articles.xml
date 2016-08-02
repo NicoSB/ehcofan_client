@@ -13,10 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/rl_articles"
+                android:id="@+id/ll_articles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical"/>
         </com.nicosb.apps.ehcofan.views.BottomRefreshScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <TextView

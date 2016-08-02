@@ -3,6 +3,7 @@ package com.nicosb.apps.ehcofan.fragments;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,18 +30,17 @@ import com.nicosb.apps.ehcofan.views.BottomRefreshScrollView;
 import java.util.ArrayList;
 
 import com.nicosb.apps.ehcofan.models.Article;
-import com.nicosb.apps.ehcofan.models.ArticleWrapper;
 
 /**
  * Created by Nico on 01.07.2016.
  */
 public class ArticlesFragment extends Fragment
         implements FetchArticlesTask.PostExecuteListener,
-        FetchArticlesTask.FetchImagesTask.FetchImagesListener,
         BottomRefreshScrollView.ViewOnBottomListener{
     ProgressBar progressBar;
     ArrayList<Article> articles = new ArrayList<>();
     SwipeRefreshLayout swipeContainer;
+    FetchArticlesTask fetchArticlesTask;
     boolean allArticlesLoaded = false;
     boolean fetching = false;
 
@@ -65,14 +65,18 @@ public class ArticlesFragment extends Fragment
 
         BottomRefreshScrollView brsview = (BottomRefreshScrollView)getActivity().findViewById(R.id.scroll_view);
         brsview.setViewOnBottomListener(this);
-        update(true);
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        refresh();
-//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(articles.size() > 0){
+            displayArticles();
+        }
+        else {
+            update(true);
+        }
+    }
 
     private void update(boolean showProgessbar) {
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -97,23 +101,27 @@ public class ArticlesFragment extends Fragment
     }
 
     private void fetchArticles(boolean showProgessbar){
-        String link = getString(R.string.rest_interface) + "articles?offset=" + articles.size();
+        Article[] articlesArray = new Article[articles.size()];
 
-        FetchArticlesTask nwTask = new FetchArticlesTask();
-        nwTask.setPostExecuteListener(this);
-        nwTask.execute(link);
+        if(fetchArticlesTask != null && fetchArticlesTask.getStatus() != AsyncTask.Status.FINISHED){
+            fetchArticlesTask.cancel(true);
+        }
+        fetchArticlesTask = new FetchArticlesTask(getContext());
+        fetchArticlesTask.setPostExecuteListener(this);
+        articles.toArray(articlesArray);
+        fetchArticlesTask.execute(articlesArray);
 
-        LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.rl_articles);
+        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.ll_articles);
         if(showProgessbar) {
             if (progressBar == null) {
                 progressBar = new ProgressBar(getActivity());
             }
-            rl.addView(progressBar);
+            ll.addView(progressBar);
         }
     }
 
     private void displayArticles() {
-        LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.rl_articles);
+        LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.ll_articles);
         for(Article a: articles){
             ArticleView av = new ArticleView(getActivity(), a);
             av.setOnClickListener(new View.OnClickListener() {
@@ -127,14 +135,14 @@ public class ArticlesFragment extends Fragment
     }
 
     private void startFragment(View view) {
-        RelativeLayout rl = (RelativeLayout)getActivity().findViewById(R.id.fragment_container);
-        rl.removeAllViews();
-
         ArticleView av = (ArticleView)view;
         ArticleFragment af = new ArticleFragment();
         Bundle args = new Bundle();
         args.putParcelable("article", av.getArticle());
         af.setArguments(args);
+
+        allArticlesLoaded = false;
+        fetching = false;
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -144,16 +152,26 @@ public class ArticlesFragment extends Fragment
     }
 
     @Override
-    public void onPostExecute(ArticleWrapper[] wrappers) {
-        if(wrappers.length == 0) {
-            allArticlesLoaded = true;
-            Toast.makeText(getActivity(), "All news loaded", Toast.LENGTH_SHORT).show();
+    public void onPostExecute(ArrayList<Article> articles) {
+        LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.ll_articles);
+
+        if(articles != null) {
+            this.articles = articles;
+            if (rl == null) {
+                return;
+            }
+            rl.removeAllViews();
+
+            displayArticles();
+            swipeContainer.setRefreshing(false);
+            fetching = false;
         }
         else{
-            FetchArticlesTask.FetchImagesTask fetchImagesTask = new FetchArticlesTask.FetchImagesTask(getContext());
-            fetchImagesTask.setFetchImagesListener(this);
-            fetchImagesTask.execute(wrappers);
+            allArticlesLoaded = true;
+            Toast.makeText(getContext(), "Alle News-Einträge geladen", Toast.LENGTH_SHORT).show();
         }
+
+        rl.removeView(progressBar);
     }
 
     @Override
@@ -168,11 +186,11 @@ public class ArticlesFragment extends Fragment
     }
 
     private void refresh(boolean showProgressbar) {
-        LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.rl_articles);
-        if(rl == null){
+        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.ll_articles);
+        if(ll == null){
             return;
         }
-        rl.removeAllViews();
+        ll.removeAllViews();
         articles.clear();
         allArticlesLoaded = false;
 
@@ -189,25 +207,9 @@ public class ArticlesFragment extends Fragment
             update(true);
         }
         else{
-            LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.rl_articles);
-            rl.removeView(progressBar);
+            if(allArticlesLoaded){
+                Toast.makeText(getContext(), "Alle News-Einträge geladen", Toast.LENGTH_SHORT).show();
+            }
         }
-    }
-
-    @Override
-    public void onImagesFetched(ArrayList<Article> articles) {
-        for(Article a: articles){
-            this.articles.add(a);
-        }
-
-        LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.rl_articles);
-        if(rl == null){
-            return;
-        }
-        rl.removeAllViews();
-
-        displayArticles();
-        swipeContainer.setRefreshing(false);
-        fetching = false;
     }
 }
