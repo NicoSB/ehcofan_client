@@ -3,16 +3,27 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/mainGreen</item>
+        <item name="colorPrimaryDark">@color/mainGreen</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <!-- Base application theme. -->
     <style name="AppTheme.ToolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/mainGreen</item>
+        <item name="android:colorPrimaryDark">@color/mainGreen</item>
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:colorActivatedHighlight">@color/mainGreen</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme.DrawerStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/mainGreen</item>
+        <item name="android:colorPrimaryDark">@color/mainGreen</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
 
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

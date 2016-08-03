@@ -1,13 +1,18 @@
 package com.nicosb.apps.ehcofan.activities;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -30,7 +35,8 @@ import java.util.Locale;
  * Created by Nico on 22.07.2016.
  */
 public class StandingsActivity extends AppCompatActivity
-                                implements FetchStandingsTask.OnTeamsFetchedListener{
+                                implements FetchStandingsTask.OnTeamsFetchedListener,
+                                    NavigationView.OnNavigationItemSelectedListener {
     private ProgressBar progressBar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +50,19 @@ public class StandingsActivity extends AppCompatActivity
         LinearLayout container = (LinearLayout)findViewById(R.id.ll_standings);
         container.addView(progressBar);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        // Initializing Toolbar and setting it as the actionbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.standings);
+
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
     }
 
     @Override
@@ -109,5 +126,31 @@ public class StandingsActivity extends AppCompatActivity
 
         LinearLayout ll_standings = (LinearLayout)findViewById(R.id.ll_standings);
         ll_standings.removeView(progressBar);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.news:
+                Intent newsActivity = new Intent(this, NewsActivity.class);
+                startActivity(newsActivity);
+                return true;
+            case R.id.schedule:
+                Intent scheduleActivity = new Intent(this, ScheduleActivity.class);
+                startActivity(scheduleActivity);
+                return true;
+            case R.id.roster:
+                Intent rosterActivity = new Intent(this, RosterActivity.class);
+                startActivity(rosterActivity);
+                return true;
+            case R.id.standings:
+                return true;
+            case R.id.settings:
+                Intent settingsActivity = new Intent(this, SettingsActivity.class);
+                startActivity(settingsActivity);
+                return true;
+            default:
+                return true;
+        }
     }
 }

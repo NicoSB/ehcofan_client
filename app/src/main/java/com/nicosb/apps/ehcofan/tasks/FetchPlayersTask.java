@@ -107,7 +107,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
         prefs = context.getSharedPreferences(CUSTOM_PREFS, Context.MODE_APPEND);
         SharedPreferences.Editor editor = prefs.edit();
         Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         editor.putString(PREF_PLAYER_UPDATE, sdf.format(currentTime.getTime()));
         editor.apply();
 

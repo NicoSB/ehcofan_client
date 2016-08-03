@@ -146,7 +146,7 @@ public class ArticlesFragment extends Fragment
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, af);
+        fragmentTransaction.replace(R.id.content_frame, af);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
