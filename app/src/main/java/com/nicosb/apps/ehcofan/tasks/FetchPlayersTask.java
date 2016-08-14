@@ -38,8 +38,8 @@ import java.util.TimeZone;
 public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>{
     private static final String TAG = "FetchPlayersTask";
 
-    private static final String CUSTOM_PREFS = "customPrefs";
-    private static final String PREF_PLAYER_UPDATE = "playerUpdate";
+    public static final String CUSTOM_PREFS = "customPrefs";
+    public static final String PREF_PLAYER_UPDATE = "playerUpdate";
     private Context context;
     private OnPlayersFetchedListener onPlayersFetchedListener;
     ArrayList<Player> players;

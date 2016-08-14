@@ -13,7 +13,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".activities.NewsActivity"
-            android:label="@string/title_activity_news" />
+            android:label="@string/title_activity_news"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.ScheduleActivity"
             android:label="@string/title_activity_schedule"
@@ -25,10 +26,6 @@
         <activity
             android:name=".activities.StandingsActivity"
             android:label="@string/title_activity_standings"/>
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait" />
 
         <service android:name=".services.CustomInstanceIdService">
             <intent-filter>

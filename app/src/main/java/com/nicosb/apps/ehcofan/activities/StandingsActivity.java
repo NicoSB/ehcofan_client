@@ -24,6 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
+import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.models.Team;
 import com.nicosb.apps.ehcofan.models.TeamAdapter;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
@@ -35,9 +36,9 @@ import java.util.Locale;
  * Created by Nico on 22.07.2016.
  */
 public class StandingsActivity extends AppCompatActivity
-                                implements FetchStandingsTask.OnTeamsFetchedListener,
-                                    NavigationView.OnNavigationItemSelectedListener {
+                                implements FetchStandingsTask.OnTeamsFetchedListener {
     private ProgressBar progressBar;
+    private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,19 +51,7 @@ public class StandingsActivity extends AppCompatActivity
         LinearLayout container = (LinearLayout)findViewById(R.id.ll_standings);
         container.addView(progressBar);
 
-        // Initializing Toolbar and setting it as the actionbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.standings);
-
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
-
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+        drawerLayout = ToolbarHelper.loadToolbar(this);
     }
 
     @Override
@@ -129,28 +118,8 @@ public class StandingsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.news:
-                Intent newsActivity = new Intent(this, NewsActivity.class);
-                startActivity(newsActivity);
-                return true;
-            case R.id.schedule:
-                Intent scheduleActivity = new Intent(this, ScheduleActivity.class);
-                startActivity(scheduleActivity);
-                return true;
-            case R.id.roster:
-                Intent rosterActivity = new Intent(this, RosterActivity.class);
-                startActivity(rosterActivity);
-                return true;
-            case R.id.standings:
-                return true;
-            case R.id.settings:
-                Intent settingsActivity = new Intent(this, SettingsActivity.class);
-                startActivity(settingsActivity);
-                return true;
-            default:
-                return true;
-        }
+    protected void onStop() {
+        super.onStop();
+        drawerLayout.closeDrawer(Gravity.LEFT, false);
     }
 }

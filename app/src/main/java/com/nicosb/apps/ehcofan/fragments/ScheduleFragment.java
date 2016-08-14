@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -34,13 +36,13 @@ import java.util.ArrayList;
 public class ScheduleFragment extends Fragment
                                 implements FetchMatchesTask.OnScheduleFetchedListener{
 
-
     private static final String TAG = "ScheduleFragment";
     private ArrayList<Match> matches = new ArrayList<>();
     private Spinner spinner;
     private ProgressBar progressBar;
     private TextView tv;
     private FetchMatchesTask fetchMatchesTask;
+    private String requestedCompetition = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,9 +78,13 @@ public class ScheduleFragment extends Fragment
         });
     }
 
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onPause() {
+        super.onPause();
+        if(fetchMatchesTask != null && fetchMatchesTask.getStatus() != AsyncTask.Status.FINISHED){
+            fetchMatchesTask.cancel(true);
+        }
     }
 
     private void fetchMatches() {
@@ -88,10 +94,12 @@ public class ScheduleFragment extends Fragment
         fetchMatchesTask = new FetchMatchesTask(getContext());
         fetchMatchesTask.setOnScheduleFetchedListener(this);
         if(spinner == null || spinner.getSelectedItem().toString().equals("Alle")){
-            fetchMatchesTask.execute("");
+            requestedCompetition = "";
         }else {
-            fetchMatchesTask.execute(spinner.getSelectedItem().toString());
+            requestedCompetition = spinner.getSelectedItem().toString();
         }
+        fetchMatchesTask.execute(requestedCompetition);
+
         LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.container_schedule);
         rl.removeAllViews();
 
@@ -116,7 +124,7 @@ public class ScheduleFragment extends Fragment
                 container.addView(noMatchesMessage);
             }
             for (Match m : matches) {
-                MatchView mv = new MatchView(getContext(), m);
+                MatchView mv = new MatchView(getContext(), m, requestedCompetition.length() == 0);
                 container.addView(mv);
             }
         }

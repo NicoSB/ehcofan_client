@@ -17,13 +17,13 @@ import java.text.SimpleDateFormat;
 public class MatchView extends RelativeLayout{
     private Match match;
 
-    public MatchView(Context context, Match match) {
+    public MatchView(Context context, Match match, boolean showCompetition) {
         super(context);
         this.match = match;
-        init();
+        init(showCompetition);
     }
 
-    private void init() {
+    private void init(boolean showCompetition) {
         inflate(getContext(), R.layout.view_match, this);
         TextView txt_home = (TextView)findViewById(R.id.txt_home);
         TextView txt_away = (TextView)findViewById(R.id.txt_away);
@@ -43,13 +43,17 @@ public class MatchView extends RelativeLayout{
         txt_h2.setText(String.valueOf(match.getScores_home()[1]));
         txt_h3.setText(String.valueOf(match.getScores_home()[2]));
         txt_h_total.setText(String.valueOf(match.getTotal(Match.Team.HOME)));
-        txt_a1.setText(String.valueOf(match.getScores_home()[0]));
-        txt_a2.setText(String.valueOf(match.getScores_home()[1]));
-        txt_a3.setText(String.valueOf(match.getScores_home()[2]));
+        txt_a1.setText(String.valueOf(match.getScores_away()[0]));
+        txt_a2.setText(String.valueOf(match.getScores_away()[1]));
+        txt_a3.setText(String.valueOf(match.getScores_away()[2]));
         txt_a_total.setText(String.valueOf(match.getTotal(Match.Team.AWAY)));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        txt_datetime.setText(sdf.format(match.getDatetime().getTime()));
+        String dt_text = sdf.format(match.getDatetime().getTime());
+        if(showCompetition){
+            dt_text = dt_text + " - " + match.getCompetition();
+        }
+        txt_datetime.setText(dt_text);
 
         if(match.getHome_team().equals("EHC Olten")){
             txt_home.setTypeface(null, Typeface.BOLD);

@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        PreferenceManager.setDefaultValues(this, R.xml.preference_screen, false);
         FirebaseHandler.signIn(this);
     }
 
@@ -67,10 +65,5 @@ public class MainActivity extends AppCompatActivity {
     public void openStandingsActivity(View view) {
         Intent standingsActivity = new Intent(this, StandingsActivity.class);
         startActivity(standingsActivity);
-    }
-
-    public void openSettingsActivity(View view) {
-        Intent settingsActivity = new Intent(this, SettingsActivity.class);
-        startActivity(settingsActivity);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group
         android:id="@+id/group_features"
         android:checkableBehavior="single">
@@ -29,9 +30,9 @@
         android:id="@+id/group_settings"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/settings"
-            android:checked="false"
-            android:icon="@drawable/ic_settings_white_48dp"
-            android:title="@string/title_activity_settings" />
+            android:id="@+id/notifications"
+            android:title="@string/pref_notifications"
+            app:actionLayout="@layout/widget_switch"/>
+
     </group>
 </menu>

@@ -43,4 +43,13 @@
     <string name="loading_older_news">Ältere News-Einträge werden geladen</string>
     <string name="close">Schliessen</string>
     <string name="open">Öffnen</string>
+    <string name="player_games">Spiele</string>
+    <string name="player_goals">Tore</string>
+    <string name="player_pim">PIM</string>
+    <string name="player_assists">Assists</string>
+    <string name="player_placeholder_number">0</string>
+    <string name="player_statistics">Statistik</string>
+    <string name="player_stats_from">Player statistics by</string>
+    <string name="player_personal">Persönlich</string>
+    <string name="article_to_homepage">Zur Homepage</string>
 </resources>

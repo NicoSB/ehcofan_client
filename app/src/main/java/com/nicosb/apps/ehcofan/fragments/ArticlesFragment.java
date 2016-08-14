@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,7 +91,7 @@ public class ArticlesFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.news, menu);
+        inflater.inflate(R.menu.menu_news, menu);
     }
 
     private void displayNoConnectionMessage() {
@@ -182,6 +181,14 @@ public class ArticlesFragment extends Fragment
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(fetchArticlesTask != null && fetchArticlesTask.getStatus() != AsyncTask.Status.FINISHED){
+            fetchArticlesTask.cancel(true);
         }
     }
 

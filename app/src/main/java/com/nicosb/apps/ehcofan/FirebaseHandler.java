@@ -3,10 +3,8 @@ package com.nicosb.apps.ehcofan;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,7 +12,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.nicosb.apps.ehcofan.fragments.SettingsFragment;
+import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 
 /**
  * Created by Nico on 28.07.2016.
@@ -23,12 +21,13 @@ public class FirebaseHandler {
     // Firebase instance variables
     public static FirebaseAuth mAuth;
     public static FirebaseAuth.AuthStateListener mAuthListener;
+    public final static String PREF_NOTIFICATIONS = "pref_notifications";
     private final static String TAG = "FirebaseHandler";
 
     public static void signIn(Activity activity){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
 
-        if(sharedPreferences.getBoolean(SettingsFragment.KEY_PREF_NOTIFICATIONS, false)) {
+        if(sharedPreferences.getBoolean(PREF_NOTIFICATIONS, false)) {
             // Initialize Firebase Auths
             Log.d(TAG, "initializing firebase");
             mAuth = FirebaseAuth.getInstance();
@@ -65,7 +64,16 @@ public class FirebaseHandler {
 
     }
 
-    public static void signOut(Activity activity) {
+    public static void signOut() {
         FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+    }
+
+    public static void sign(Activity activity, boolean signIn){
+        if(signIn){
+            signIn(activity);
+        }
+        else{
+            signOut();
+        }
     }
 }
