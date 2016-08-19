@@ -1,66 +1,125 @@
 package com.nicosb.apps.ehcofan.models;
 
+import android.database.Cursor;
+
 /**
- * Created by Nico on 27.07.2016.
+ * Created by Nico on 17.08.2016.
  */
 public class Team {
-    private String name;
-    private String competition;
-    private int wins;
-    private int ot_wins;
-    private int ot_losses;
-    private int losses;
-    private int goals_for;
-    private int goals_against;
+    int _id;
+    String name;
+    String league;
+    String country;
+    String last_season;
+    int founded;
+    int title_count;
+    String topscorer;
+    String desc_text;
+    String website;
 
-    public Team(String name, String competition, int wins, int ot_wins, int ot_losses, int losses, int goals_for, int goals_against) {
+    public Team(int _id, String name, String league, String country, String last_season, int founded, int title_count, String topscorer, String desc_text, String website) {
+        this._id = _id;
         this.name = name;
-        this.competition = competition;
-        this.wins = wins;
-        this.ot_wins = ot_wins;
-        this.ot_losses = ot_losses;
-        this.losses = losses;
-        this.goals_for = goals_for;
-        this.goals_against = goals_against;
+        this.league = league;
+        this.country = country;
+        this.last_season = last_season;
+        this.founded = founded;
+        this.title_count = title_count;
+        this.topscorer = topscorer;
+        this.desc_text = desc_text;
+        this.website = website;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getCompetition() {
-        return competition;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getWins() {
-        return wins;
+    public String getLeague() {
+        return league;
     }
 
-    public int getOt_wins() {
-        return ot_wins;
+    public void setLeague(String league) {
+        this.league = league;
     }
 
-    public int getOt_losses() {
-        return ot_losses;
+    public String getCountry() {
+        return country;
     }
 
-    public int getLosses() {
-        return losses;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public int getGoals_for() {
-        return goals_for;
+    public String getLast_season() {
+        return last_season;
     }
 
-    public int getGoals_against() {
-        return goals_against;
+    public void setLast_season(String last_season) {
+        this.last_season = last_season;
     }
 
-    public int getGames(){
-        return wins + ot_wins + ot_losses + losses;
+    public int getFounded() {
+        return founded;
     }
 
-    public int getPoints(){
-        return 3*wins + 2*ot_wins + ot_losses;
+    public void setFounded(int founded) {
+        this.founded = founded;
+    }
+
+    public int getTitle_count() {
+        return title_count;
+    }
+
+    public void setTitle_count(int title_count) {
+        this.title_count = title_count;
+    }
+
+    public String getTopscorer() {
+        return topscorer;
+    }
+
+    public void setTopscorer(String topscorer) {
+        this.topscorer = topscorer;
+    }
+
+    public String getDesc_text() {
+        return desc_text;
+    }
+
+    public void setDesc_text(String desc_text) {
+        this.desc_text = desc_text;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public static Team populateTeam(Cursor c){
+        return new Team(c.getInt(c.getColumnIndex("_id")),
+                c.getString(c.getColumnIndex("name")),
+                c.getString(c.getColumnIndex("league")),
+                c.getString(c.getColumnIndex("Country")),
+                c.getString(c.getColumnIndex("last_season")),
+                c.getInt(c.getColumnIndex("founded")),
+                c.getInt(c.getColumnIndex("title_count")),
+                c.getString(c.getColumnIndex("topscorer")),
+                c.getString(c.getColumnIndex("desc_text")),
+                c.getString(c.getColumnIndex("website_url")));
     }
 }

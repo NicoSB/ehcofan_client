@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EHCO Fan</string>
+    <string name="app_name">grüen-wiiss</string>
     <string name="rest_interface_local">http://10.0.2.2:3000/</string>
     <string name="rest_interface">https://ehcofan.herokuapp.com/</string>
     <string name="action_refresh">aktualisieren</string>
@@ -12,9 +12,6 @@
     <string name="home_team_placeholder">HOME Team</string>
     <string name="away_team_placeholder">AWAY Team</string>
     <string name="zero">0</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_schedule">Spielplan</string>
     <string name="choose_competition">Wettbewerb wählen</string>
     <string name="datetime_placeholder">01.01.2016 20:00</string>
@@ -22,7 +19,7 @@
     <string name="placeholder_player_name">Max Mustermann</string>
     <string name="placeholder_player_position">Verteidiger</string>
     <string name="placeholder_player_number">13</string>
-    <string name="missing_connection">No connection to the internet!</string>
+    <string name="missing_connection">Keine Verbindung zum Internet!</string>
     <string name="birthday">Geburtsdatum</string>
     <string name="weight">Gewicht</string>
     <string name="contract">Vertrag</string>
@@ -52,4 +49,16 @@
     <string name="player_stats_from">Player statistics by</string>
     <string name="player_personal">Persönlich</string>
     <string name="article_to_homepage">Zur Homepage</string>
+    <string name="title_activity_cup">EHCO Cup</string>
+    <string name="grizzlys_wolfsburg">Grizzlys Wolfsburg</string>
+    <string name="team_name_placeholder">EHC Olten</string>
+    <string name="team_league_placeholder">NLB • Schweiz</string>
+    <string name="title_activity_team">Teamübersicht</string>
+    <string name="placement_15_16">Saison 2015/16</string>
+    <string name="team_founded">gegründet</string>
+    <string name="team_titles">Meistertitel</string>
+    <string name="placeholder_team_topscorer">Curtis Gedig</string>
+    <string name="placeholder_team_saison">Platz 2, Playoff-Halbfinale</string>
+    <string name="last_match">Letztes Spiel</string>
+    <string name="next_match">Nächstes Spiel</string>
 </resources>

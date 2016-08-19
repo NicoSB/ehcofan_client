@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/tab_height"
+    android:columnCount="2"
+    android:rowCount="3">
+
+    <ImageView
+        android:id="@+id/logo_gw"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:padding="32dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:src="@drawable/logo_gw"
+        android:onClick="openTeamFragment" />
+
+    <ImageView
+        android:id="@+id/logo_gs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:padding="32dp"
+        android:src="@drawable/logo_gs"
+        android:onClick="openTeamFragment"/>
+
+    <ImageView
+        android:id="@+id/logo_kp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:padding="32dp"
+        android:src="@drawable/logo_kp"
+        android:onClick="openTeamFragment"/>
+
+    <ImageView
+        android:id="@+id/logo_ir"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:padding="32dp"
+        android:src="@drawable/logo_ir"
+        android:onClick="openTeamFragment"/>
+
+    <ImageView
+        android:id="@+id/logo_scl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:padding="32dp"
+        android:src="@drawable/logo_scl"
+        android:onClick="openTeamFragment"/>
+
+    <ImageView
+        android:id="@+id/logo_ehco"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:padding="32dp"
+        android:src="@drawable/logo_ehco"
+        android:onClick="openTeamFragment"/>
+
+</GridLayout>

@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
  * Created by Nico on 20.07.2016.
  */
 public class MatchWrapper {
+    private int id;
     private String home_team;
     private String away_team;
     private String competition;
@@ -33,6 +34,6 @@ public class MatchWrapper {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return new Match(home_team, away_team, competition, calendar, scores_home, scores_away);
+        return new Match(id, home_team, away_team, competition, calendar, scores_home, scores_away);
     }
 }

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.Player;
 
 import java.io.FileInputStream;
@@ -61,11 +62,21 @@ public class Cacher {
     }
 
     public static boolean cachePlayer(Context context, Player player){
-        PlayerCacheHelper helper = new PlayerCacheHelper(context);
+        MatchCacheHelper helper = new MatchCacheHelper(context);
         SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
 
         long newRowId;
         newRowId = sqLiteDatabase.insertWithOnConflict(PlayerCacheHelper.PlayerCache.TABLE_NAME, PlayerCacheHelper.PlayerCache.COLUMN_NAME_WEIGHT, player.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
+
+        return newRowId > 0;
+    }
+
+    public static boolean cacheMatch(Context context, Match match){
+        MatchCacheHelper helper = new MatchCacheHelper(context);
+        SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
+
+        long newRowId;
+        newRowId = sqLiteDatabase.insertWithOnConflict(MatchCacheHelper.MatchCache.TABLE_NAME, MatchCacheHelper.MatchCache.COLUMN_NAME_COMPETITION, match.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
         return newRowId > 0;
     }

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 public class ScheduleFragment extends Fragment
                                 implements FetchMatchesTask.OnScheduleFetchedListener{
+    boolean inPager = false;
 
     private static final String TAG = "ScheduleFragment";
     private ArrayList<Match> matches = new ArrayList<>();
@@ -44,17 +45,21 @@ public class ScheduleFragment extends Fragment
     private FetchMatchesTask fetchMatchesTask;
     private String requestedCompetition = "";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
-        setHasOptionsMenu(true);
-        spinner = (Spinner) getActivity().findViewById(R.id.schedule_spinner);
+        if(!inPager){
+            setHasOptionsMenu(true);
+            spinner = (Spinner) getActivity().findViewById(R.id.schedule_spinner);
+        }
+        else{
+            float scale = getResources().getDisplayMetrics().density;
+            int paddingTop = (int) (8*scale + 0.5f);
+
+            v.setPadding(0,  (int)getResources().getDimension(R.dimen.tab_height) + paddingTop, 0, 0);
+        }
 
         return v;
     }
@@ -62,20 +67,26 @@ public class ScheduleFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SpinnerAdapter adapter = ArrayAdapter.createFromResource(getContext().getApplicationContext(), R.array.competition_names, R.layout.spinner_item_competition);
-        spinner.setAdapter(adapter);
-        spinner.setGravity(Gravity.END);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                update();
-            }
+        if (!inPager) {
+            SpinnerAdapter adapter = ArrayAdapter.createFromResource(getContext().getApplicationContext(), R.array.competition_names, R.layout.spinner_item_competition);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            spinner.setAdapter(adapter);
+            spinner.setGravity(Gravity.END);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    update();
+                }
 
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+        else{
+            update();
+        }
     }
 
 
@@ -94,7 +105,12 @@ public class ScheduleFragment extends Fragment
         fetchMatchesTask = new FetchMatchesTask(getContext());
         fetchMatchesTask.setOnScheduleFetchedListener(this);
         if(spinner == null || spinner.getSelectedItem().toString().equals("Alle")){
-            requestedCompetition = "";
+            if(inPager){
+                requestedCompetition = "EHCO Cup 2016";
+            }
+            else{
+                requestedCompetition = "";
+            }
         }else {
             requestedCompetition = spinner.getSelectedItem().toString();
         }
@@ -157,5 +173,13 @@ public class ScheduleFragment extends Fragment
         if(tv != null) {
             tv.setVisibility(View.VISIBLE);
         }
+    }
+
+    public boolean isInPager() {
+        return inPager;
+    }
+
+    public void setInPager(boolean inPager) {
+        this.inPager = inPager;
     }
 }

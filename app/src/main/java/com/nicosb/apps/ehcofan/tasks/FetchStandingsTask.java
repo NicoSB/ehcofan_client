@@ -5,9 +5,7 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.models.Match;
-import com.nicosb.apps.ehcofan.models.Player;
-import com.nicosb.apps.ehcofan.models.Team;
+import com.nicosb.apps.ehcofan.models.StandingsTeam;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,7 +20,7 @@ import java.util.Collections;
 /**
  * Created by Nico on 27.07.2016.
  */
-public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Team>>{
+public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<StandingsTeam>>{
     Context context;
     OnTeamsFetchedListener onTeamsFetchedListener;
 
@@ -31,9 +29,9 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Team>>
     }
 
     @Override
-    protected ArrayList<Team> doInBackground(String... strings) {
+    protected ArrayList<StandingsTeam> doInBackground(String... strings) {
         try {
-            String rest_url = context.getString(R.string.rest_interface) + "teams?competition=NLB%2016/17";
+            String rest_url = context.getString(R.string.rest_interface) + "teams?competition=" + strings[0];
             URL restAddress = new URL(rest_url);
             HttpURLConnection urlConnection = (HttpURLConnection) restAddress.openConnection();
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -48,24 +46,24 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Team>>
             String json = builder.toString();
             Gson gson = new Gson();
 
-            Team[] teamsArray = gson.fromJson(json, Team[].class);
-            ArrayList<Team> teams = new ArrayList<>();
-            Collections.addAll(teams, teamsArray);
+            StandingsTeam[] teamsArray = gson.fromJson(json, StandingsTeam[].class);
+            ArrayList<StandingsTeam> standingsTeams = new ArrayList<>();
+            Collections.addAll(standingsTeams, teamsArray);
 
-            return teams;
+            return standingsTeams;
         } catch (IOException e) {
             e.printStackTrace();
-            Team[] teamsArray = {new Team("EHC Olten", "NLB 16/17", 1,1,1,1,1,1),new Team("SC Langenthal", "NLB 16/17", 0,1,1,1,1,1)};
-            ArrayList<Team> teams = new ArrayList<>();
-            Collections.addAll(teams, teamsArray);
-            return teams;
+            StandingsTeam[] teamsArray = {new StandingsTeam("EHC Olten", "NLB 16/17", "", 1,1,1,1,1,1),new StandingsTeam("SC Langenthal", "NLB 16/17", "", 0,1,1,1,1,1)};
+            ArrayList<StandingsTeam> standingsTeams = new ArrayList<>();
+            Collections.addAll(standingsTeams, teamsArray);
+            return standingsTeams;
         }
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Team> teams) {
+    protected void onPostExecute(ArrayList<StandingsTeam> standingsTeams) {
         if(onTeamsFetchedListener != null){
-            onTeamsFetchedListener.onTeamsFetched(teams);
+            onTeamsFetchedListener.onTeamsFetched(standingsTeams);
         }
     }
 
@@ -74,6 +72,6 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Team>>
     }
 
     public interface OnTeamsFetchedListener{
-        void onTeamsFetched(ArrayList<Team> teams);
+        void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams);
     }
 }

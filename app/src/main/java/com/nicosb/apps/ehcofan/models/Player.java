@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.ContextThemeWrapper;
 
 import com.nicosb.apps.ehcofan.PlayerCacheHelper;
 

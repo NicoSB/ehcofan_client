@@ -16,16 +16,16 @@ import java.util.Locale;
 /**
  * Created by Nico on 28.07.2016.
  */
-public class TeamAdapter extends ArrayAdapter<Team> {
+public class TeamAdapter extends ArrayAdapter<StandingsTeam> {
     private Activity activity;
-    private ArrayList<Team> lTeam = new ArrayList<>();
+    private ArrayList<StandingsTeam> lStandingsTeam = new ArrayList<>();
     private static LayoutInflater inflater = null;
 
-    public TeamAdapter(Activity activity, int resource, ArrayList<Team> lTeam) {
-        super(activity, resource, lTeam);
+    public TeamAdapter(Activity activity, int resource, ArrayList<StandingsTeam> lStandingsTeam) {
+        super(activity, resource, lStandingsTeam);
         try {
             this.activity = activity;
-            this.lTeam = lTeam;
+            this.lStandingsTeam = lStandingsTeam;
 
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }catch(Exception e) {
@@ -34,10 +34,10 @@ public class TeamAdapter extends ArrayAdapter<Team> {
     }
 
     public int getCount(){
-        return lTeam.size();
+        return lStandingsTeam.size();
     }
 
-    public Team getItem(Team position){
+    public StandingsTeam getItem(StandingsTeam position){
         return position;
     }
 
@@ -71,9 +71,9 @@ public class TeamAdapter extends ArrayAdapter<Team> {
             }
 
             holder.txt_rank.setText(String.format(Locale.GERMANY, "%d.", position));
-            holder.txt_name.setText(lTeam.get(position).getName());
-            holder.txt_goals.setText(String.format(Locale.GERMANY, "%d:%d", lTeam.get(position).getGoals_for(), lTeam.get(position).getGoals_against()));
-            holder.txt_points.setText(lTeam.get(position).getPoints());
+            holder.txt_name.setText(lStandingsTeam.get(position).getName());
+            holder.txt_goals.setText(String.format(Locale.GERMANY, "%d:%d", lStandingsTeam.get(position).getGoals_for(), lStandingsTeam.get(position).getGoals_against()));
+            holder.txt_points.setText(lStandingsTeam.get(position).getPoints());
         }catch (Exception e){
             e.printStackTrace();
         }

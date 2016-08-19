@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -56,12 +57,11 @@ public class NewsActivity extends AppCompatActivity{
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        drawerLayout.closeDrawer(Gravity.LEFT, false);
+        drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 }

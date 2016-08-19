@@ -28,18 +28,12 @@
                 android:layout_height="wrap_content" />
 
         </android.support.v7.widget.Toolbar>
-
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/schedule_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/schedule_fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
-        </ScrollView>
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
     </LinearLayout>
 
     <!-- The navigation drawer -->

@@ -26,6 +26,14 @@
         <activity
             android:name=".activities.StandingsActivity"
             android:label="@string/title_activity_standings"/>
+        <activity
+            android:name=".activities.CupActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_cup" />
+        <activity
+            android:name=".activities.TeamActivity"
+            android:label="@string/title_activity_team"
+            android:screenOrientation="portrait" />
 
         <service android:name=".services.CustomInstanceIdService">
             <intent-filter>
@@ -41,6 +49,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
