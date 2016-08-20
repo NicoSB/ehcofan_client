@@ -5,6 +5,11 @@
         android:id="@+id/group_features"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/home"
+            android:checked="false"
+            android:icon="@drawable/ic_home_white_48dp"
+            android:title="@string/title_activity_main" />
+        <item
             android:id="@+id/news"
             android:checked="false"
             android:icon="@drawable/ic_newspaper_white_48dp"

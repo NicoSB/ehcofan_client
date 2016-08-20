@@ -3,13 +3,12 @@ package com.nicosb.apps.ehcofan.models;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.nicosb.apps.ehcofan.MatchCacheHelper;
-import com.nicosb.apps.ehcofan.PlayerCacheHelper;
+import com.nicosb.apps.ehcofan.CacheDBHelper;
+import com.nicosb.apps.ehcofan.CacheDBHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Created by Nico on 20.07.2016.
@@ -87,13 +86,13 @@ public class Match {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String dt_text = sdf.format(datetime.getTime());
 
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_ID, id);
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_HOME_TEAM, home_team);
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_AWAY_TEAM, away_team);
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_COMPETITION, competition);
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME, dt_text);
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_SCORES_HOME, MatchCacheHelper.encodeScores(scores_home));
-        contentValues.put(MatchCacheHelper.MatchCache.COLUMN_NAME_SCORES_AWAY, MatchCacheHelper.encodeScores(scores_away));
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID, id);
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM, home_team);
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM, away_team);
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION, competition);
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME, dt_text);
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_HOME, CacheDBHelper.encodeScores(scores_home));
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_AWAY, CacheDBHelper.encodeScores(scores_away));
 
         return contentValues;
     }
@@ -101,14 +100,14 @@ public class Match {
     public static Match populateMatch(Cursor c) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Calendar datetime = Calendar.getInstance();
-        datetime.setTime(sdf.parse(c.getString(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME))));
+        datetime.setTime(sdf.parse(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME))));
 
-        int[] scores_home = MatchCacheHelper.decodeScores(c.getString(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_SCORES_HOME)));
-        int[] scores_away = MatchCacheHelper.decodeScores(c.getString(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_SCORES_AWAY)));
-        return new Match(c.getInt(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_ID)),
-                c.getString(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_HOME_TEAM)),
-                c.getString(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_AWAY_TEAM)),
-                c.getString(c.getColumnIndex(MatchCacheHelper.MatchCache.COLUMN_NAME_COMPETITION)),
+        int[] scores_home = CacheDBHelper.decodeScores(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_HOME)));
+        int[] scores_away = CacheDBHelper.decodeScores(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_AWAY)));
+        return new Match(c.getInt(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID)),
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM)),
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM)),
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION)),
                 datetime,
                 scores_home,
                 scores_away

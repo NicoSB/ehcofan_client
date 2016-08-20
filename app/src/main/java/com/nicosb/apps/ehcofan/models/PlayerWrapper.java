@@ -20,6 +20,7 @@ public class PlayerWrapper {
     private int ep_id;
     private String birthdate;
     private String player_image_file_name;
+    private String updated_at;
 
     public int getId() {
         return id;
@@ -123,5 +124,13 @@ public class PlayerWrapper {
 
     public Player toPlayer(Bitmap bitmap){
         return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, birthdate, bitmap);
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 }

@@ -11,12 +11,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.nicosb.apps.ehcofan.Cacher;
-import com.nicosb.apps.ehcofan.MatchCacheHelper;
-import com.nicosb.apps.ehcofan.PlayerCacheHelper;
+import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.MatchWrapper;
-import com.nicosb.apps.ehcofan.models.Player;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,10 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 
 /**
@@ -50,27 +45,27 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
     protected ArrayList<Match> doInBackground(String... strings) {
         updateMatches(strings);
 
-        SQLiteDatabase db = new MatchCacheHelper(context).getReadableDatabase();
-        String where = null;
-        String[] values = null;
+        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
+        String where;
+        String[] values;
         if(strings[0].length() > 0){
-            where = MatchCacheHelper.MatchCache.COLUMN_NAME_COMPETITION + " = ?";
+                where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION + " = ?";
             values = new String[1];
             values[0] = strings[0];
         }
         else{
-            where = MatchCacheHelper.MatchCache.COLUMN_NAME_COMPETITION + " != ?";
+            where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION + " != ?";
             values = new String[1];
             values[0] = "EHCO Cup 2016";
         }
         Cursor c = db.query(
-                MatchCacheHelper.MatchCache.TABLE_NAME,  // The table to query
+                CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
                 where,                                // The columns for the WHERE clause
                 values,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
-                "datetime(" + MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME + ")"                                 // The sort order
+                "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ")"                                 // The sort order
         );
 
         while(c.moveToNext()){
@@ -82,6 +77,7 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
             }
         }
         c.close();
+        db.close();
 
         return matches;
     }
@@ -135,23 +131,27 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
                 String json = builder.toString();
                 Gson gson = new Gson();
                 MatchWrapper[] wrappers = gson.fromJson(json, MatchWrapper[].class);
+                String lastUpdate = "0";
 
                 // extract players and save them as well as pictures to local database
                 for (MatchWrapper m: wrappers) {
                     Match match = m.toMatch();
                     Cacher.cacheMatch(context, match);
+                    if(lastUpdate.compareTo(m.getUpdated_at()) < 0){
+                        lastUpdate = m.getUpdated_at();
+                    }
+                }
+
+                if(!lastUpdate.equals("0")){
+                    // update player update pref
+                    prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_APPEND);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(PREF_MATCH_UPDATE, lastUpdate);
+                    editor.apply();
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-
-            // update player update pref
-            prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_APPEND);
-            SharedPreferences.Editor editor = prefs.edit();
-            Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            editor.putString(PREF_MATCH_UPDATE, sdf.format(currentTime.getTime()));
-            editor.apply();
         }
     }
 }

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Switch;
 
 import com.nicosb.apps.ehcofan.activities.CupActivity;
+import com.nicosb.apps.ehcofan.activities.MainActivity;
 import com.nicosb.apps.ehcofan.activities.NewsActivity;
 import com.nicosb.apps.ehcofan.activities.RosterActivity;
 import com.nicosb.apps.ehcofan.activities.ScheduleActivity;
@@ -98,6 +99,9 @@ public class ToolbarHelper{
         public boolean onNavigationItemSelected(MenuItem item) {
             Intent newActivity = null;
             switch (item.getItemId()) {
+                case R.id.home:
+                    newActivity = new Intent(activity, MainActivity.class);
+                    break;
                 case R.id.news:
                     newActivity = new Intent(activity, NewsActivity.class);
                     break;

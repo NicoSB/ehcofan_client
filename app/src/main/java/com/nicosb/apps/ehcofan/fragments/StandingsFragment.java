@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -59,70 +60,89 @@ public class StandingsFragment extends Fragment
 
     @Override
     public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
-        TableLayout container = (TableLayout)getActivity().findViewById(R.id.container_standings);
-        int position = 1;
-        String group = "";
-        for(StandingsTeam t: standingsTeams){
-            if(t.getGroup().length() > 0 && !t.getGroup().equals(group)) {
-                group = t.getGroup();
-                position = 1;
-                addGroupHeader(group, container);
+        if(getActivity() != null) {
+            if(standingsTeams.size() == 0){
+                TextView txt_no_connection = (TextView)getActivity().findViewById(R.id.txt_noconnection);
+                txt_no_connection.setVisibility(View.VISIBLE);
+
+                LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.container_standings);
+                ll.setVisibility(View.GONE);
             }
-            View tableRow = getActivity().getLayoutInflater().inflate(R.layout.listitem_team, null, false);
-
-            TextView txt_rank = (TextView)tableRow.findViewById(R.id.txt_rank);
-            TextView txt_name =  (TextView)tableRow.findViewById(R.id.txt_team_name);
-            TextView txt_games = (TextView)tableRow.findViewById(R.id.txt_games);
-            TextView txt_wins = (TextView)tableRow.findViewById(R.id.txt_wins);
-            TextView txt_ot_wins = (TextView)tableRow.findViewById(R.id.txt_ot_wins);
-            TextView txt_ot_losses = (TextView)tableRow.findViewById(R.id.txt_ot_losses);
-            TextView txt_losses = (TextView)tableRow.findViewById(R.id.txt_losses);
-            TextView txt_goals = (TextView)tableRow.findViewById(R.id.txt_goals);
-            TextView txt_points =  (TextView)tableRow.findViewById(R.id.txt_points);
-
-            txt_rank.setText(String.format(Locale.GERMANY, "%d.", position));
-            txt_name.setText(t.getName());
-            txt_games.setText(String.valueOf(t.getGames()));
-            txt_goals.setText(String.format(Locale.GERMANY, "%d:%d", t.getGoals_for(), t.getGoals_against()));
-            txt_points.setText(String.valueOf(t.getPoints()));
-
-            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                txt_wins.setText(String.valueOf(t.getWins()));
-                txt_ot_wins.setText(String.valueOf(t.getOt_wins()));
-                txt_ot_losses.setText(String.valueOf(t.getOt_losses()));
-                txt_losses.setText(String.valueOf(t.getLosses()));
-            }
-
-            if(t.getName().equals("EHC Olten")){
-                txt_name.setTextColor(getResources().getColor(R.color.mainGreen));
-                txt_name.setTypeface(Typeface.DEFAULT_BOLD);
-                txt_rank.setTextColor(getResources().getColor(R.color.mainGreen));
-                txt_rank.setTypeface(Typeface.DEFAULT_BOLD);
-                txt_games.setTextColor(getResources().getColor(R.color.mainGreen));
-                txt_games.setTypeface(Typeface.DEFAULT_BOLD);
-                txt_goals.setTextColor(getResources().getColor(R.color.mainGreen));
-                txt_goals.setTypeface(Typeface.DEFAULT_BOLD);
-                txt_points.setTextColor(getResources().getColor(R.color.mainGreen));
-                txt_points.setTypeface(Typeface.DEFAULT_BOLD);
-
-                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    txt_wins.setTextColor(getResources().getColor(R.color.mainGreen));
-                    txt_wins.setTypeface(Typeface.DEFAULT_BOLD);
-                    txt_ot_wins.setTextColor(getResources().getColor(R.color.mainGreen));
-                    txt_ot_wins.setTypeface(Typeface.DEFAULT_BOLD);
-                    txt_losses.setTextColor(getResources().getColor(R.color.mainGreen));
-                    txt_losses.setTypeface(Typeface.DEFAULT_BOLD);
-                    txt_ot_losses.setTextColor(getResources().getColor(R.color.mainGreen));
-                    txt_ot_losses.setTypeface(Typeface.DEFAULT_BOLD);
+            TableLayout container = (TableLayout) getActivity().findViewById(R.id.container_standings);
+            int position = 1;
+            String group = "";
+            for (StandingsTeam t : standingsTeams) {
+                if (t.getGroup().length() > 0 && !t.getGroup().equals(group)) {
+                    group = t.getGroup();
+                    position = 1;
+                    addGroupHeader(group, container);
                 }
+                View tableRow = getActivity().getLayoutInflater().inflate(R.layout.listitem_team, null, false);
+
+                TextView txt_rank = (TextView) tableRow.findViewById(R.id.txt_rank);
+                TextView txt_name = (TextView) tableRow.findViewById(R.id.txt_team_name);
+                TextView txt_games = (TextView) tableRow.findViewById(R.id.txt_games);
+                TextView txt_wins = (TextView) tableRow.findViewById(R.id.txt_wins);
+                TextView txt_ot_wins = (TextView) tableRow.findViewById(R.id.txt_ot_wins);
+                TextView txt_ot_losses = (TextView) tableRow.findViewById(R.id.txt_ot_losses);
+                TextView txt_losses = (TextView) tableRow.findViewById(R.id.txt_losses);
+                TextView txt_goals = (TextView) tableRow.findViewById(R.id.txt_goals);
+                TextView txt_points = (TextView) tableRow.findViewById(R.id.txt_points);
+
+                txt_rank.setText(String.format(Locale.GERMANY, "%d.", position));
+                txt_name.setText(t.getName());
+                txt_games.setText(String.valueOf(t.getGames()));
+                txt_goals.setText(String.format(Locale.GERMANY, "%d:%d", t.getGoals_for(), t.getGoals_against()));
+                txt_points.setText(String.valueOf(t.getPoints()));
+
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    txt_wins.setText(String.valueOf(t.getWins()));
+                    txt_ot_wins.setText(String.valueOf(t.getOt_wins()));
+                    txt_ot_losses.setText(String.valueOf(t.getOt_losses()));
+                    txt_losses.setText(String.valueOf(t.getLosses()));
+                }
+
+                if (t.getName().equals("EHC Olten")) {
+                    txt_name.setTextColor(getResources().getColor(R.color.mainGreen));
+                    txt_name.setTypeface(Typeface.DEFAULT_BOLD);
+                    txt_rank.setTextColor(getResources().getColor(R.color.mainGreen));
+                    txt_rank.setTypeface(Typeface.DEFAULT_BOLD);
+                    txt_games.setTextColor(getResources().getColor(R.color.mainGreen));
+                    txt_games.setTypeface(Typeface.DEFAULT_BOLD);
+                    txt_goals.setTextColor(getResources().getColor(R.color.mainGreen));
+                    txt_goals.setTypeface(Typeface.DEFAULT_BOLD);
+                    txt_points.setTextColor(getResources().getColor(R.color.mainGreen));
+                    txt_points.setTypeface(Typeface.DEFAULT_BOLD);
+
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        txt_wins.setTextColor(getResources().getColor(R.color.mainGreen));
+                        txt_wins.setTypeface(Typeface.DEFAULT_BOLD);
+                        txt_ot_wins.setTextColor(getResources().getColor(R.color.mainGreen));
+                        txt_ot_wins.setTypeface(Typeface.DEFAULT_BOLD);
+                        txt_losses.setTextColor(getResources().getColor(R.color.mainGreen));
+                        txt_losses.setTypeface(Typeface.DEFAULT_BOLD);
+                        txt_ot_losses.setTextColor(getResources().getColor(R.color.mainGreen));
+                        txt_ot_losses.setTypeface(Typeface.DEFAULT_BOLD);
+                    }
+                }
+
+                container.addView(tableRow);
+                if(position == 8){
+                    container.addView(getLine());
+                }
+                position++;
             }
 
-            container.addView(tableRow);
-            position++;
+            LinearLayout ll_standings = (LinearLayout) getActivity().findViewById(R.id.ll_standings);
+            ll_standings.removeView(progressBar);
         }
+    }
 
-        LinearLayout ll_standings = (LinearLayout)getActivity().findViewById(R.id.ll_standings);
-        ll_standings.removeView(progressBar);
+    private View getLine() {
+        View v = new View(getActivity());
+        v.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));
+        v.setBackgroundColor(getResources().getColor(R.color.mainGreen));
+        return v;
     }
 
     private void addGroupHeader(String group, TableLayout container) {

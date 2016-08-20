@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import com.nicosb.apps.ehcofan.models.Article;
  */
 public class ArticleFragment extends Fragment {
     Article article;
+    public static String ARGS_ARTICLE = "article";
 
     @Nullable
     @Override
@@ -37,7 +39,7 @@ public class ArticleFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
         if(bundle != null){
-            article = bundle.getParcelable("article");
+            article = bundle.getParcelable(ARGS_ARTICLE);
             displayArticle();
         }
     }
@@ -66,5 +68,6 @@ public class ArticleFragment extends Fragment {
 
         txt_title.setText(article.getTitle());
         txt_text.setText(Html.fromHtml(article.getText()));
+        txt_text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

@@ -1,34 +1,35 @@
 package com.nicosb.apps.ehcofan.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.nicosb.apps.ehcofan.FirebaseHandler;
-import com.nicosb.apps.ehcofan.MatchCacheHelper;
+import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.R;
+import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
+import com.nicosb.apps.ehcofan.models.Article;
 import com.nicosb.apps.ehcofan.models.Match;
+import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
+import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
+import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.MatchView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+                            implements FetchArticlesTask.PostExecuteListener,
+                                FetchMatchesTask.OnScheduleFetchedListener{
     private String TAG = "MainActivity";
 
     @Override
@@ -42,58 +43,81 @@ public class MainActivity extends AppCompatActivity {
         try {
             displayLastMatch();
             displayNextMatch();
+
+            ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if(networkInfo != null && networkInfo.isConnected()) {
+                displayLatestNews();
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
+    private void displayLatestNews() {
+        FetchArticlesTask fetchArticlesTask = new FetchArticlesTask(this);
+        fetchArticlesTask.setLimited(true);
+        fetchArticlesTask.setPostExecuteListener(this);
+        Article[] dummy = new Article[0];
+        fetchArticlesTask.execute(dummy);
+    }
+
     private void displayLastMatch() throws ParseException {
         LinearLayout container = (LinearLayout)findViewById(R.id.container_last_match);
 
-        SQLiteDatabase db = new MatchCacheHelper(this).getReadableDatabase();
-        String where = "datetime(" + MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME + ") < datetime('now')";
+        SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
+        String where = "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") < datetime('now') AND (" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM +
+                " = 'EHC Olten' OR " +  CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM + " = 'EHC Olten')";
 
         Cursor c = db.query(
-                MatchCacheHelper.MatchCache.TABLE_NAME,  // The table to query
+                CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
                 where,                                // The columns for the WHERE clause
                 null,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
-                "datetime(" + MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME + ")", // The sort order
+                "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") DESC", // The sort order
                 "1"                                   // LIMIT
         );
-        if(c.getColumnCount() > 0) {
+        if(c.getCount() > 0) {
             c.moveToFirst();
             Match lastMatch = Match.populateMatch(c);
             MatchView mv = new MatchView(this, lastMatch, true);
             container.addView(mv);
         }
+        else{
+            FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
+            fetchMatchesTask.setOnScheduleFetchedListener(this);
+            fetchMatchesTask.execute("");
+        }
+        db.close();
         c.close();
     }
 
     private void displayNextMatch() throws ParseException {
         LinearLayout container = (LinearLayout)findViewById(R.id.container_next_match);
 
-        SQLiteDatabase db = new MatchCacheHelper(this).getReadableDatabase();
-        String where = "datetime(" + MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME + ") > datetime('now')";
+        SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
+        String where = "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") > datetime('now') AND (" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM +
+                " = 'EHC Olten' OR " +  CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM + " = 'EHC Olten')";
 
         Cursor c = db.query(
-                MatchCacheHelper.MatchCache.TABLE_NAME,  // The table to query
+                CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
                 where,                                // The columns for the WHERE clause
                 null,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
-                "datetime(" + MatchCacheHelper.MatchCache.COLUMN_NAME_DATETIME + ")", // The sort order
+                "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ")", // The sort order
                 "1"                                   // LIMIT
         );
-        if(c.getColumnCount() > 0) {
+        if(c.getCount() > 0) {
             c.moveToFirst();
             Match nextMatch = Match.populateMatch(c);
             MatchView mv = new MatchView(this, nextMatch, true);
             container.addView(mv);
         }
+        db.close();
         c.close();
     }
 
@@ -117,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(newsActivity);
     }
 
+    public void openNewsActivity(View view, Article article) {
+        Intent newsActivity = new Intent(this, NewsActivity.class);
+        newsActivity.putExtra(ArticleFragment.ARGS_ARTICLE, article);
+        startActivity(newsActivity);
+    }
+
     public void openScheduleActivity(View view) {
         Intent scheduleActivity = new Intent(this, ScheduleActivity.class);
         startActivity(scheduleActivity);
@@ -135,5 +165,40 @@ public class MainActivity extends AppCompatActivity {
     public void openCupActivity(View view){
         Intent cupActivity = new Intent(this, CupActivity.class);
         startActivity(cupActivity);
+    }
+
+    @Override
+    public void onPostExecute(ArrayList<Article> articles) {
+        LinearLayout container = (LinearLayout)findViewById(R.id.container_latest_news);
+        final ArticleView av = new ArticleView(this, articles.get(0));
+        av.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNewsActivity(view, av.getArticle());
+            }
+        });
+        container.addView(av);
+    }
+
+    @Override
+    public void onScheduleFetched(ArrayList<Match> matches){
+        try {
+            ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+            if(matches.size() > 0){
+                displayNextMatch();
+                displayLastMatch();
+            }
+            else{
+                CardView cardLast = (CardView)findViewById(R.id.card_last_match);
+                CardView cardNext = (CardView)findViewById(R.id.card_next_match);
+
+                cardLast.setVisibility(View.GONE);
+                cardNext.setVisibility(View.GONE);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.nicosb.apps.ehcofan.models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
@@ -14,6 +13,7 @@ public class MatchWrapper {
     private String away_team;
     private String competition;
     private String datetime;
+    private String updated_at;
     private int a1;
     private int a2;
     private int a3;
@@ -35,5 +35,13 @@ public class MatchWrapper {
             e.printStackTrace();
         }
         return new Match(id, home_team, away_team, competition, calendar, scores_home, scores_away);
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 }

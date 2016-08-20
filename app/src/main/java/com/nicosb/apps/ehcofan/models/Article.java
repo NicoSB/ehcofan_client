@@ -27,7 +27,6 @@ public class Article implements Parcelable {
         text = in.readString();
         url = in.readString();
         date = in.readString();
-        news_image = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
     public static final Creator<Article> CREATOR = new Creator<Article>() {
@@ -80,6 +79,5 @@ public class Article implements Parcelable {
         parcel.writeString(text);
         parcel.writeString(url);
         parcel.writeString(date);
-        parcel.writeParcelable(news_image, i);
     }
 }

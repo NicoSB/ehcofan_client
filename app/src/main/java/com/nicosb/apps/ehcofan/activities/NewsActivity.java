@@ -33,8 +33,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.nicosb.apps.ehcofan.FirebaseHandler;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.ToolbarHelper;
+import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
 import com.nicosb.apps.ehcofan.fragments.ArticlesFragment;
 import com.nicosb.apps.ehcofan.fragments.ScheduleFragment;
+import com.nicosb.apps.ehcofan.models.Article;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 
 import java.util.List;
@@ -48,8 +50,18 @@ public class NewsActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        ArticlesFragment af = new ArticlesFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commit();
+        if(getIntent().getExtras() == null) {
+            ArticlesFragment af = new ArticlesFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commit();
+        }
+        else{
+            ArticleFragment af = new ArticleFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(ArticleFragment.ARGS_ARTICLE, getIntent().getExtras().getParcelable(ArticleFragment.ARGS_ARTICLE));
+            af.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commit();
+        }
 
         drawerLayout = ToolbarHelper.loadToolbar(this);
     }

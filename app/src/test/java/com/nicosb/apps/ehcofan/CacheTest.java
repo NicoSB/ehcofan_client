@@ -11,7 +11,7 @@ public class CacheTest {
     @Test
     public void decode_isCorrect_3numbers(){
         String scores = "1;2;3";
-        int[] decoded = MatchCacheHelper.decodeScores(scores);
+        int[] decoded = CacheDBHelper.decodeScores(scores);
 
         Assert.assertEquals(1, decoded[0]);
         Assert.assertEquals(2, decoded[1]);
@@ -21,7 +21,7 @@ public class CacheTest {
     @Test
     public void decode_isCorrect_4numbers(){
         String scores = "1;2;3;4";
-        int[] decoded = MatchCacheHelper.decodeScores(scores);
+        int[] decoded = CacheDBHelper.decodeScores(scores);
 
         Assert.assertEquals(1, decoded[0]);
         Assert.assertEquals(2, decoded[1]);
@@ -33,7 +33,7 @@ public class CacheTest {
     @Test
     public void decode_isCorrect_doubleDigits(){
         String scores = "10;2;30;4";
-        int[] decoded = MatchCacheHelper.decodeScores(scores);
+        int[] decoded = CacheDBHelper.decodeScores(scores);
 
         Assert.assertEquals(10, decoded[0]);
         Assert.assertEquals(2, decoded[1]);
@@ -44,7 +44,7 @@ public class CacheTest {
     @Test
     public void encode_isCorrect(){
         int scores[] = {1,2,3,4,5};
-        String encoded = MatchCacheHelper.encodeScores(scores);
+        String encoded = CacheDBHelper.encodeScores(scores);
 
         Assert.assertEquals("1;2;3;4;5", encoded);
     }

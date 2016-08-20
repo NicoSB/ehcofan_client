@@ -36,7 +36,6 @@ import java.util.ArrayList;
 public class ScheduleFragment extends Fragment
                                 implements FetchMatchesTask.OnScheduleFetchedListener{
     boolean inPager = false;
-
     private static final String TAG = "ScheduleFragment";
     private ArrayList<Match> matches = new ArrayList<>();
     private Spinner spinner;
@@ -75,7 +74,7 @@ public class ScheduleFragment extends Fragment
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    update();
+                    fetchMatches();
                 }
 
                 @Override
@@ -85,7 +84,7 @@ public class ScheduleFragment extends Fragment
             });
         }
         else{
-            update();
+            fetchMatches();
         }
     }
 

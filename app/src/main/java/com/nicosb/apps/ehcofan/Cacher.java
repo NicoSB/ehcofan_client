@@ -62,22 +62,24 @@ public class Cacher {
     }
 
     public static boolean cachePlayer(Context context, Player player){
-        MatchCacheHelper helper = new MatchCacheHelper(context);
+        CacheDBHelper helper = new CacheDBHelper(context);
         SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
 
         long newRowId;
-        newRowId = sqLiteDatabase.insertWithOnConflict(PlayerCacheHelper.PlayerCache.TABLE_NAME, PlayerCacheHelper.PlayerCache.COLUMN_NAME_WEIGHT, player.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
+        newRowId = sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.PLAYERS_TABLE_NAME, CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT, player.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
+        helper.close();
         return newRowId > 0;
     }
 
     public static boolean cacheMatch(Context context, Match match){
-        MatchCacheHelper helper = new MatchCacheHelper(context);
+        CacheDBHelper helper = new CacheDBHelper(context);
         SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
 
         long newRowId;
-        newRowId = sqLiteDatabase.insertWithOnConflict(MatchCacheHelper.MatchCache.TABLE_NAME, MatchCacheHelper.MatchCache.COLUMN_NAME_COMPETITION, match.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
+        newRowId = sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.MATCHES_TABLE_NAME, CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION, match.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
+        helper.close();
         return newRowId > 0;
     }
 }

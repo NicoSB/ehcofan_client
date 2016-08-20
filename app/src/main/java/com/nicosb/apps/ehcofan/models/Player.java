@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.nicosb.apps.ehcofan.PlayerCacheHelper;
+import com.nicosb.apps.ehcofan.CacheDBHelper;
 
 /**
  * Created by Nico on 25.07.2016.
@@ -209,33 +209,33 @@ public class Player implements Parcelable{
     public ContentValues getContentValues(){
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_ID, id);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_NAME, name);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_SURNAME, surname);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_POSITION, position);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_CONTRACT, contract);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_NATIONALITY, nationality);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_BIRTHDATE, birthdate);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_NUMBER, number);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_WEIGHT, weight);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_HEIGHT, height);
-        contentValues.put(PlayerCacheHelper.PlayerCache.COLUMN_NAME_EP_ID, ep_id);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ID, id);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NAME, name);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_SURNAME, surname);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_POSITION, position);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_CONTRACT, contract);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NATIONALITY, nationality);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_BIRTHDATE, birthdate);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NUMBER, number);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT, weight);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_HEIGHT, height);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_EP_ID, ep_id);
 
         return contentValues;
     }
 
     public static Player populatePlayer(Cursor c){
-        return new Player(c.getInt(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_ID)),
-                c.getString(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_NAME)),
-                c.getString(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_SURNAME)),
-                c.getString(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_POSITION)),
-                c.getString(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_CONTRACT)),
-                c.getString(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_NATIONALITY)),
-                c.getInt(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_NUMBER)),
-                c.getInt(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_WEIGHT)),
-                c.getInt(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_HEIGHT)),
-                c.getInt(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_EP_ID)),
-                c.getString(c.getColumnIndexOrThrow(PlayerCacheHelper.PlayerCache.COLUMN_NAME_BIRTHDATE))
+        return new Player(c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ID)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NAME)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_SURNAME)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_POSITION)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_CONTRACT)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NATIONALITY)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NUMBER)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_HEIGHT)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_EP_ID)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_BIRTHDATE))
                 );
     }
 }

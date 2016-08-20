@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,6 +63,7 @@ public class TeamActivity extends AppCompatActivity {
         TextView txt_team_founded = (TextView)findViewById(R.id.team_founded);
         TextView txt_team_titles = (TextView)findViewById(R.id.team_titles);
         TextView txt_team_topscorer = (TextView)findViewById(R.id.team_topscorer);
+        TextView txt_team_text = (TextView)findViewById(R.id.txt_team);
 
         img_team_logo.setImageDrawable(getTeamLogo(team.get_id()));
         txt_team_name.setText(team.getName());
@@ -70,6 +72,7 @@ public class TeamActivity extends AppCompatActivity {
         txt_team_founded.setText(String.valueOf(team.getFounded()));
         txt_team_titles.setText(String.valueOf(team.getTitle_count()));
         txt_team_topscorer.setText(team.getTopscorer());
+        txt_team_text.setText(Html.fromHtml(getTeamText(team.get_id())));
     }
 
     private Drawable getTeamLogo(int id){
@@ -85,7 +88,26 @@ public class TeamActivity extends AppCompatActivity {
             case 5:
                 return getDrawable(R.drawable.logo_gs);
             case 6:
-                return getDrawable(R.drawable.logo_ir);
+                return getDrawable(R.drawable.logo_kp);
+        }
+
+        return null;
+    } 
+    
+    private String getTeamText(int id){
+        switch(id){
+            case 1:
+                return getString(R.string.text_ehco);
+            case 2:
+                return getString(R.string.text_scl);
+            case 3:
+                return getString(R.string.text_ir);
+            case 4:
+                return getString(R.string.text_gw);
+            case 5:
+                return getString(R.string.text_gs);
+            case 6:
+                return getString(R.string.text_kp);
         }
 
         return null;

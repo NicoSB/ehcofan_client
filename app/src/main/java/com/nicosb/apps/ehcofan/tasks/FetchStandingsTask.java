@@ -53,7 +53,7 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
             return standingsTeams;
         } catch (IOException e) {
             e.printStackTrace();
-            StandingsTeam[] teamsArray = {new StandingsTeam("EHC Olten", "NLB 16/17", "", 1,1,1,1,1,1),new StandingsTeam("SC Langenthal", "NLB 16/17", "", 0,1,1,1,1,1)};
+            StandingsTeam[] teamsArray = {};
             ArrayList<StandingsTeam> standingsTeams = new ArrayList<>();
             Collections.addAll(standingsTeams, teamsArray);
             return standingsTeams;

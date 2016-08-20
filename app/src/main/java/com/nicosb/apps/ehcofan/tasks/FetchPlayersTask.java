@@ -13,8 +13,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.nicosb.apps.ehcofan.Cacher;
-import com.nicosb.apps.ehcofan.MatchCacheHelper;
-import com.nicosb.apps.ehcofan.PlayerCacheHelper;
+import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 import com.nicosb.apps.ehcofan.models.Player;
@@ -54,9 +53,9 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
     protected ArrayList<Player> doInBackground(String... strings) {
         updatePayers();
 
-        SQLiteDatabase db = new MatchCacheHelper(context).getReadableDatabase();
+        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
         Cursor c = db.query(
-                PlayerCacheHelper.PlayerCache.TABLE_NAME,  // The table to query
+                CacheDBHelper.TableColumns.PLAYERS_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
                 null,                                // The columns for the WHERE clause
                 null,                            // The values for the WHERE clause
@@ -120,11 +119,13 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                 Gson gson = new Gson();
                 PlayerWrapper playersArray[] = gson.fromJson(json, PlayerWrapper[].class);
                 String image_url = "";
+                String lastUpdate = "0";
 
                 // extract players and save them as well as pictures to local database
                 for (PlayerWrapper p : playersArray) {
                     Player player = p.toPlayer(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_account_circle_white_48dp));
                     Cacher.cachePlayer(context, player);
+
                     if (p.getPlayer_image_file_name() != null) {
                         try {
                             if (!Cacher.hasImage(context, player)) {
@@ -137,6 +138,10 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                                 InputStream input = imageConnection.getInputStream();
                                 Bitmap bitmap = BitmapFactory.decodeStream(input);
                                 Cacher.storePlayerImage(context, player, bitmap);
+
+                                if(lastUpdate.compareTo(p.getUpdated_at()) < 0){
+                                    lastUpdate = p.getUpdated_at();
+                                }
                             }
                         } catch (FileNotFoundException fnfe) {
                             Log.w(TAG, "Error with: " + image_url);
@@ -144,18 +149,18 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                             ioe.printStackTrace();
                         }
                     }
+
+                    if(!lastUpdate.equals("0")){
+                        // update player update pref
+                        prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_APPEND);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString(PREF_PLAYER_UPDATE, lastUpdate);
+                        editor.apply();
+                    }
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-
-            // update player update pref
-            prefs = context.getSharedPreferences(CUSTOM_PREFS, Context.MODE_APPEND);
-            SharedPreferences.Editor editor = prefs.edit();
-            Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            editor.putString(PREF_PLAYER_UPDATE, sdf.format(currentTime.getTime()));
-            editor.apply();
         }
     }
 }
