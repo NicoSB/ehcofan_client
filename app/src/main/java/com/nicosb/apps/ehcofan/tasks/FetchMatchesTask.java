@@ -10,8 +10,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.nicosb.apps.ehcofan.Cacher;
 import com.nicosb.apps.ehcofan.CacheDBHelper;
+import com.nicosb.apps.ehcofan.Cacher;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.MatchWrapper;

@@ -7,11 +7,4 @@
         <item>Cup 2016</item>
     </string-array>
 
-    <string-array name="activities">
-        <item>News</item>
-        <item>Spielplan</item>
-        <item>Kader</item>
-        <item>Tabelle</item>
-        <item>Einstellungen</item>
-    </string-array>
 </resources>

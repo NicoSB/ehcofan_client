@@ -21,14 +21,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import com.nicosb.apps.ehcofan.R;
+import com.nicosb.apps.ehcofan.models.Article;
+import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.BottomRefreshScrollView;
 
 import java.util.ArrayList;
-
-import com.nicosb.apps.ehcofan.models.Article;
 
 /**
  * Created by Nico on 01.07.2016.
@@ -77,11 +76,11 @@ public class ArticlesFragment extends Fragment
         }
     }
 
-    private void update(boolean showProgessbar) {
+    private void update(boolean showProgressbar) {
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
-            fetchArticles(showProgessbar);
+            fetchArticles(showProgressbar);
         }
         else{
             displayNoConnectionMessage();

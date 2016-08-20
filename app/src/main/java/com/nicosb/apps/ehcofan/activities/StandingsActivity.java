@@ -1,26 +1,14 @@
 package com.nicosb.apps.ehcofan.activities;
 
-import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.StandingsFragment;
-import com.nicosb.apps.ehcofan.models.StandingsTeam;
-import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by Nico on 22.07.2016.
@@ -45,6 +33,6 @@ public class StandingsActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        drawerLayout.closeDrawer(Gravity.LEFT, false);
+        drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 }

@@ -13,15 +13,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.nicosb.apps.ehcofan.PremadeDBHelper;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.CupTeamsFragment;
 import com.nicosb.apps.ehcofan.fragments.ScheduleFragment;
 import com.nicosb.apps.ehcofan.fragments.StandingsFragment;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

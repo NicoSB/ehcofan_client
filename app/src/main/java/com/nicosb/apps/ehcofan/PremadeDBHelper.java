@@ -1,7 +1,6 @@
 package com.nicosb.apps.ehcofan;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;

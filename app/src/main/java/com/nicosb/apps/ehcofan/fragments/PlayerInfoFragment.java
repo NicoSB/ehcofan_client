@@ -1,7 +1,5 @@
 package com.nicosb.apps.ehcofan.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -37,6 +34,7 @@ public class PlayerInfoFragment extends DialogFragment {
         TextView txt_name = (TextView)view.findViewById(R.id.player_name);
         CircularImageView circularImageView = (CircularImageView)view.findViewById(R.id.player_picture);
 
+        assert player != null;
         txt_birthday.setText(player.getGermanBirthdate());
         txt_weight.setText(String.format("%s kg", String.valueOf(player.getWeight())));
         txt_height.setText(String.format("%s cm", String.valueOf(player.getHeight())));

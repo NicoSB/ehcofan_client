@@ -2,8 +2,6 @@ package com.nicosb.apps.ehcofan.models;
 
 import android.graphics.Bitmap;
 
-import java.util.Date;
-
 /**
  * Created by Nico on 23.07.2016.
  */

@@ -13,8 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.nicosb.apps.ehcofan.FirebaseHandler;
 import com.nicosb.apps.ehcofan.CacheDBHelper;
+import com.nicosb.apps.ehcofan.FirebaseHandler;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
 import com.nicosb.apps.ehcofan.models.Article;
@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity
             Match lastMatch = Match.populateMatch(c);
             MatchView mv = new MatchView(this, lastMatch, true);
             container.addView(mv);
+            CardView cardView = (CardView)findViewById(R.id.card_last_match);
+            cardView.setVisibility(View.VISIBLE);
         }
         else{
             FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
@@ -116,6 +118,8 @@ public class MainActivity extends AppCompatActivity
             Match nextMatch = Match.populateMatch(c);
             MatchView mv = new MatchView(this, nextMatch, true);
             container.addView(mv);
+            CardView cardView = (CardView)findViewById(R.id.card_next_match);
+            cardView.setVisibility(View.VISIBLE);
         }
         db.close();
         c.close();
@@ -178,24 +182,17 @@ public class MainActivity extends AppCompatActivity
             }
         });
         container.addView(av);
+
+        CardView cardView = (CardView)findViewById(R.id.card_latest_news);
+        cardView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onScheduleFetched(ArrayList<Match> matches){
         try {
-            ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
             if(matches.size() > 0){
                 displayNextMatch();
                 displayLastMatch();
-            }
-            else{
-                CardView cardLast = (CardView)findViewById(R.id.card_last_match);
-                CardView cardNext = (CardView)findViewById(R.id.card_next_match);
-
-                cardLast.setVisibility(View.GONE);
-                cardNext.setVisibility(View.GONE);
             }
         } catch (ParseException e) {
             e.printStackTrace();

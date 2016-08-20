@@ -12,11 +12,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.nicosb.apps.ehcofan.Cacher;
 import com.nicosb.apps.ehcofan.CacheDBHelper;
+import com.nicosb.apps.ehcofan.Cacher;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 import com.nicosb.apps.ehcofan.models.Player;
+import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,11 +26,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by Nico on 23.07.2016.

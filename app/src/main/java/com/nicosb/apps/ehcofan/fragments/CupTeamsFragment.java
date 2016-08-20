@@ -24,11 +24,6 @@ public class CupTeamsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_cup_teams, container, false);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     public static CupTeamsFragment newInstance(int position){
         CupTeamsFragment frag=new CupTeamsFragment();
         Bundle args = new Bundle();

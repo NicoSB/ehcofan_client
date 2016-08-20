@@ -5,18 +5,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -28,8 +24,6 @@ import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
 import com.nicosb.apps.ehcofan.views.MatchView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 
@@ -40,7 +34,6 @@ public class ScheduleFragment extends Fragment
     private ArrayList<Match> matches = new ArrayList<>();
     private Spinner spinner;
     private ProgressBar progressBar;
-    private TextView tv;
     private FetchMatchesTask fetchMatchesTask;
     private String requestedCompetition = "";
 
@@ -165,7 +158,7 @@ public class ScheduleFragment extends Fragment
     }
 
     private void displayNoConnectionMessage() {
-        tv = (TextView)getActivity().findViewById(R.id.txt_schedule_noconnection);
+        TextView tv = (TextView) getActivity().findViewById(R.id.txt_schedule_noconnection);
         LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.container_schedule);
         rl.removeAllViews();
 

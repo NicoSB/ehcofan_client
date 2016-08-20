@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nicosb.apps.ehcofan.CacheDBHelper;
-import com.nicosb.apps.ehcofan.CacheDBHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

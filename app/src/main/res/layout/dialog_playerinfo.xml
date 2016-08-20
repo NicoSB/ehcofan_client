@@ -168,7 +168,6 @@
                         android:gravity="center"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/player_games"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -194,7 +193,6 @@
                         android:gravity="center"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/player_goals"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -219,7 +217,6 @@
                         android:gravity="center"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/player_assists"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -245,7 +242,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/player_pim"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"

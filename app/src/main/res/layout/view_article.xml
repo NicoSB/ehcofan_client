@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/imageview"
-        android:contentDescription="News Picture"
+        android:contentDescription="@string/desc_news_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="TITLE"
+        android:text="@string/placeholder_title"
         android:background="@color/mainGreenTransp"
         android:textColor="#FFFFFF"
         android:padding="8dp"
@@ -33,7 +33,7 @@
         android:background="#FFFFFF"
         android:textSize="12sp"
         android:textColor="@color/mainGreen"
-        android:text="20. Aug"
+        android:text="@string/placeholder_date"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"/>
 </RelativeLayout>

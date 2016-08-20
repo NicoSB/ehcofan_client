@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">grüen-wiiss</string>
-    <string name="rest_interface_local">http://10.0.2.2:3000/</string>
     <string name="rest_interface">https://ehcofan.herokuapp.com/</string>
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
@@ -13,7 +12,6 @@
     <string name="away_team_placeholder">AWAY Team</string>
     <string name="zero">0</string>
     <string name="title_activity_schedule">Spielplan</string>
-    <string name="choose_competition">Wettbewerb wählen</string>
     <string name="datetime_placeholder">01.01.2016 20:00</string>
     <string name="title_activity_roster">Kader</string>
     <string name="placeholder_player_name">Max Mustermann</string>
@@ -35,9 +33,6 @@
     <string name="ot_losses">OTN</string>
     <string name="losses">N</string>
     <string name="pref_notifications">Benachrichtigungen</string>
-    <string name="pref_notifications_summ">Du erhälst eine Nachricht, wenn ein neuer Newsartikel verfügbar ist.</string>
-    <string name="title_activity_settings">Einstellungen</string>
-    <string name="loading_older_news">Ältere News-Einträge werden geladen</string>
     <string name="close">Schliessen</string>
     <string name="open">Öffnen</string>
     <string name="player_games">Spiele</string>
@@ -50,7 +45,6 @@
     <string name="player_personal">Persönlich</string>
     <string name="article_to_homepage">Zur Homepage</string>
     <string name="title_activity_cup">EHCO Cup</string>
-    <string name="grizzlys_wolfsburg">Grizzlys Wolfsburg</string>
     <string name="team_name_placeholder">EHC Olten</string>
     <string name="team_league_placeholder">NLB • Schweiz</string>
     <string name="title_activity_team">Teamübersicht</string>
@@ -88,4 +82,7 @@ Gegenüber der letzten Saison hat sich im Kader der Grizzlys nicht viel verände
 <b>Wichtige Neuzugänge:</b> Kris Foucault, Jeremy Dehner<br>
 <b>Wichtige Abgänge:</b> Tim Hambly, Marco Rosa]]></string>
     <string name="topscorer_15_16">Topscorer 15/16</string>
+    <string name="desc_news_picture">News Picture</string>
+    <string name="placeholder_title">TITLE</string>
+    <string name="placeholder_date">20. Aug</string>
 </resources>

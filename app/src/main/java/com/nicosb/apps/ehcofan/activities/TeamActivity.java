@@ -2,7 +2,6 @@ package com.nicosb.apps.ehcofan.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.PremadeDBHelper;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.models.Team;
 
 import java.io.IOException;

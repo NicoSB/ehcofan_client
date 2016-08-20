@@ -1,14 +1,12 @@
 package com.nicosb.apps.ehcofan.views;
 
 import android.content.Context;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Player;
-import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 
 /**
  * Created by Nico on 23.07.2016.

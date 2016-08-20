@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
-
 import com.nicosb.apps.ehcofan.models.Article;
 
 /**
