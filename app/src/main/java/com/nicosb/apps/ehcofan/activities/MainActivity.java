@@ -166,11 +166,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(standingsActivity);
     }
 
-    public void openCupActivity(View view){
-        Intent cupActivity = new Intent(this, CupActivity.class);
-        startActivity(cupActivity);
-    }
-
     @Override
     public void onPostExecute(ArrayList<Article> articles) {
         if(articles != null) {

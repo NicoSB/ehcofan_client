@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Switch;
 
-import com.nicosb.apps.ehcofan.activities.CupActivity;
 import com.nicosb.apps.ehcofan.activities.MainActivity;
 import com.nicosb.apps.ehcofan.activities.NewsActivity;
 import com.nicosb.apps.ehcofan.activities.RosterActivity;
@@ -52,9 +51,6 @@ public class ToolbarHelper{
         }
         if(activity instanceof StandingsActivity){
             return R.id.standings;
-        }
-        if(activity instanceof CupActivity){
-            return R.id.cup;
         }
         return -1;
     }
@@ -113,9 +109,6 @@ public class ToolbarHelper{
                     break;
                 case R.id.standings:
                     newActivity = new Intent(activity, StandingsActivity.class);
-                    break;
-                case R.id.cup:
-                    newActivity = new Intent(activity, CupActivity.class);
                     break;
             }
             if(newActivity == null || activity.getClass().getName().equals(newActivity.getComponent().getClassName())){

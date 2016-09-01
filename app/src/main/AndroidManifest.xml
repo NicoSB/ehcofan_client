@@ -27,10 +27,6 @@
             android:name=".activities.StandingsActivity"
             android:label="@string/title_activity_standings"/>
         <activity
-            android:name=".activities.CupActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_cup" />
-        <activity
             android:name=".activities.TeamActivity"
             android:label="@string/title_activity_team"
             android:screenOrientation="portrait" />
