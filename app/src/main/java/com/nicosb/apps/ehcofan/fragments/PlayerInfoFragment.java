@@ -32,6 +32,10 @@ public class PlayerInfoFragment extends DialogFragment {
         TextView txt_height = (TextView)view.findViewById(R.id.txt_height);
         TextView txt_contract = (TextView)view.findViewById(R.id.txt_contract);
         TextView txt_name = (TextView)view.findViewById(R.id.player_name);
+        TextView txt_games = (TextView)view.findViewById(R.id.txt_player_games);
+        TextView txt_goals = (TextView)view.findViewById(R.id.txt_player_goals);
+        TextView txt_assists = (TextView)view.findViewById(R.id.txt_player_assists);
+        TextView txt_pim = (TextView)view.findViewById(R.id.txt_player_pim);
         CircularImageView circularImageView = (CircularImageView)view.findViewById(R.id.player_picture);
 
         assert player != null;
@@ -40,14 +44,21 @@ public class PlayerInfoFragment extends DialogFragment {
         txt_height.setText(String.format("%s cm", String.valueOf(player.getHeight())));
         txt_contract.setText(player.getContract());
         txt_name.setText(player.getFullName());
+        txt_games.setText(String.valueOf(player.getGames()));
+        txt_goals.setText(String.valueOf(player.getGoals()));
+        txt_assists.setText(String.valueOf(player.getAssists()));
+        txt_pim.setText(String.valueOf(player.getPim()));
         circularImageView.setImageBitmap(player.getPlayerImage());
-        getDialog().setCanceledOnTouchOutside(true);
+
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getDialog().getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        getDialog().setCanceledOnTouchOutside(true);
         getDialog().show();
         getDialog().getWindow().setAttributes(lp);
+
         return view;
     }
 }

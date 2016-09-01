@@ -1,6 +1,7 @@
 package com.nicosb.apps.ehcofan;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -9,7 +10,7 @@ import android.provider.BaseColumns;
  * Created by Nico on 28.07.2016.
  */
 public class CacheDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "EHCOFan.db";
 
 
@@ -44,6 +45,10 @@ public class CacheDBHelper extends SQLiteOpenHelper {
         public static final String PLAYERS_COLUMN_NAME_WEIGHT = "weight";
         public static final String PLAYERS_COLUMN_NAME_HEIGHT = "height";
         public static final String PLAYERS_COLUMN_NAME_EP_ID = "ep_id";
+        public static final String PLAYERS_COLUMN_NAME_GAMES = "games";
+        public static final String PLAYERS_COLUMN_NAME_GOALS = "goals";
+        public static final String PLAYERS_COLUMN_NAME_ASSISTS = "assists";
+        public static final String PLAYERS_COLUMN_NAME_PIM = "pim";
         public static final String PLAYERS_COLUMN_NAME_BIRTHDATE = "birthday";
         
         // Table matches
@@ -74,6 +79,10 @@ public class CacheDBHelper extends SQLiteOpenHelper {
                         PLAYERS_COLUMN_NAME_WEIGHT + INTEGER_TYPE + COMMA_SEP +
                         PLAYERS_COLUMN_NAME_HEIGHT + INTEGER_TYPE + COMMA_SEP +
                         PLAYERS_COLUMN_NAME_EP_ID + INTEGER_TYPE + COMMA_SEP +
+                        PLAYERS_COLUMN_NAME_GAMES + INTEGER_TYPE + COMMA_SEP +
+                        PLAYERS_COLUMN_NAME_GOALS + INTEGER_TYPE + COMMA_SEP +
+                        PLAYERS_COLUMN_NAME_ASSISTS + INTEGER_TYPE + COMMA_SEP +
+                        PLAYERS_COLUMN_NAME_PIM + INTEGER_TYPE + COMMA_SEP +
                         PLAYERS_COLUMN_NAME_BIRTHDATE + TEXT_TYPE +
                         " )";
         

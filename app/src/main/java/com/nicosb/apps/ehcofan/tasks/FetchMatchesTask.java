@@ -89,7 +89,6 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>>{
             onScheduleFetchedListener.onScheduleFetched(matches);
         }
         else{
-            Log.w(TAG, "No listener assigned!");
         }
     }
 

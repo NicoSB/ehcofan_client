@@ -16,6 +16,10 @@ public class PlayerWrapper {
     private int weight;
     private int height;
     private int ep_id;
+    private int games;
+    private int goals;
+    private int assists;
+    private int pim;
     private String birthdate;
     private String player_image_file_name;
     private String updated_at;
@@ -116,12 +120,44 @@ public class PlayerWrapper {
         this.player_image_file_name = player_image_file_name;
     }
 
+    public int getGames() {
+        return games;
+    }
+
+    public void setGames(int games) {
+        this.games = games;
+    }
+
+    public int getGoals() {
+        return goals;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public int getPim() {
+        return pim;
+    }
+
+    public void setPim(int pim) {
+        this.pim = pim;
+    }
+
     public Player toPlayer(){
-        return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, birthdate);
+        return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, games, goals, assists, pim, birthdate);
     }
 
     public Player toPlayer(Bitmap bitmap){
-        return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, birthdate, bitmap);
+        return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, games, goals, assists, pim, birthdate, bitmap);
     }
 
     public String getUpdated_at() {

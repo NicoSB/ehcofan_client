@@ -173,18 +173,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPostExecute(ArrayList<Article> articles) {
-        LinearLayout container = (LinearLayout)findViewById(R.id.container_latest_news);
-        final ArticleView av = new ArticleView(this, articles.get(0));
-        av.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openNewsActivity(view, av.getArticle());
-            }
-        });
-        container.addView(av);
+        if(articles != null) {
+            LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
+            final ArticleView av = new ArticleView(this, articles.get(0));
+            av.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openNewsActivity(view, av.getArticle());
+                }
+            });
+            container.addView(av);
 
-        CardView cardView = (CardView)findViewById(R.id.card_latest_news);
-        cardView.setVisibility(View.VISIBLE);
+            CardView cardView = (CardView) findViewById(R.id.card_latest_news);
+            cardView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

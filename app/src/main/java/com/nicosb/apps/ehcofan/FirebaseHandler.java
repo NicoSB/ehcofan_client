@@ -29,7 +29,6 @@ public class FirebaseHandler {
 
         if(sharedPreferences.getBoolean(PREF_NOTIFICATIONS, false)) {
             // Initialize Firebase Auths
-            Log.d(TAG, "initializing firebase");
             mAuth = FirebaseAuth.getInstance();
 
             // Setup Listener
@@ -37,11 +36,9 @@ public class FirebaseHandler {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null) {
-                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    } else {
-                        Log.d(TAG, "onAuthStateChanged:signed_out");
-                    }
+//                    if (user != null) {
+//                    } else {
+//                    }
                 }
             };
 
@@ -49,14 +46,11 @@ public class FirebaseHandler {
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
 
                             if (!task.isSuccessful()) {
-                                Log.w(TAG, "signInAnonymously", task.getException());
 
                             } else {
                                 FirebaseMessaging.getInstance().subscribeToTopic("news");
-                                Log.w(TAG, "subscribed to topic 'news'");
                             }
                         }
                     });

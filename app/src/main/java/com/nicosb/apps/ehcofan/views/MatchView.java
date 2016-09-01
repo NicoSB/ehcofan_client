@@ -10,6 +10,7 @@ import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Match;
 
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * Created by Nico on 20.07.2016.

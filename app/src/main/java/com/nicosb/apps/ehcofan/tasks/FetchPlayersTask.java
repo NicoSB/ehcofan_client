@@ -140,8 +140,6 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                                     lastUpdate = p.getUpdated_at();
                                 }
                             }
-                        } catch (FileNotFoundException fnfe) {
-                            Log.w(TAG, "Error with: " + image_url);
                         } catch (IOException ioe) {
                             ioe.printStackTrace();
                         }

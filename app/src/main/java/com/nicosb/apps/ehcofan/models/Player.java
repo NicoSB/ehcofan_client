@@ -22,10 +22,14 @@ public class Player implements Parcelable{
     private int weight;
     private int height;
     private int ep_id;
+    private int games;
+    private int goals;
+    private int assists;
+    private int pim;
     private String birthdate;
     private Bitmap playerImage;
 
-    public Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, String birthdate) {
+    public Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, int games, int goals, int assists, int pim, String birthdate) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -36,10 +40,14 @@ public class Player implements Parcelable{
         this.weight = weight;
         this.height = height;
         this.ep_id = ep_id;
+        this.games = games;
+        this.goals = goals;
+        this.assists = assists;
+        this.pim = pim;
         this.birthdate = birthdate;
     }
 
-    public Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, String birthdate, Bitmap playerImage) {
+    public Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, int games, int goals, int assists, int pim, String birthdate, Bitmap playerImage) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -50,6 +58,10 @@ public class Player implements Parcelable{
         this.weight = weight;
         this.height = height;
         this.ep_id = ep_id;
+        this.games = games;
+        this.goals = goals;
+        this.assists = assists;
+        this.pim = pim;
         this.birthdate = birthdate;
         this.playerImage = playerImage;
     }
@@ -65,6 +77,10 @@ public class Player implements Parcelable{
         weight = in.readInt();
         height = in.readInt();
         ep_id = in.readInt();
+        games = in.readInt();
+        goals = in.readInt();
+        assists = in.readInt();
+        pim = in.readInt();
         birthdate = in.readString();
         playerImage = in.readParcelable(Bitmap.class.getClassLoader());
     }
@@ -173,6 +189,38 @@ public class Player implements Parcelable{
         this.birthdate = birthdate;
     }
 
+    public int getGames() {
+        return games;
+    }
+
+    public void setGames(int games) {
+        this.games = games;
+    }
+
+    public int getGoals() {
+        return goals;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    public int getPim() {
+        return pim;
+    }
+
+    public void setPim(int pim) {
+        this.pim = pim;
+    }
+
     public Bitmap getPlayerImage() {
         return playerImage;
     }
@@ -197,6 +245,10 @@ public class Player implements Parcelable{
         parcel.writeInt(weight);
         parcel.writeInt(height);
         parcel.writeInt(ep_id);
+        parcel.writeInt(games);
+        parcel.writeInt(goals);
+        parcel.writeInt(assists);
+        parcel.writeInt(pim);
         parcel.writeString(name);
         parcel.writeString(surname);
         parcel.writeString(position);
@@ -220,6 +272,10 @@ public class Player implements Parcelable{
         contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT, weight);
         contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_HEIGHT, height);
         contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_EP_ID, ep_id);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GAMES, games);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GOALS, goals);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ASSISTS, assists);
+        contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_PIM, pim);
 
         return contentValues;
     }
@@ -235,6 +291,10 @@ public class Player implements Parcelable{
                 c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT)),
                 c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_HEIGHT)),
                 c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_EP_ID)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GAMES)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GOALS)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ASSISTS)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_PIM)),
                 c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_BIRTHDATE))
                 );
     }

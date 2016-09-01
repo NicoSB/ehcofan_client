@@ -20,13 +20,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 /**
  * Created by Nico on 30.06.2016.
  */
 public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Article>> {
-    Logger log = Logger.getLogger("FetchArticlesTask");
     private PostExecuteListener postExecuteListener;
     private ArrayList<Article> mArticles = new ArrayList<>();
     private Context context;
@@ -38,7 +36,6 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
 
     @Override
     protected ArrayList<Article> doInBackground(Article... articles) {
-        log.warning("Start fetch articles, limited: " + isLimited);
         for(Article a: articles){
             if(a != null){
                 mArticles.add(a);
@@ -88,7 +85,6 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
                 }catch (FileNotFoundException fnfe){
                     Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder));
                     mArticles.add(a);
-                    log.warning("Error with: " + image_url);
                 }catch(IOException ioe){
                     ioe.printStackTrace();
                 }
@@ -105,7 +101,6 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
 
     @Override
     protected void onPostExecute(ArrayList<Article> articles) {
-        log.warning("End of fetching articles");
         super.onPostExecute(articles);
         if(postExecuteListener != null){
             postExecuteListener.onPostExecute(articles);
