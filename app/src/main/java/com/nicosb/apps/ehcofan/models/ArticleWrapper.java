@@ -7,7 +7,18 @@ import android.os.Parcelable;
 /**
  * Created by Nico on 30.06.2016.
  */
-public class ArticleWrapper implements Parcelable{
+public class ArticleWrapper implements Parcelable {
+    public static final Creator<ArticleWrapper> CREATOR = new Creator<ArticleWrapper>() {
+        @Override
+        public ArticleWrapper createFromParcel(Parcel in) {
+            return new ArticleWrapper(in);
+        }
+
+        @Override
+        public ArticleWrapper[] newArray(int size) {
+            return new ArticleWrapper[size];
+        }
+    };
     int id;
     String title;
     String text;
@@ -23,18 +34,6 @@ public class ArticleWrapper implements Parcelable{
         date = in.readString();
         news_image_file_name = in.readString();
     }
-
-    public static final Creator<ArticleWrapper> CREATOR = new Creator<ArticleWrapper>() {
-        @Override
-        public ArticleWrapper createFromParcel(Parcel in) {
-            return new ArticleWrapper(in);
-        }
-
-        @Override
-        public ArticleWrapper[] newArray(int size) {
-            return new ArticleWrapper[size];
-        }
-    };
 
     public String getTitle() {
         return title;

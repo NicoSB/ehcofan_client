@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class ArticlesFragment extends Fragment
         implements FetchArticlesTask.PostExecuteListener,
-        BottomRefreshScrollView.ViewOnBottomListener{
+        BottomRefreshScrollView.ViewOnBottomListener {
     ProgressBar progressBar;
     ArrayList<Article> articles = new ArrayList<>();
     SwipeRefreshLayout swipeContainer;
@@ -53,7 +53,7 @@ public class ArticlesFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        swipeContainer = (SwipeRefreshLayout)getActivity().findViewById(R.id.swipe_container);
+        swipeContainer = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_container);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -61,17 +61,16 @@ public class ArticlesFragment extends Fragment
             }
         });
 
-        BottomRefreshScrollView brsview = (BottomRefreshScrollView)getActivity().findViewById(R.id.scroll_view);
+        BottomRefreshScrollView brsview = (BottomRefreshScrollView) getActivity().findViewById(R.id.scroll_view);
         brsview.setViewOnBottomListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(articles.size() > 0){
+        if (articles.size() > 0) {
             displayArticles();
-        }
-        else {
+        } else {
             update(true);
         }
     }
@@ -79,10 +78,9 @@ public class ArticlesFragment extends Fragment
     private void update(boolean showProgressbar) {
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnected()) {
+        if (networkInfo != null && networkInfo.isConnected()) {
             fetchArticles(showProgressbar);
-        }
-        else{
+        } else {
             displayNoConnectionMessage();
         }
     }
@@ -94,14 +92,14 @@ public class ArticlesFragment extends Fragment
     }
 
     private void displayNoConnectionMessage() {
-        TextView tv = (TextView)getActivity().findViewById(R.id.txt_noconnection);
+        TextView tv = (TextView) getActivity().findViewById(R.id.txt_noconnection);
         tv.setVisibility(View.VISIBLE);
     }
 
-    private void fetchArticles(boolean showProgessbar){
+    private void fetchArticles(boolean showProgessbar) {
         Article[] articlesArray = new Article[articles.size()];
 
-        if(fetchArticlesTask != null && fetchArticlesTask.getStatus() != AsyncTask.Status.FINISHED){
+        if (fetchArticlesTask != null && fetchArticlesTask.getStatus() != AsyncTask.Status.FINISHED) {
             fetchArticlesTask.cancel(true);
         }
         fetchArticlesTask = new FetchArticlesTask(getContext());
@@ -109,8 +107,8 @@ public class ArticlesFragment extends Fragment
         articles.toArray(articlesArray);
         fetchArticlesTask.execute(articlesArray);
 
-        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.ll_articles);
-        if(showProgessbar) {
+        LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.ll_articles);
+        if (showProgessbar) {
             if (progressBar == null) {
                 progressBar = new ProgressBar(getActivity());
             }
@@ -119,8 +117,8 @@ public class ArticlesFragment extends Fragment
     }
 
     private void displayArticles() {
-        LinearLayout rl = (LinearLayout)getActivity().findViewById(R.id.ll_articles);
-        for(Article a: articles){
+        LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.ll_articles);
+        for (Article a : articles) {
             ArticleView av = new ArticleView(getActivity(), a);
             av.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -133,7 +131,7 @@ public class ArticlesFragment extends Fragment
     }
 
     private void startFragment(View view) {
-        ArticleView av = (ArticleView)view;
+        ArticleView av = (ArticleView) view;
         ArticleFragment af = new ArticleFragment();
         Bundle args = new Bundle();
         args.putParcelable("article", av.getArticle());
@@ -153,7 +151,7 @@ public class ArticlesFragment extends Fragment
     public void onPostExecute(ArrayList<Article> articles) {
         LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.ll_articles);
 
-        if(articles != null) {
+        if (articles != null) {
             this.articles = articles;
             if (rl == null) {
                 return;
@@ -163,8 +161,7 @@ public class ArticlesFragment extends Fragment
             displayArticles();
             swipeContainer.setRefreshing(false);
             fetching = false;
-        }
-        else{
+        } else {
             allArticlesLoaded = true;
             Toast.makeText(getContext(), "Alle News-Einträge geladen", Toast.LENGTH_SHORT).show();
         }
@@ -174,7 +171,7 @@ public class ArticlesFragment extends Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_refresh:
                 refresh(true);
                 return true;
@@ -186,21 +183,21 @@ public class ArticlesFragment extends Fragment
     @Override
     public void onPause() {
         super.onPause();
-        if(fetchArticlesTask != null && fetchArticlesTask.getStatus() != AsyncTask.Status.FINISHED){
+        if (fetchArticlesTask != null && fetchArticlesTask.getStatus() != AsyncTask.Status.FINISHED) {
             fetchArticlesTask.cancel(true);
         }
     }
 
     private void refresh(boolean showProgressbar) {
-        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.ll_articles);
-        if(ll == null){
+        LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.ll_articles);
+        if (ll == null) {
             return;
         }
         ll.removeAllViews();
         articles.clear();
         allArticlesLoaded = false;
 
-        TextView textView = (TextView)getActivity().findViewById(R.id.txt_noconnection);
+        TextView textView = (TextView) getActivity().findViewById(R.id.txt_noconnection);
         textView.setVisibility(View.GONE);
 
         update(showProgressbar);
@@ -208,12 +205,11 @@ public class ArticlesFragment extends Fragment
 
     @Override
     public void onBottomReached() {
-        if(!allArticlesLoaded && !fetching) {
+        if (!allArticlesLoaded && !fetching) {
             fetching = true;
             update(true);
-        }
-        else{
-            if(allArticlesLoaded){
+        } else {
+            if (allArticlesLoaded) {
                 Toast.makeText(getContext(), "Alle News-Einträge geladen", Toast.LENGTH_SHORT).show();
             }
         }

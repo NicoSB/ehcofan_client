@@ -25,18 +25,18 @@ public class PlayerInfoFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.dialog_playerinfo, container, false);
 
-        Player player = getArguments().getParcelable("player");
+        Player player = getArguments().getParcelable("player" );
 
-        TextView txt_birthday = (TextView)view.findViewById(R.id.txt_birthday);
-        TextView txt_weight = (TextView)view.findViewById(R.id.txt_weight);
-        TextView txt_height = (TextView)view.findViewById(R.id.txt_height);
-        TextView txt_contract = (TextView)view.findViewById(R.id.txt_contract);
-        TextView txt_name = (TextView)view.findViewById(R.id.player_name);
-        TextView txt_games = (TextView)view.findViewById(R.id.txt_player_games);
-        TextView txt_goals = (TextView)view.findViewById(R.id.txt_player_goals);
-        TextView txt_assists = (TextView)view.findViewById(R.id.txt_player_assists);
-        TextView txt_pim = (TextView)view.findViewById(R.id.txt_player_pim);
-        CircularImageView circularImageView = (CircularImageView)view.findViewById(R.id.player_picture);
+        TextView txt_birthday = (TextView) view.findViewById(R.id.txt_birthday);
+        TextView txt_weight = (TextView) view.findViewById(R.id.txt_weight);
+        TextView txt_height = (TextView) view.findViewById(R.id.txt_height);
+        TextView txt_contract = (TextView) view.findViewById(R.id.txt_contract);
+        TextView txt_name = (TextView) view.findViewById(R.id.player_name);
+        TextView txt_games = (TextView) view.findViewById(R.id.txt_player_games);
+        TextView txt_goals = (TextView) view.findViewById(R.id.txt_player_goals);
+        TextView txt_assists = (TextView) view.findViewById(R.id.txt_player_assists);
+        TextView txt_pim = (TextView) view.findViewById(R.id.txt_player_pim);
+        CircularImageView circularImageView = (CircularImageView) view.findViewById(R.id.player_picture);
 
         assert player != null;
         txt_birthday.setText(player.getGermanBirthdate());

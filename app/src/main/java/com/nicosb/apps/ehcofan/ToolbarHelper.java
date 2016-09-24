@@ -14,25 +14,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Switch;
 
-import com.nicosb.apps.ehcofan.activities.MainActivity;
+import com.nicosb.apps.ehcofan.activities.HomeActivity;
 import com.nicosb.apps.ehcofan.activities.NewsActivity;
 import com.nicosb.apps.ehcofan.activities.RosterActivity;
 import com.nicosb.apps.ehcofan.activities.ScheduleActivity;
 import com.nicosb.apps.ehcofan.activities.StandingsActivity;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 
-public class ToolbarHelper{
+public class ToolbarHelper {
 
-    public static DrawerLayout loadToolbar(AppCompatActivity activity){
+    public static DrawerLayout loadToolbar(AppCompatActivity activity) {
         Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
         activity.setSupportActionBar(toolbar);
 
-        DrawerLayout drawerLayout = (DrawerLayout)activity.findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
         DrawerToggle drawerToggle = new DrawerToggle(activity, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView)activity.findViewById(R.id.navigation_view);
+        NavigationView navigationView = (NavigationView) activity.findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(drawerToggle);
         navigationView.setCheckedItem(getItemId(activity));
 
@@ -40,23 +40,23 @@ public class ToolbarHelper{
     }
 
     private static int getItemId(AppCompatActivity activity) {
-        if(activity instanceof RosterActivity){
+        if (activity instanceof RosterActivity) {
             return R.id.roster;
         }
-        if(activity instanceof NewsActivity){
+        if (activity instanceof NewsActivity) {
             return R.id.news;
         }
-        if(activity instanceof ScheduleActivity){
+        if (activity instanceof ScheduleActivity) {
             return R.id.schedule;
         }
-        if(activity instanceof StandingsActivity){
+        if (activity instanceof StandingsActivity) {
             return R.id.standings;
         }
         return -1;
     }
 
     public static class DrawerToggle extends ActionBarDrawerToggle
-            implements NavigationView.OnNavigationItemSelectedListener{
+            implements NavigationView.OnNavigationItemSelectedListener {
         private Activity activity;
 
         public DrawerToggle(Activity activity, DrawerLayout drawerLayout, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
@@ -72,7 +72,7 @@ public class ToolbarHelper{
 
         @Override
         public void onDrawerClosed(View drawerView) {
-                Switch notificationsSwitch = (Switch)drawerView.findViewById(R.id.switch_notifications);
+            Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
 
             FirebaseHandler.sign(activity, notificationsSwitch.isChecked());
 
@@ -86,7 +86,7 @@ public class ToolbarHelper{
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
 
-            Switch notificationsSwitch = (Switch)drawerView.findViewById(R.id.switch_notifications);
+            Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
             SharedPreferences prefs = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
             notificationsSwitch.setChecked(prefs.getBoolean(FirebaseHandler.PREF_NOTIFICATIONS, false));
         }
@@ -96,7 +96,7 @@ public class ToolbarHelper{
             Intent newActivity = null;
             switch (item.getItemId()) {
                 case R.id.home:
-                    newActivity = new Intent(activity, MainActivity.class);
+                    newActivity = new Intent(activity, HomeActivity.class);
                     break;
                 case R.id.news:
                     newActivity = new Intent(activity, NewsActivity.class);
@@ -111,10 +111,9 @@ public class ToolbarHelper{
                     newActivity = new Intent(activity, StandingsActivity.class);
                     break;
             }
-            if(newActivity == null || activity.getClass().getName().equals(newActivity.getComponent().getClassName())){
+            if (newActivity == null || activity.getClass().getName().equals(newActivity.getComponent().getClassName())) {
                 return false;
-            }
-            else{
+            } else {
                 activity.startActivity(newActivity);
                 return true;
             }

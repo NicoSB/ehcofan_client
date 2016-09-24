@@ -36,33 +36,33 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
 
     @Override
     protected ArrayList<Article> doInBackground(Article... articles) {
-        for(Article a: articles){
-            if(a != null){
+        for (Article a : articles) {
+            if (a != null) {
                 mArticles.add(a);
             }
         }
-        try{
+        try {
             String link = context.getString(R.string.rest_interface) + "articles?offset=" + mArticles.size();
             URL restAddress = new URL(link);
-            HttpURLConnection urlConnection = (HttpURLConnection)restAddress.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) restAddress.openConnection();
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             StringBuilder builder = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 builder.append(line).append('\n');
             }
 
             String json = builder.toString();
 
             Gson gson = new Gson();
-            if(isCancelled()){
+            if (isCancelled()) {
                 return null;
             }
             ArticleWrapper[] wrappers = gson.fromJson(json, ArticleWrapper[].class);
             String image_url = "";
-            if(wrappers.length == 0){
+            if (wrappers.length == 0) {
                 return null;
             }
 
@@ -79,18 +79,19 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
 
                     Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), bitmap);
                     mArticles.add(a);
-                    if(isLimited){
+                    if (isLimited) {
                         return mArticles;
                     }
-                }catch (FileNotFoundException fnfe){
+                } catch (FileNotFoundException fnfe) {
                     Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder));
                     mArticles.add(a);
-                }catch(IOException ioe){
+                } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
             }
-        }catch (IOException mue){
+        } catch (IOException mue) {
             mue.printStackTrace();
+            return null;
         }
         return mArticles;
     }
@@ -102,13 +103,9 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
     @Override
     protected void onPostExecute(ArrayList<Article> articles) {
         super.onPostExecute(articles);
-        if(postExecuteListener != null){
+        if (postExecuteListener != null) {
             postExecuteListener.onPostExecute(articles);
         }
-    }
-
-    public interface PostExecuteListener{
-        void onPostExecute(ArrayList<Article> articles);
     }
 
     public boolean isLimited() {
@@ -117,5 +114,9 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
 
     public void setLimited(boolean limited) {
         isLimited = limited;
+    }
+
+    public interface PostExecuteListener {
+        void onPostExecute(ArrayList<Article> articles);
     }
 }

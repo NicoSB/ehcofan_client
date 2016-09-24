@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.nicosb.apps.ehcofan.CacheDBHelper;
@@ -20,7 +19,6 @@ import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,15 +30,14 @@ import java.util.Locale;
 /**
  * Created by Nico on 23.07.2016.
  */
-public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>{
-    private static final String TAG = "FetchPlayersTask";
-
+public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>> {
     public static final String CUSTOM_PREFS = "customPrefs";
     public static final String PREF_PLAYER_UPDATE = "playerUpdate";
+    private static final String TAG = "FetchPlayersTask";
+    ArrayList<Player> players = new ArrayList<>();
+    SharedPreferences prefs;
     private Context context;
     private OnPlayersFetchedListener onPlayersFetchedListener;
-    ArrayList<Player> players = new ArrayList<>( );
-    SharedPreferences prefs;
 
     public FetchPlayersTask(Context context) {
         this.context = context;
@@ -61,7 +58,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                 "position != 'Torhüter', position != 'Verteidiger', position != 'Stürmer', number ASC"                                 // The sort order
         );
 
-        while(c.moveToNext()){
+        while (c.moveToNext()) {
             Player p = Player.populatePlayer(c);
             p.setPlayerImage(Cacher.getPlayerImage(context, p));
             players.add(p);
@@ -74,7 +71,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
     @Override
     protected void onPostExecute(ArrayList<Player> players) {
         super.onPostExecute(players);
-        if(onPlayersFetchedListener != null) {
+        if (onPlayersFetchedListener != null) {
             onPlayersFetchedListener.onPlayersFetched(players);
         }
     }
@@ -83,18 +80,13 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
         this.onPlayersFetchedListener = onPlayersFetchedListener;
     }
 
-
-    public interface OnPlayersFetchedListener{
-        void onPlayersFetched(ArrayList<Player> players);
-    }
-
-    private void updatePayers(){
+    private void updatePayers() {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()){
+        if (networkInfo != null && networkInfo.isConnected()) {
             try {
                 prefs = context.getSharedPreferences(CUSTOM_PREFS, Context.MODE_PRIVATE);
-                String lastUpdated = prefs.getString(PREF_PLAYER_UPDATE, "");
+                String lastUpdated = prefs.getString(PREF_PLAYER_UPDATE, "" );
                 String rest_url = context.getString(R.string.rest_interface) + "players";
                 if (lastUpdated.length() > 0) {
                     rest_url = rest_url + "?updated_at=" + lastUpdated;
@@ -136,7 +128,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                                 Bitmap bitmap = BitmapFactory.decodeStream(input);
                                 Cacher.storePlayerImage(context, player, bitmap);
 
-                                if(lastUpdate.compareTo(p.getUpdated_at()) < 0){
+                                if (lastUpdate.compareTo(p.getUpdated_at()) < 0) {
                                     lastUpdate = p.getUpdated_at();
                                 }
                             }
@@ -145,7 +137,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                         }
                     }
 
-                    if(!lastUpdate.equals("0")){
+                    if (!lastUpdate.equals("0" )) {
                         // update player update pref
                         prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_APPEND);
                         SharedPreferences.Editor editor = prefs.edit();
@@ -157,5 +149,9 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                 ioe.printStackTrace();
             }
         }
+    }
+
+    public interface OnPlayersFetchedListener {
+        void onPlayersFetched(ArrayList<Player> players);
     }
 }

@@ -152,11 +152,11 @@ public class PlayerWrapper {
         this.pim = pim;
     }
 
-    public Player toPlayer(){
+    public Player toPlayer() {
         return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, games, goals, assists, pim, birthdate);
     }
 
-    public Player toPlayer(Bitmap bitmap){
+    public Player toPlayer(Bitmap bitmap) {
         return new Player(id, name, surname, position, contract, nationality, number, weight, height, ep_id, games, goals, assists, pim, birthdate, bitmap);
     }
 

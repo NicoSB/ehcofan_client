@@ -22,8 +22,8 @@ import com.nicosb.apps.ehcofan.models.Article;
  * Created by Nico on 01.07.2016.
  */
 public class ArticleFragment extends Fragment {
-    Article article;
     public static String ARGS_ARTICLE = "article";
+    Article article;
 
     @Nullable
     @Override
@@ -37,7 +37,7 @@ public class ArticleFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             article = bundle.getParcelable(ARGS_ARTICLE);
             displayArticle();
         }
@@ -51,7 +51,7 @@ public class ArticleFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_website:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl()));
                 startActivity(browserIntent);
@@ -62,8 +62,8 @@ public class ArticleFragment extends Fragment {
     }
 
     private void displayArticle() {
-        TextView txt_title = (TextView)getActivity().findViewById(R.id.text_title);
-        TextView txt_text = (TextView)getActivity().findViewById(R.id.text_text);
+        TextView txt_title = (TextView) getActivity().findViewById(R.id.text_title);
+        TextView txt_text = (TextView) getActivity().findViewById(R.id.text_text);
 
         txt_title.setText(article.getTitle());
         txt_text.setText(Html.fromHtml(article.getText()));

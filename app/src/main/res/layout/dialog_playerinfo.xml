@@ -265,14 +265,6 @@
                             android:text="@string/player_pim"/>
                     </LinearLayout>
                 </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="@string/player_stats_from"
-                android:drawableRight="@drawable/ep_logo_2"
-                android:drawablePadding="8dp"
-                android:drawableEnd="@drawable/ep_logo_2"/>
             </LinearLayout>
         </LinearLayout>
 </ScrollView>

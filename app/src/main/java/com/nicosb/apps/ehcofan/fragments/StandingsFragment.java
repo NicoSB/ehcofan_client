@@ -26,10 +26,10 @@ import java.util.Locale;
  * Created by Nico on 17.08.2016.
  */
 public class StandingsFragment extends Fragment
-                implements FetchStandingsTask.OnTeamsFetchedListener{
+        implements FetchStandingsTask.OnTeamsFetchedListener {
+    public static String KEY_COMPETITION = "competition";
     private ProgressBar progressBar;
     private boolean inPager = false;
-    public static String KEY_COMPETITION = "competition";
 
     @Nullable
     @Override
@@ -42,13 +42,13 @@ public class StandingsFragment extends Fragment
         fetchStandingsTask.execute(getArguments().getString(KEY_COMPETITION));
 
         progressBar = new ProgressBar(getActivity());
-        LinearLayout ll_container = (LinearLayout)v.findViewById(R.id.ll_standings);
+        LinearLayout ll_container = (LinearLayout) v.findViewById(R.id.ll_standings);
         ll_container.addView(progressBar);
 
-        if(inPager){
+        if (inPager) {
             float scale = getResources().getDisplayMetrics().density;
-            int paddingTop = (int) (8*scale + 0.5f);
-            v.setPadding(0,  (int)getResources().getDimension(R.dimen.tab_height) + paddingTop, 0, 0);
+            int paddingTop = (int) (8 * scale + 0.5f);
+            v.setPadding(0, (int) getResources().getDimension(R.dimen.tab_height) + paddingTop, 0, 0);
         }
 
         return v;
@@ -56,12 +56,12 @@ public class StandingsFragment extends Fragment
 
     @Override
     public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
-        if(getActivity() != null) {
-            if(standingsTeams.size() == 0){
-                TextView txt_no_connection = (TextView)getActivity().findViewById(R.id.txt_noconnection);
+        if (getActivity() != null) {
+            if (standingsTeams.size() == 0) {
+                TextView txt_no_connection = (TextView) getActivity().findViewById(R.id.txt_noconnection);
                 txt_no_connection.setVisibility(View.VISIBLE);
 
-                LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.container_standings);
+                LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.container_standings);
                 ll.setVisibility(View.GONE);
             }
             TableLayout container = (TableLayout) getActivity().findViewById(R.id.container_standings);
@@ -98,7 +98,7 @@ public class StandingsFragment extends Fragment
                     txt_losses.setText(String.valueOf(t.getLosses()));
                 }
 
-                if (t.getName().equals("EHC Olten")) {
+                if (t.getName().equals("EHC Olten" )) {
                     txt_name.setTextColor(getResources().getColor(R.color.mainGreen));
                     txt_name.setTypeface(Typeface.DEFAULT_BOLD);
                     txt_rank.setTextColor(getResources().getColor(R.color.mainGreen));
@@ -123,7 +123,7 @@ public class StandingsFragment extends Fragment
                 }
 
                 container.addView(tableRow);
-                if(position == 8){
+                if (position == 8) {
                     container.addView(getLine());
                 }
                 position++;
@@ -147,7 +147,7 @@ public class StandingsFragment extends Fragment
         tv.setText(group);
         tv.setTextColor(getContext().getResources().getColor(R.color.white));
         float scale = getResources().getDisplayMetrics().density;
-        int padding = (int) (8*scale + 0.5f);
+        int padding = (int) (8 * scale + 0.5f);
         tv.setPadding(padding, 0, padding, 0);
         tv.setGravity(Gravity.CENTER_VERTICAL);
 

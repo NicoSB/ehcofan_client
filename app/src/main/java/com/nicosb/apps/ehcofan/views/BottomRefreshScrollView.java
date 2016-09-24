@@ -32,16 +32,16 @@ public class BottomRefreshScrollView extends ScrollView {
         super.onScrollChanged(l, t, oldl, oldt);
 
         View view = getChildAt(getChildCount() - 1);
-        int diff = (view.getBottom()-(getHeight()+getScrollY()));
+        int diff = (view.getBottom() - (getHeight() + getScrollY()));
 
-        if(diff <= 0){
-            if(viewOnBottomListener != null){
+        if (diff <= 0) {
+            if (viewOnBottomListener != null) {
                 viewOnBottomListener.onBottomReached();
             }
         }
     }
 
-    public interface ViewOnBottomListener{
+    public interface ViewOnBottomListener {
         void onBottomReached();
     }
 }

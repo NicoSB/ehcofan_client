@@ -15,12 +15,12 @@ import com.nicosb.apps.ehcofan.models.Article;
 public class ArticleView extends RelativeLayout {
     private Article article;
 
-    public ArticleView(Context context){
+    public ArticleView(Context context) {
         super(context);
         inflate(context, R.layout.view_article, this);
     }
 
-    public ArticleView(Context context, Article article){
+    public ArticleView(Context context, Article article) {
         super(context);
         this.article = article;
         init();
@@ -28,9 +28,9 @@ public class ArticleView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.view_article, this);
-        TextView txt_title = (TextView)findViewById(R.id.text_title);
-        TextView txt_date = (TextView)findViewById(R.id.text_date);
-        ImageView img_news = (ImageView)findViewById(R.id.imageview);
+        TextView txt_title = (TextView) findViewById(R.id.text_title);
+        TextView txt_date = (TextView) findViewById(R.id.text_date);
+        ImageView img_news = (ImageView) findViewById(R.id.imageview);
 
         txt_date.setText(article.getDisplayDate());
         txt_title.setText(article.getTitle());

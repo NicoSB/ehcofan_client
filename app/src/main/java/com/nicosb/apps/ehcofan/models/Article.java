@@ -8,6 +8,17 @@ import android.os.Parcelable;
  * Created by Nico on 15.07.2016.
  */
 public class Article implements Parcelable {
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
+        @Override
+        public Article createFromParcel(Parcel in) {
+            return new Article(in);
+        }
+
+        @Override
+        public Article[] newArray(int size) {
+            return new Article[size];
+        }
+    };
     String title;
     String text;
     String url;
@@ -29,18 +40,6 @@ public class Article implements Parcelable {
         date = in.readString();
     }
 
-    public static final Creator<Article> CREATOR = new Creator<Article>() {
-        @Override
-        public Article createFromParcel(Parcel in) {
-            return new Article(in);
-        }
-
-        @Override
-        public Article[] newArray(int size) {
-            return new Article[size];
-        }
-    };
-
     public String getTitle() {
         return title;
     }
@@ -61,9 +60,9 @@ public class Article implements Parcelable {
         return news_image;
     }
 
-    public String getDisplayDate(){
-        String day = date.substring(8,10);
-        String month = date.substring(5,7);
+    public String getDisplayDate() {
+        String day = date.substring(8, 10);
+        String month = date.substring(5, 7);
 
         return day + "." + month;
     }

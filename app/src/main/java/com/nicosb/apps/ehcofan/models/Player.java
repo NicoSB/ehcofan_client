@@ -11,7 +11,18 @@ import com.nicosb.apps.ehcofan.CacheDBHelper;
 /**
  * Created by Nico on 25.07.2016.
  */
-public class Player implements Parcelable{
+public class Player implements Parcelable {
+    public static final Creator<Player> CREATOR = new Creator<Player>() {
+        @Override
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
+        }
+
+        @Override
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
     private int id;
     private String name;
     private String surname;
@@ -85,17 +96,24 @@ public class Player implements Parcelable{
         playerImage = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
-    public static final Creator<Player> CREATOR = new Creator<Player>() {
-        @Override
-        public Player createFromParcel(Parcel in) {
-            return new Player(in);
-        }
-
-        @Override
-        public Player[] newArray(int size) {
-            return new Player[size];
-        }
-    };
+    public static Player populatePlayer(Cursor c) {
+        return new Player(c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ID)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NAME)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_SURNAME)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_POSITION)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_CONTRACT)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NATIONALITY)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NUMBER)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_HEIGHT)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_EP_ID)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GAMES)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GOALS)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ASSISTS)),
+                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_PIM)),
+                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_BIRTHDATE))
+        );
+    }
 
     public int getId() {
         return id;
@@ -181,12 +199,12 @@ public class Player implements Parcelable{
         return birthdate;
     }
 
-    public String getGermanBirthdate() {
-        return birthdate.substring(8, 10) + "." + birthdate.substring(5, 7) + "." + birthdate.substring(0, 4);
-    }
-
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public String getGermanBirthdate() {
+        return birthdate.substring(8, 10) + "." + birthdate.substring(5, 7) + "." + birthdate.substring(0, 4);
     }
 
     public int getGames() {
@@ -229,7 +247,7 @@ public class Player implements Parcelable{
         this.playerImage = playerImage;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return name + " " + surname;
     }
 
@@ -258,7 +276,7 @@ public class Player implements Parcelable{
         playerImage.writeToParcel(parcel, 0);
     }
 
-    public ContentValues getContentValues(){
+    public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ID, id);
@@ -278,24 +296,5 @@ public class Player implements Parcelable{
         contentValues.put(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_PIM, pim);
 
         return contentValues;
-    }
-
-    public static Player populatePlayer(Cursor c){
-        return new Player(c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ID)),
-                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NAME)),
-                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_SURNAME)),
-                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_POSITION)),
-                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_CONTRACT)),
-                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NATIONALITY)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_NUMBER)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_HEIGHT)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_EP_ID)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GAMES)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_GOALS)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_ASSISTS)),
-                c.getInt(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_PIM)),
-                c.getString(c.getColumnIndexOrThrow(CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_BIRTHDATE))
-                );
     }
 }

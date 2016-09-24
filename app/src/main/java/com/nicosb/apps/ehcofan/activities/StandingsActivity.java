@@ -23,9 +23,9 @@ public class StandingsActivity extends AppCompatActivity {
 
         StandingsFragment standingsFragment = new StandingsFragment();
         Bundle args = new Bundle();
-        args.putString(StandingsFragment.KEY_COMPETITION, "NLB%2016/17");
+        args.putString(StandingsFragment.KEY_COMPETITION, "NLB%2016/17" );
         standingsFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.standings_content_frame, standingsFragment, "Tabelle").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.standings_content_frame, standingsFragment, "Tabelle" ).commit();
 
         drawerLayout = ToolbarHelper.loadToolbar(this);
     }

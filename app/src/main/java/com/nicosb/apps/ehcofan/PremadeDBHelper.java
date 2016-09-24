@@ -17,20 +17,19 @@ import java.io.OutputStream;
 /**
  * Created by Nico on 17.08.2016.
  */
-public class PremadeDBHelper extends SQLiteOpenHelper{
+public class PremadeDBHelper extends SQLiteOpenHelper {
 
     //The Android's default system path of your application database.
     private static String DB_PATH;
 
     private static String DB_NAME = "premade_db.db";
-
-    private SQLiteDatabase myDataBase;
-
     private final Context context;
+    private SQLiteDatabase myDataBase;
 
     /**
      * Constructor
      * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
+     *
      * @param context
      */
     public PremadeDBHelper(Context context) throws IOException {
@@ -41,39 +40,40 @@ public class PremadeDBHelper extends SQLiteOpenHelper{
 
     /**
      * Creates a empty database on the system and rewrites it with your own database.
-     * */
+     */
     public void createDatabase() throws IOException {
 
         boolean dbExist = checkDataBase();
 
-        if(!dbExist){
+        if (!dbExist) {
             this.getReadableDatabase();
 
             try {
                 copyDataBase();
             } catch (IOException e) {
-                throw new Error("Error copying database");
+                throw new Error("Error copying database" );
             }
         }
     }
 
     /**
      * Check if the database already exist to avoid re-copying the file each time you open the application.
+     *
      * @return true if it exists, false if it doesn't
      */
-    private boolean checkDataBase(){
+    private boolean checkDataBase() {
 
         SQLiteDatabase checkDB = null;
 
-        try{
+        try {
             String myPath = DB_PATH + DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
-        }catch(SQLiteException e){
+        } catch (SQLiteException e) {
             //
         }
 
-        if(checkDB != null){
+        if (checkDB != null) {
 
             checkDB.close();
 
@@ -86,8 +86,8 @@ public class PremadeDBHelper extends SQLiteOpenHelper{
      * Copies your database from your local assets-folder to the just created empty database in the
      * system folder, from where it can be accessed and handled.
      * This is done by transfering bytestream.
-     * */
-    private void copyDataBase() throws IOException{
+     */
+    private void copyDataBase() throws IOException {
 
         //Open your local db as the input stream
         InputStream myInput = context.getAssets().open(DB_NAME);
@@ -101,7 +101,7 @@ public class PremadeDBHelper extends SQLiteOpenHelper{
         //transfer bytes from the inputfile to the outputfile
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = myInput.read(buffer))>0){
+        while ((length = myInput.read(buffer)) > 0) {
             myOutput.write(buffer, 0, length);
         }
 
@@ -119,7 +119,7 @@ public class PremadeDBHelper extends SQLiteOpenHelper{
 
     @Override
     public synchronized void close() {
-        if(myDataBase != null)
+        if (myDataBase != null)
             myDataBase.close();
 
         super.close();
@@ -139,14 +139,14 @@ public class PremadeDBHelper extends SQLiteOpenHelper{
     public Team getTeam(int i) {
         String[] where = {String.valueOf(i)};
         Cursor c = myDataBase.query(
-            "teams",  // The table to query
-            null,                               // The columns to return
-            "_id = ?",                                // The columns for the WHERE clause
-            where,                            // The values for the WHERE clause
-            null,                                     // don't group the rows
-            null,                                     // don't filter by row groups
-            null                                // The sort order
-    );
+                "teams",  // The table to query
+                null,                               // The columns to return
+                "_id = ?",                                // The columns for the WHERE clause
+                where,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                // The sort order
+        );
 
         c.moveToFirst();
 

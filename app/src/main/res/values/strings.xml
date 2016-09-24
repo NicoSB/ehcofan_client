@@ -5,7 +5,7 @@
     <string name="title_placeholder">TITLE</string>
     <string name="text_placeholder">LOREMIPSUMDOLORET</string>
     <string name="aws_url">https://s3.eu-central-1.amazonaws.com/ehcofan/</string>
-    <string name="title_activity_main">Home</string>
+    <string name="title_activity_home">Home</string>
     <string name="title_activity_news">News</string>
     <string name="news">News</string>
     <string name="home_team_placeholder">HOME Team</string>
@@ -85,4 +85,9 @@ Gegenüber der letzten Saison hat sich im Kader der Grizzlys nicht viel verände
     <string name="desc_news_picture">News Picture</string>
     <string name="placeholder_title">TITLE</string>
     <string name="placeholder_date">20. Aug</string>
+    <string name="nlb_tore">Tore</string>
+    <string name="team_points">Punkte</string>
+    <string name="team_games">Spiele</string>
+    <string name="team_placement">Rang</string>
+    <string name="team_nlb">NLB 2016/17</string>
 </resources>

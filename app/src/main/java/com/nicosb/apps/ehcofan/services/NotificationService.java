@@ -1,7 +1,5 @@
 package com.nicosb.apps.ehcofan.services;
 
-import android.util.Log;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -11,6 +9,7 @@ import com.google.firebase.messaging.RemoteMessage;
 public class NotificationService extends FirebaseMessagingService {
 
     private String TAG = "NotificationService";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
     }

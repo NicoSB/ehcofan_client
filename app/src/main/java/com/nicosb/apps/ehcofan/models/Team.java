@@ -30,6 +30,19 @@ public class Team {
         this.website = website;
     }
 
+    public static Team populateTeam(Cursor c) {
+        return new Team(c.getInt(c.getColumnIndex("_id" )),
+                c.getString(c.getColumnIndex("name" )),
+                c.getString(c.getColumnIndex("league" )),
+                c.getString(c.getColumnIndex("Country" )),
+                c.getString(c.getColumnIndex("last_season" )),
+                c.getInt(c.getColumnIndex("founded" )),
+                c.getInt(c.getColumnIndex("title_count" )),
+                c.getString(c.getColumnIndex("topscorer" )),
+                c.getString(c.getColumnIndex("desc_text" )),
+                c.getString(c.getColumnIndex("website_url" )));
+    }
+
     public int get_id() {
         return _id;
     }
@@ -108,18 +121,5 @@ public class Team {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public static Team populateTeam(Cursor c){
-        return new Team(c.getInt(c.getColumnIndex("_id")),
-                c.getString(c.getColumnIndex("name")),
-                c.getString(c.getColumnIndex("league")),
-                c.getString(c.getColumnIndex("Country")),
-                c.getString(c.getColumnIndex("last_season")),
-                c.getInt(c.getColumnIndex("founded")),
-                c.getInt(c.getColumnIndex("title_count")),
-                c.getString(c.getColumnIndex("topscorer")),
-                c.getString(c.getColumnIndex("desc_text")),
-                c.getString(c.getColumnIndex("website_url")));
     }
 }

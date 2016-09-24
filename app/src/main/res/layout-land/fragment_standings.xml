@@ -33,52 +33,61 @@
                     android:layout_width="wrap_content"
                     android:gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/rank"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/team_name"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/games"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/wins"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/ot_wins"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/ot_losses"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
                     android:text="@string/losses"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:gravity="end"
+                    android:textStyle="bold"
                     android:text="@string/goals"/>
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
+                    android:textStyle="bold"
                     android:text="@string/points"/>
             </TableRow>
         </TableLayout>

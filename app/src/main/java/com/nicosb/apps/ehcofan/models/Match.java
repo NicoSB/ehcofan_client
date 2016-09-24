@@ -31,6 +31,23 @@ public class Match {
         this.scores_away = scores_away;
     }
 
+    public static Match populateMatch(Cursor c) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm" );
+        Calendar datetime = Calendar.getInstance();
+        datetime.setTime(sdf.parse(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME))));
+
+        int[] scores_home = CacheDBHelper.decodeScores(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_HOME)));
+        int[] scores_away = CacheDBHelper.decodeScores(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_AWAY)));
+        return new Match(c.getInt(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID)),
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM)),
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM)),
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION)),
+                datetime,
+                scores_home,
+                scores_away
+        );
+    }
+
     public int getId() {
         return id;
     }
@@ -62,9 +79,9 @@ public class Match {
     public int[] getScores_away() {
         return scores_away;
     }
-    
-    public int getTotal(Team team){
-        switch(team){
+
+    public int getTotal(Team team) {
+        switch (team) {
             case HOME:
                 return scores_home[0] + scores_home[1] + scores_home[2] + scores_home[3];
             case AWAY:
@@ -72,17 +89,12 @@ public class Match {
             default:
                 return -1;
         }
-        
-    }
-    
-    public enum Team{
-        HOME,
-        AWAY
+
     }
 
-    public ContentValues getContentValues(){
+    public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm" );
         String dt_text = sdf.format(datetime.getTime());
 
         contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID, id);
@@ -96,20 +108,8 @@ public class Match {
         return contentValues;
     }
 
-    public static Match populateMatch(Cursor c) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar datetime = Calendar.getInstance();
-        datetime.setTime(sdf.parse(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME))));
-
-        int[] scores_home = CacheDBHelper.decodeScores(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_HOME)));
-        int[] scores_away = CacheDBHelper.decodeScores(c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_AWAY)));
-        return new Match(c.getInt(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID)),
-                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM)),
-                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM)),
-                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION)),
-                datetime,
-                scores_home,
-                scores_away
-                );
+    public enum Team {
+        HOME,
+        AWAY
     }
 }

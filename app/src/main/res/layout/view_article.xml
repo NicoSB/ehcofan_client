@@ -23,7 +23,7 @@
         android:background="@color/mainGreenTransp"
         android:textColor="#FFFFFF"
         android:padding="8dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignBottom="@id/imageview"/>
 
     <TextView
         android:id="@+id/text_date"
