@@ -52,6 +52,9 @@ public class ToolbarHelper {
         if (activity instanceof StandingsActivity) {
             return R.id.standings;
         }
+        if (activity instanceof HomeActivity) {
+            return R.id.home;
+        }
         return -1;
     }
 
