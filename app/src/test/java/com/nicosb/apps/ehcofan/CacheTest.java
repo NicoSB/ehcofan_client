@@ -1,5 +1,7 @@
 package com.nicosb.apps.ehcofan;
 
+import com.nicosb.apps.ehcofan.models.Match;
+
 import junit.framework.Assert;
 
 import org.junit.Test;

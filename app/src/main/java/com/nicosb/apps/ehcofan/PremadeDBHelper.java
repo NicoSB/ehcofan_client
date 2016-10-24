@@ -1,13 +1,10 @@
 package com.nicosb.apps.ehcofan;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.nicosb.apps.ehcofan.models.Team;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -134,22 +131,5 @@ public class PremadeDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-    }
-
-    public Team getTeam(int i) {
-        String[] where = {String.valueOf(i)};
-        Cursor c = myDataBase.query(
-                "teams",  // The table to query
-                null,                               // The columns to return
-                "_id = ?",                                // The columns for the WHERE clause
-                where,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                // The sort order
-        );
-
-        c.moveToFirst();
-
-        return Team.populateTeam(c);
     }
 }

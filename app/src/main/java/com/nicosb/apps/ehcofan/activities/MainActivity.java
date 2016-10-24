@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
+            mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

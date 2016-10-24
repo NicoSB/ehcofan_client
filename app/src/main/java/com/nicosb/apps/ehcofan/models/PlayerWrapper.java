@@ -23,6 +23,7 @@ public class PlayerWrapper {
     private String birthdate;
     private String player_image_file_name;
     private String updated_at;
+    private boolean active;
 
     public int getId() {
         return id;
@@ -166,5 +167,9 @@ public class PlayerWrapper {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

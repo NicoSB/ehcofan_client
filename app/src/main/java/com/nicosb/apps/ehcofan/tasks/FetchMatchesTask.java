@@ -130,13 +130,18 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>> 
                 // extract players and save them as well as pictures to local database
                 for (MatchWrapper m : wrappers) {
                     Match match = m.toMatch();
-                    Cacher.cacheMatch(context, match);
+                    if(m.isActive()) {
+                        Cacher.cacheMatch(context, match);
 
-                    if (lastUpdate == null || lastUpdate.before(sdf.parse(m.getUpdated_at()))) {
-                        GregorianCalendar d = new GregorianCalendar();
-                        d.setTime(sdf.parse(m.getUpdated_at()));
-                        d.add(Calendar.SECOND, 1);
-                        lastUpdate = d;
+                        if (lastUpdate == null || lastUpdate.before(sdf.parse(m.getUpdated_at()))) {
+                            GregorianCalendar d = new GregorianCalendar();
+                            d.setTime(sdf.parse(m.getUpdated_at()));
+                            d.add(Calendar.SECOND, 1);
+                            lastUpdate = d;
+                        }
+                    }
+                    else{
+                        Cacher.delete(context, CacheDBHelper.TableColumns.MATCHES_TABLE_NAME, m.getId());
                     }
                 }
 

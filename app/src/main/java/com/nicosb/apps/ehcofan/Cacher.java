@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.Player;
@@ -13,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by Nico on 28.07.2016.
@@ -89,5 +91,11 @@ public class Cacher {
         helper.close();
         sqLiteDatabase.close();
 
+    }
+
+    public static void delete(Context context, String table, long id){
+        CacheDBHelper helper = new CacheDBHelper(context);
+        SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
+        Log.w("DELETE", ""+sqLiteDatabase.delete(table, "id="+id, null));
     }
 }

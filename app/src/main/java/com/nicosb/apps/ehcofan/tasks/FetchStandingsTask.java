@@ -10,6 +10,7 @@ import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.Cacher;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
+import com.nicosb.apps.ehcofan.models.TeamWrapper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -52,12 +53,17 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
                 String json = builder.toString();
                 Gson gson = new Gson();
 
-                StandingsTeam[] teamsArray = gson.fromJson(json, StandingsTeam[].class);
-                ArrayList<StandingsTeam> standingsTeams = new ArrayList<>();
-                Collections.addAll(standingsTeams, teamsArray);
+                TeamWrapper[] teamsArray = gson.fromJson(json, TeamWrapper[].class);
+                ArrayList<TeamWrapper> teamWrappers = new ArrayList<>();
+                Collections.addAll(teamWrappers, teamsArray);
 
-                for (StandingsTeam st : standingsTeams) {
-                    Cacher.cacheTeam(context, st);
+                for (TeamWrapper tw : teamWrappers) {
+                    if(tw.isActive()){
+                        Cacher.cacheTeam(context, tw);
+                    }
+                    else{
+                        Cacher.delete(context, CacheDBHelper.TableColumns.STANDINGSTEAMS_TABLE_NAME, tw.getId());
+                    }
                 }
             }
 

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">grüen-wiiss</string>
-    <string name="rest_interface">https://ehcofan.herokuapp.com/</string>
+    <string name="rest_interface">http://ehcofan.herokuapp.com/</string>
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
     <string name="text_placeholder">LOREMIPSUMDOLORET</string>
@@ -90,4 +90,6 @@ Gegenüber der letzten Saison hat sich im Kader der Grizzlys nicht viel verände
     <string name="team_games">Spiele</string>
     <string name="team_placement">Rang</string>
     <string name="team_nlb">NLB 2016/17</string>
+    <string name="gaa">GAA</string>
+    <string name="svs">SVS</string>
 </resources>

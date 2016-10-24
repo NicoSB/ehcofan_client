@@ -1,5 +1,6 @@
 package com.nicosb.apps.ehcofan.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,17 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Player;
 
+import org.w3c.dom.Text;
+
 
 /**
  * Created by Nico on 25.07.2016.
  */
 public class PlayerInfoFragment extends DialogFragment {
+    @SuppressLint("DefaultLocale")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +50,25 @@ public class PlayerInfoFragment extends DialogFragment {
         txt_contract.setText(player.getContract());
         txt_name.setText(player.getFullName());
         txt_games.setText(String.valueOf(player.getGames()));
-        txt_goals.setText(String.valueOf(player.getGoals()));
-        txt_assists.setText(String.valueOf(player.getAssists()));
-        txt_pim.setText(String.valueOf(player.getPim()));
+
+        if(player.getPosition().equals("Torhüter")){
+            TextView txt_gaa = (TextView)view.findViewById(R.id.txt_const_goals);
+            TextView txt_svs = (TextView)view.findViewById(R.id.txt_const_assists);
+            LinearLayout ll_pim = (LinearLayout)view.findViewById(R.id.container_PIM);
+
+            txt_gaa.setText(R.string.gaa);
+            txt_svs.setText(R.string.svs);
+
+            txt_goals.setText(String.valueOf(player.getGoals()/100.0));
+            txt_assists.setText(String.format("%.2f%%", player.getAssists()/100.0));
+            ll_pim.setVisibility(View.GONE);
+        }
+        else {
+            txt_games.setText(String.valueOf(player.getGames()));
+            txt_goals.setText(String.valueOf(player.getGoals()));
+            txt_assists.setText(String.valueOf(player.getAssists()));
+            txt_pim.setText(String.valueOf(player.getPim()));
+        }
         circularImageView.setImageBitmap(player.getPlayerImage());
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

@@ -22,6 +22,7 @@ public class MatchWrapper {
     private int h2;
     private int h3;
     private int h_ot;
+    private boolean active;
 
     public Match toMatch() {
         int scores_home[] = {h1, h2, h3, h_ot};
@@ -43,5 +44,13 @@ public class MatchWrapper {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public int getId() {
+        return id;
     }
 }
