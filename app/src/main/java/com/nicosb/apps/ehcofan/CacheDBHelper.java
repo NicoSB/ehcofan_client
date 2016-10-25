@@ -58,6 +58,12 @@ public class CacheDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    public static void truncateTables(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL(TableColumns.PLAYERS_SQL_TRUNCATE_TABLE);
+        sqLiteDatabase.execSQL(TableColumns.MATCHES_SQL_TRUNCATE_TABLE);
+        sqLiteDatabase.execSQL(TableColumns.STANDINGSTEAMS_SQL_TRUNCATE_TABLE);
+    }
+
     public static abstract class TableColumns implements BaseColumns {
 
         // Table players
@@ -160,6 +166,13 @@ public class CacheDBHelper extends SQLiteOpenHelper {
                 "DROP TABLE IF EXISTS " + MATCHES_TABLE_NAME;
         private static final String STANDINGSTEAMS_SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + STANDINGSTEAMS_TABLE_NAME;
+
+        private static final String STANDINGSTEAMS_SQL_TRUNCATE_TABLE =
+                "DELETE FROM " + STANDINGSTEAMS_TABLE_NAME;
+        private static final String PLAYERS_SQL_TRUNCATE_TABLE =
+                "DELETE FROM " + PLAYERS_TABLE_NAME;
+        private static final String MATCHES_SQL_TRUNCATE_TABLE =
+                "DELETE FROM " + MATCHES_TABLE_NAME;
 
     }
 }

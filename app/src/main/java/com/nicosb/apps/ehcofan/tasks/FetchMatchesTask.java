@@ -34,7 +34,7 @@ import java.util.GregorianCalendar;
  */
 public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>> {
     private static final String TAG = "FetchMatchesTask";
-    private static final String PREF_MATCH_UPDATE = "matchUpdate";
+    public static final String PREF_MATCH_UPDATE = "matchUpdate";
     Context context;
     private OnScheduleFetchedListener onScheduleFetchedListener;
     private ArrayList<Match> matches = new ArrayList<>();

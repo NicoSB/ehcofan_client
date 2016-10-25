@@ -26,8 +26,8 @@ import java.util.Collections;
  * Created by Nico on 27.07.2016.
  */
 public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<StandingsTeam>> {
-    Context context;
-    OnTeamsFetchedListener onTeamsFetchedListener;
+    private Context context;
+    private OnTeamsFetchedListener onTeamsFetchedListener;
     private boolean onlyOffline = false;
 
     public FetchStandingsTask(Context context) {
@@ -84,6 +84,8 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
                 teams.add(StandingsTeam.populateStandingsTeam(c));
             }
 
+            c.close();
+            db.close();
             return teams;
         } catch (IOException e) {
             e.printStackTrace();

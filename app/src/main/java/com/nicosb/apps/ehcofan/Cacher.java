@@ -90,12 +90,12 @@ public class Cacher {
 
         helper.close();
         sqLiteDatabase.close();
-
     }
 
     public static void delete(Context context, String table, long id){
         CacheDBHelper helper = new CacheDBHelper(context);
         SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
         Log.w("DELETE", ""+sqLiteDatabase.delete(table, "id="+id, null));
+        sqLiteDatabase.close();
     }
 }

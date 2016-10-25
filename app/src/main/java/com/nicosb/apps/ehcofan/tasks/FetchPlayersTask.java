@@ -67,7 +67,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
             players.add(p);
         }
         c.close();
-
+        db.close();
         return players;
     }
 

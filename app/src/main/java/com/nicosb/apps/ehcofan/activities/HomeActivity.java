@@ -44,23 +44,22 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         FirebaseHandler.signIn(this);
 
-        try {
-            displayLastMatch();
-            displayNextMatch();
-            fetchLatestNews();
-            fetchStandingsTeam();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         drawerLayout = ToolbarHelper.loadToolbar(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchSchedule();
+        fetchLatestNews();
+        fetchStandingsTeam();
     }
 
     private void fetchStandingsTeam() {
         FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(this);
         fetchStandingsTask.setOnlyOffline(true);
         fetchStandingsTask.setOnTeamsFetchedListener(this);
-        fetchStandingsTask.execute("" );
+        fetchStandingsTask.execute(""  );
     }
 
     private void fetchLatestNews() {
@@ -228,5 +227,18 @@ public class HomeActivity extends AppCompatActivity
     public void startStandingsActivity(View view) {
         Intent standingsActivity = new Intent(this, StandingsActivity.class);
         startActivity(standingsActivity);
+    }
+
+
+    private void fetchSchedule() {
+        FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
+        fetchMatchesTask.setOnScheduleFetchedListener(this);
+        fetchMatchesTask.execute("" );
+    }
+
+    private void fetchTeams() {
+        FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(this);
+        fetchStandingsTask.setOnTeamsFetchedListener(this);
+        fetchStandingsTask.execute("NLB%2016/17" );
     }
 }

@@ -43,6 +43,9 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
         }
         try {
             String link = context.getString(R.string.rest_interface) + "articles?offset=" + mArticles.size();
+            if(isLimited){
+                link = link.concat("&limit=1");
+            }
             URL restAddress = new URL(link);
             HttpURLConnection urlConnection = (HttpURLConnection) restAddress.openConnection();
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -79,9 +82,6 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
 
                     Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), bitmap);
                     mArticles.add(a);
-                    if (isLimited) {
-                        return mArticles;
-                    }
                 } catch (FileNotFoundException fnfe) {
                     Article a = new Article(aw.getTitle(), aw.getText(), aw.getUrl(), aw.getDate(), BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder));
                     mArticles.add(a);
