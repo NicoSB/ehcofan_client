@@ -90,7 +90,6 @@ public class ToolbarHelper {
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
 
-            navigationView.setCheckedItem(getItemId(this.));
             Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
             SharedPreferences prefs = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
             notificationsSwitch.setChecked(prefs.getBoolean(FirebaseHandler.PREF_NOTIFICATIONS, false));
