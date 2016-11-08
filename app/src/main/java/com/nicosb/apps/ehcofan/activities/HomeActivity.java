@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class HomeActivity extends AppCompatActivity
         FetchMatchesTask.OnScheduleFetchedListener, FetchStandingsTask.OnTeamsFetchedListener {
     private String TAG = "HomeActivity";
     private DrawerLayout drawerLayout;
+    private MatchView mv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class HomeActivity extends AppCompatActivity
         fetchSchedule();
         fetchLatestNews();
         fetchStandingsTeam();
+        drawerLayout.closeDrawer(Gravity.LEFT, false);
     }
 
     private void fetchStandingsTeam() {
@@ -72,6 +75,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayLastMatch() throws ParseException {
         LinearLayout container = (LinearLayout) findViewById(R.id.container_last_match);
+        container.removeAllViews();
 
         container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +117,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayNextMatch() throws ParseException {
         LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
+        container.removeAllViews();
 
         container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +144,8 @@ public class HomeActivity extends AppCompatActivity
         if (c.getCount() > 0) {
             c.moveToFirst();
             Match nextMatch = Match.populateMatch(c);
-            MatchView mv = new MatchView(this, nextMatch, true);
+
+            mv = new MatchView(this, nextMatch, true);
             container.addView(mv);
             CardView cardView = (CardView) findViewById(R.id.card_next_match);
             cardView.setVisibility(View.VISIBLE);

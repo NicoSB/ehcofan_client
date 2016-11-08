@@ -22,6 +22,7 @@ import com.nicosb.apps.ehcofan.activities.StandingsActivity;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 
 public class ToolbarHelper {
+    static NavigationView navigationView;
 
     public static DrawerLayout loadToolbar(AppCompatActivity activity) {
         Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
@@ -32,7 +33,7 @@ public class ToolbarHelper {
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) activity.findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) activity.findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(drawerToggle);
         navigationView.setCheckedItem(getItemId(activity));
 
@@ -89,6 +90,7 @@ public class ToolbarHelper {
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
 
+            navigationView.setCheckedItem(getItemId(this.));
             Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
             SharedPreferences prefs = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
             notificationsSwitch.setChecked(prefs.getBoolean(FirebaseHandler.PREF_NOTIFICATIONS, false));
