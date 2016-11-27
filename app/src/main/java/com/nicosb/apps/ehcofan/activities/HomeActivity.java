@@ -1,8 +1,11 @@
 package com.nicosb.apps.ehcofan.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.FirebaseHandler;
@@ -35,7 +39,9 @@ public class HomeActivity extends AppCompatActivity
         FetchMatchesTask.OnScheduleFetchedListener, FetchStandingsTask.OnTeamsFetchedListener {
     private String TAG = "HomeActivity";
     private DrawerLayout drawerLayout;
-    private MatchView mv;
+    private Match mNextMatch;
+    private Match mLastMatch;
+    private Article mArticle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +58,16 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnected()){
+            fetchLatestNews();
+        }
+        else{
+            Toast.makeText(this, "Keine Verbindung zum Internet!", Toast.LENGTH_LONG).show();
+        }
         fetchSchedule();
-        fetchLatestNews();
         fetchStandingsTeam();
         drawerLayout.closeDrawer(Gravity.LEFT, false);
     }
@@ -65,7 +79,17 @@ public class HomeActivity extends AppCompatActivity
         fetchStandingsTask.execute(""  );
     }
 
+
+
     private void fetchLatestNews() {
+        LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
+        container.setVisibility(View.VISIBLE);
+
+        if(mArticle == null) {
+            LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
+            ll_loading.setVisibility(View.VISIBLE);
+        }
+
         FetchArticlesTask fetchArticlesTask = new FetchArticlesTask(this);
         fetchArticlesTask.setLimited(true);
         fetchArticlesTask.setPostExecuteListener(this);
@@ -75,15 +99,6 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayLastMatch() throws ParseException {
         LinearLayout container = (LinearLayout) findViewById(R.id.container_last_match);
-        container.removeAllViews();
-
-        container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent scheduleActivity = new Intent(view.getContext(), ScheduleActivity.class);
-                startActivity(scheduleActivity);
-            }
-        });
 
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
         String where = "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") < datetime('now') AND (" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM +
@@ -101,11 +116,8 @@ public class HomeActivity extends AppCompatActivity
         );
         if (c.getCount() > 0) {
             c.moveToFirst();
-            Match lastMatch = Match.populateMatch(c);
-            MatchView mv = new MatchView(this, lastMatch, true);
-            container.addView(mv);
-            CardView cardView = (CardView) findViewById(R.id.card_last_match);
-            cardView.setVisibility(View.VISIBLE);
+            mLastMatch = Match.populateMatch(c);
+            displayMatch(container, mLastMatch, R.id.card_last_match);
         } else {
             FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
             fetchMatchesTask.setOnScheduleFetchedListener(this);
@@ -116,17 +128,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void displayNextMatch() throws ParseException {
-        LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
-        container.removeAllViews();
-
-        container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent scheduleActivity = new Intent(view.getContext(), ScheduleActivity.class);
-                startActivity(scheduleActivity);
-            }
-        });
-
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
         String where = "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") > datetime('now') AND (" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM +
                 " = 'EHC Olten' OR " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM + " = 'EHC Olten')";
@@ -143,15 +144,31 @@ public class HomeActivity extends AppCompatActivity
         );
         if (c.getCount() > 0) {
             c.moveToFirst();
-            Match nextMatch = Match.populateMatch(c);
-
-            mv = new MatchView(this, nextMatch, true);
-            container.addView(mv);
-            CardView cardView = (CardView) findViewById(R.id.card_next_match);
-            cardView.setVisibility(View.VISIBLE);
+            mNextMatch = Match.populateMatch(c);
+            LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
+            displayMatch(container, mNextMatch, R.id.card_next_match);
         }
         db.close();
         c.close();
+    }
+
+    private void displayMatch(LinearLayout container, Match nextMatch, int card_next_match) {
+        container.removeAllViews();
+
+        if(!container.hasOnClickListeners()) {
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent scheduleActivity = new Intent(view.getContext(), ScheduleActivity.class);
+                    startActivity(scheduleActivity);
+                }
+            });
+        }
+
+        MatchView mv = new MatchView(this, nextMatch, true);
+        container.addView(mv);
+        CardView cardView = (CardView) findViewById(card_next_match);
+        cardView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -179,19 +196,27 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onPostExecute(ArrayList<Article> articles) {
         if (articles != null && articles.size() > 0) {
-            LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
-            final ArticleView av = new ArticleView(this, articles.get(0));
-            av.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openNewsActivity(view, av.getArticle());
-                }
-            });
-            container.addView(av);
-
-            CardView cardView = (CardView) findViewById(R.id.card_latest_news);
-            cardView.setVisibility(View.VISIBLE);
+            LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
+            ll_loading.setVisibility(View.GONE);
+            mArticle = articles.get(0);
+            displayArticle();
         }
+    }
+
+    private void displayArticle() {
+        final ArticleView av = new ArticleView(this, mArticle);
+        av.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNewsActivity(view, av.getArticle());
+            }
+        });
+
+        LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
+        container.addView(av);
+
+        CardView cardView = (CardView) findViewById(R.id.card_latest_news);
+        cardView.setVisibility(View.VISIBLE);
     }
 
     @Override

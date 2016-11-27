@@ -35,42 +35,44 @@ public class ToolbarHelper {
 
         navigationView = (NavigationView) activity.findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(drawerToggle);
-        navigationView.setCheckedItem(getItemId(activity));
+        // disabled due to not working correctly
+        // navigationView.setCheckedItem(getItemId(activity));
 
         return drawerLayout;
     }
 
     private static int getItemId(AppCompatActivity activity) {
+        int id = -1;
         if (activity instanceof RosterActivity) {
-            return R.id.roster;
+            id =  R.id.roster;
         }
         if (activity instanceof NewsActivity) {
-            return R.id.news;
+            id =  R.id.news;
         }
         if (activity instanceof ScheduleActivity) {
-            return R.id.schedule;
+            id =  R.id.schedule;
         }
         if (activity instanceof StandingsActivity) {
-            return R.id.standings;
+            id =  R.id.standings;
         }
         if (activity instanceof HomeActivity) {
-            return R.id.home;
+            id = R.id.home;
         }
-        return -1;
+        return id;
     }
 
     public static class DrawerToggle extends ActionBarDrawerToggle
             implements NavigationView.OnNavigationItemSelectedListener {
-        private Activity activity;
+        private AppCompatActivity activity;
 
         public DrawerToggle(Activity activity, DrawerLayout drawerLayout, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
             super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
-            this.activity = activity;
+            this.activity = (AppCompatActivity)activity;
         }
 
         public DrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
             super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
-            this.activity = activity;
+            this.activity = (AppCompatActivity)activity;
         }
 
 

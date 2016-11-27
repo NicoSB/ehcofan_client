@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
             try {
                 gc.setTime(sdf.parse(lastDumped));
                 int datediff = now.get(Calendar.DAY_OF_YEAR) - gc.get(Calendar.DAY_OF_YEAR);
-                if((networkInfo.getTypeName().equals("WIFI") && datediff >= 3 ) || datediff >= 14 || now.get(Calendar.YEAR) > gc.get(Calendar.YEAR)){
+                if(networkInfo != null && (networkInfo.getTypeName().equals("WIFI") && datediff >= 3 ) || datediff >= 14 || now.get(Calendar.YEAR) > gc.get(Calendar.YEAR)){
                     flushTables(prefs, sdf, now);
                 }
             } catch (ParseException e) {
