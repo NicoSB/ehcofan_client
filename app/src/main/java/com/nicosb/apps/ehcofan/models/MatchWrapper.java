@@ -23,11 +23,11 @@ public class MatchWrapper {
     private int h3;
     private int h_ot;
     private boolean active;
+    private String status;
 
     public Match toMatch() {
         int scores_home[] = {h1, h2, h3, h_ot};
         int scores_away[] = {a1, a2, a3, a_ot};
-        // TODO: parse date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS" );
         GregorianCalendar calendar = new GregorianCalendar();
         try {
@@ -35,7 +35,7 @@ public class MatchWrapper {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return new Match(id, home_team, away_team, competition, calendar, scores_home, scores_away);
+        return new Match(id, home_team, away_team, competition, calendar, scores_home, scores_away, status);
     }
 
     public String getUpdated_at() {

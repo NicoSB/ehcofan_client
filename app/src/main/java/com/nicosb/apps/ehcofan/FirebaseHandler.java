@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +24,7 @@ public class FirebaseHandler {
     public static FirebaseAuth mAuth;
     public static FirebaseAuth.AuthStateListener mAuthListener;
 
-    public static void signIn(Activity activity) {
+    public static void signIn(final Activity activity) {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getBoolean(PREF_NOTIFICATIONS, false)) {
@@ -43,7 +44,7 @@ public class FirebaseHandler {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseMessaging.getInstance().subscribeToTopic("news" );
+                                FirebaseMessaging.getInstance().subscribeToTopic("testgoals" );
                             }
                         }
                     });
@@ -52,7 +53,7 @@ public class FirebaseHandler {
     }
 
     private static void signOut() {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("news" );
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("testgoals" );
     }
 
     static void sign(Activity activity, boolean signIn) {

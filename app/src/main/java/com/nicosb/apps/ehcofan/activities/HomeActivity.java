@@ -39,9 +39,7 @@ public class HomeActivity extends AppCompatActivity
         FetchMatchesTask.OnScheduleFetchedListener, FetchStandingsTask.OnTeamsFetchedListener {
     private String TAG = "HomeActivity";
     private DrawerLayout drawerLayout;
-    private Match mNextMatch;
-    private Match mLastMatch;
-    private Article mArticle;
+    private boolean showPB = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +83,12 @@ public class HomeActivity extends AppCompatActivity
         LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
         container.setVisibility(View.VISIBLE);
 
-        if(mArticle == null) {
+        if(showPB) {
             LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
             ll_loading.setVisibility(View.VISIBLE);
         }
+
+        showPB = false;
 
         FetchArticlesTask fetchArticlesTask = new FetchArticlesTask(this);
         fetchArticlesTask.setLimited(true);
@@ -116,8 +116,8 @@ public class HomeActivity extends AppCompatActivity
         );
         if (c.getCount() > 0) {
             c.moveToFirst();
-            mLastMatch = Match.populateMatch(c);
-            displayMatch(container, mLastMatch, R.id.card_last_match);
+            Match match = Match.populateMatch(c);
+            displayMatch(container, match, R.id.card_last_match);
         } else {
             FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
             fetchMatchesTask.setOnScheduleFetchedListener(this);
@@ -144,9 +144,9 @@ public class HomeActivity extends AppCompatActivity
         );
         if (c.getCount() > 0) {
             c.moveToFirst();
-            mNextMatch = Match.populateMatch(c);
+            Match match = Match.populateMatch(c);
             LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
-            displayMatch(container, mNextMatch, R.id.card_next_match);
+            displayMatch(container, match, R.id.card_next_match);
         }
         db.close();
         c.close();
@@ -198,13 +198,16 @@ public class HomeActivity extends AppCompatActivity
         if (articles != null && articles.size() > 0) {
             LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
             ll_loading.setVisibility(View.GONE);
-            mArticle = articles.get(0);
-            displayArticle();
+            Article a = articles.get(0);
+            displayArticle(a);
         }
     }
 
-    private void displayArticle() {
-        final ArticleView av = new ArticleView(this, mArticle);
+
+
+    private void displayArticle(Article a) {
+        final ArticleView av = new ArticleView(this, a);
+
         av.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

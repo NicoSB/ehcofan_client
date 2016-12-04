@@ -53,6 +53,9 @@ public class MatchView extends RelativeLayout {
         if (showCompetition) {
             dt_text = dt_text + " - " + match.getCompetition();
         }
+        if (match.getStatus() != null && match.getStatus().length() > 4){
+            dt_text = dt_text + " live!";
+        }
         txt_datetime.setText(dt_text);
 
         if (match.getHome_team().equals("EHC Olten" )) {

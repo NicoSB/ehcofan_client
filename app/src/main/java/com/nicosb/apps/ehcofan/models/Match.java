@@ -17,11 +17,12 @@ public class Match {
     private String home_team;
     private String away_team;
     private String competition;
+    private String status;
     private Calendar datetime;
     private int scores_home[];
     private int scores_away[];
 
-    public Match(int id, String home_team, String away_team, String competition, Calendar datetime, int[] scores_home, int[] scores_away) {
+    public Match(int id, String home_team, String away_team, String competition, Calendar datetime, int[] scores_home, int[] scores_away, String status) {
         this.id = id;
         this.home_team = home_team;
         this.away_team = away_team;
@@ -29,6 +30,7 @@ public class Match {
         this.datetime = datetime;
         this.scores_home = scores_home;
         this.scores_away = scores_away;
+        this.status = status;
     }
 
     public static Match populateMatch(Cursor c) throws ParseException {
@@ -44,7 +46,8 @@ public class Match {
                 c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION)),
                 datetime,
                 scores_home,
-                scores_away
+                scores_away,
+                c.getString(c.getColumnIndex(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS))
         );
     }
 
@@ -104,8 +107,13 @@ public class Match {
         contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME, dt_text);
         contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_HOME, CacheDBHelper.encodeScores(scores_home));
         contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_SCORES_AWAY, CacheDBHelper.encodeScores(scores_away));
+        contentValues.put(CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS, status);
 
         return contentValues;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public enum Team {

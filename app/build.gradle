@@ -15,8 +15,8 @@ android {
         applicationId "com.nicosb.apps.ehcofan"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 2
-        versionName "0.2"
+        versionCode 4
+        versionName "0.31"
     }
     buildTypes {
         release {

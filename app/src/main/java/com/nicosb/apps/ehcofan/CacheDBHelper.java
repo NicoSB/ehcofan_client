@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
  * Created by Nico on 28.07.2016.
  */
 public class CacheDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 12;
     public static final String DATABASE_NAME = "EHCOFan.db";
 
 
@@ -93,6 +93,7 @@ public class CacheDBHelper extends SQLiteOpenHelper {
         public static final String MATCHES_COLUMN_NAME_DATETIME = "match_datetime";
         public static final String MATCHES_COLUMN_NAME_SCORES_HOME = "scores_away";
         public static final String MATCHES_COLUMN_NAME_SCORES_AWAY = "scores_home";
+        public static final String MATCHES_COLUMN_NAME_STATUS = "status";
 
         // Table standingsteams
         public static final String STANDINGSTEAMS_TABLE_NAME = "standingsteams";
@@ -141,7 +142,8 @@ public class CacheDBHelper extends SQLiteOpenHelper {
                         MATCHES_COLUMN_NAME_COMPETITION + TEXT_TYPE + COMMA_SEP +
                         MATCHES_COLUMN_NAME_DATETIME + TEXT_TYPE + COMMA_SEP +
                         MATCHES_COLUMN_NAME_SCORES_HOME + TEXT_TYPE + COMMA_SEP +
-                        MATCHES_COLUMN_NAME_SCORES_AWAY + TEXT_TYPE +
+                        MATCHES_COLUMN_NAME_SCORES_AWAY + TEXT_TYPE + COMMA_SEP +
+                        MATCHES_COLUMN_NAME_STATUS + TEXT_TYPE +
                         " )";
 
         // Create table standingsteams
@@ -173,6 +175,5 @@ public class CacheDBHelper extends SQLiteOpenHelper {
                 "DELETE FROM " + PLAYERS_TABLE_NAME;
         private static final String MATCHES_SQL_TRUNCATE_TABLE =
                 "DELETE FROM " + MATCHES_TABLE_NAME;
-
     }
 }
