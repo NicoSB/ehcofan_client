@@ -2,6 +2,8 @@ package com.nicosb.apps.ehcofan.views;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +38,9 @@ public class MatchView extends RelativeLayout {
         TextView txt_h_total = (TextView) findViewById(R.id.txt_h_total);
         TextView txt_a_total = (TextView) findViewById(R.id.txt_a_total);
         TextView txt_datetime = (TextView) findViewById(R.id.txt_date);
+        TextView txt_status = (TextView) findViewById(R.id.txt_status);
+        TextView txt_live = (TextView) findViewById(R.id.txt_live);
+
 
         txt_home.setText(match.getHome_team());
         txt_away.setText(match.getAway_team());
@@ -54,7 +59,17 @@ public class MatchView extends RelativeLayout {
             dt_text = dt_text + " - " + match.getCompetition();
         }
         if (match.getStatus() != null && match.getStatus().length() > 4){
-            dt_text = dt_text + " live!";
+            txt_datetime.setVisibility(GONE);
+            txt_status.setText(match.getStatus());
+            txt_status.setVisibility(VISIBLE);
+            txt_live.setVisibility(VISIBLE);
+
+            Animation anim = new AlphaAnimation(0.2f, 1.0f);
+            anim.setDuration(2500); //You can manage the time of the blink with this parameter
+            anim.setStartOffset(20);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setRepeatCount(Animation.INFINITE);
+            txt_live.startAnimation(anim);
         }
         txt_datetime.setText(dt_text);
 

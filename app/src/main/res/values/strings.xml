@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">grüen-wiiss</string>
     <!--<string name="rest_interface">https://ehcofan.herokuapp.com/</string>-->
-    <string name="rest_interface">http://10.0.2.2:3000/</string>
+    <!--<string name="rest_interface">http://10.0.2.2:3000/</string>-->
+    <string name="rest_interface">http://192.168.0.108:3000/</string>
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
     <string name="text_placeholder">LOREMIPSUMDOLORET</string>
@@ -47,42 +48,10 @@
     <string name="article_to_homepage">Zur Homepage</string>
     <string name="title_activity_cup">EHCO Cup</string>
     <string name="team_name_placeholder">EHC Olten</string>
-    <string name="team_league_placeholder">NLB • Schweiz</string>
-    <string name="title_activity_team">Teamübersicht</string>
-    <string name="placement_15_16">Saison 2015/16</string>
-    <string name="team_founded">gegründet</string>
-    <string name="team_titles">Meistertitel</string>
     <string name="placeholder_team_topscorer">Curtis Gedig</string>
     <string name="placeholder_team_saison">Platz 2, Playoff-Halbfinale</string>
     <string name="last_match">Letztes Spiel</string>
     <string name="next_match">Nächstes Spiel</string>
-    <string name="text_ehco"><![CDATA[Der EHC Olten ist Gastgeber und bezieht eine klare Aussenseiterrolle. Die Power-Mäuse stellen das einzige Team, welches nicht in der obersten Liga seines Landes spielt. Dennoch darf man den EHC nicht abschreiben, bereits in der letztjährigen Ausgabe eliminierten sie mit den Panthern aus Augsburg eine DEL-Mannschaft. <br>
-Die Lücke auf der Trainerbank, die nach der Entlassung von Heikki Leime während dem Playoff-Halbfinale entstanden ist, konnte gefüllt werden. Erstmals kann sich Maurizio Mansi in einer Wettkampfumgebung als Headcoach behaupten. <br>Ebenfalls gespannt darf man auf den Auftritt des neuen Ausländers Curtis Gedig sein. Der Verteidiger stösst aus der norwegischen Liga zum EHCO, in der er mit 52 Punkten in 43 Spielen zu den Topscorern der Liga gehörte.<br>
-<b>Wichtige Neuzugänge:</b> Maurizio Mansi (Trainer), Chris Bartolone (Assistenztrainer), Dominic Nyffeler, Marc Grieder, Anthony Rouiller, Curtis Gedig, Stefan Mäder<br>
-<b>Wichtige Abgänge:</b> Shayne Wiebe, Kevin Huber, Sami El Assaoui, Fabian Ganz, Martin Wüthrich]]></string>
-    <string name="text_gs"><![CDATA[Als zweifacher Gewinner des Spengler Cups und Halbfinalist der letzten NLA-Saison, gehört die Genfer Equipe zu den Favoriten des Turniers. Mit den Zuzügen der beiden NHL-Spieler Mike Santorelli und Nick Spaling hat Dirigent MacSorley seine Mannschaft noch einmal verstärkt. Man darf also gespannt sein, ob auch im Kleinholz ein bisschen NHL-Wind wehen wird. <br>
-Neben den beiden Kanadiern komplettieren Jim Slater aus den USA und Johan Fransson aus Schweden das Ausländer-Quartett. <br>
-Die namhaften Verstärkungen kommen nicht ungewiss, die Genfer müssen nämlich den Abgang ihres letztjährigen Topskorers, Matt D\'Agostini, verkraften. <br><br>
-<b>Wichtige Neuzugänge:</b> Nick Spaling, Mike Santorelli
-<b>Wichtige Abgänge:</b> Matt D\'Agostini, Goran Bezina, Tom Pyatt, Matthew Lombardi]]></string>
-    <string name="text_scl"><![CDATA[Den SC Langnau kennt man im Kleinholz nur zu gut. 2015 standen zwischen dem EHC Olten und dem Meistertitel nur noch die Tiger aus dem Berner Oberland. In der Folge stieg der SCL in die NLA auf. <br>
-Zuletzt schaffte es der SCL, den Klassenerhalt in den Playout-Finals gegen den EHC Biel zu sichern. Damit dies auch in dieser Saison gelingt, verpflichteten die Berner zwei Spieler aus der AHL, deren Teams der Umstrukturierung der Liga zum Opfer fielen. <br><br>
-<b>Wichtige Neuzugänge:</b> Rob Schremp, Brendan Shinnimin <br>
-<b>Wichtige Abgänge:</b> Kevin Clark, Kyle Wilson, Kevin Hecqfeuille, Sandro Moggi]]></string>
-    <string name="text_ir"><![CDATA[Die Roosters aus dem Nordrhein-Westfälischen Iserlohn haben eine durchzogene Saison hinter sich: Zwar beendeten sie die Qualifikation auf dem starken dritten Platz, jedoch war bereits im Viertelfinale der Playoffs Endstation. Diese Barriere konnten die Sauerländer seit dem Aufstieg in die Oberklasse im Jahre 2000 nie überwinden. <br>
-Die Mannschaft ist gespickt mit kanadischer Power: So haben nicht weniger als 11 Spieler ihre Wurzeln im Mutterland des Eishockeys. <br><br>
-<b>Wichtige Neuzugänge:</b> Greg Rallo, Troy Milam, Ashton Rome<br>
-<b>Wichtige Abgänge:</b> Mike York, Nick Petersen, Brooks Macek]]></string>
-    <string name="text_kp"><![CDATA[Krefeld lief die vergangene Saison sicherlich nicht wie geplant. Bereits nach der Qualifikation, und dem enttäuschenden 13. und damit vorletzten Platz war Schluss für die Pinguine. Dennoch darf man die Pinguine nicht unterschätzen, schliesslich nehmen Westfalen als Gründungsmitglied an der Champions Hockey League teil. <br>
-In der Zwischensaison trennte sich der Verein von nicht weniger als neun Spielern, unter anderem Henrik Eriksson, dem neuen HCC-Ausländer. Im Gegenzug konnten acht Neuzugänge verpflichtet werden, ein Grossteil davon spielte bereits letzte Saison in Deutschland. Brisant: Zwei der neuen Spieler stiessen vom Startgegner, den Grizzlys aus Wolfsburg, nach Krefeld.<br><br>
-<b>Wichtige Neuzugänge:</b> Dragan Umicevic, Mike Little, Mark Mancari<br>
-<b>Wichtige Abgänge:</b> Henrik Eriksson, David Fischer, Tomas Duba]]></string>
-    <string name="text_gw"><![CDATA[Die Grizzlys Wolfsburg gehören wohl zu den Topanwärtern auf die Trophäe: Vom vierten Platz in der Qualifikation arbeiteten sich die Bärne bis ins Finale der DEL vor. Einzig Red Bull München mussten sich die Wolfsburger geschlagen geben. Somit sind die Grizzlys das einzige Team am EHCO Cup, welches sich für die Champions Hockey League qualifizieren konnte. <br>
-Das Erfolgsrezept der Wolfsburger besteht aus einer guten Mischung von Nord-Amerikanischer Power und einheimischen Spielern. <br>
-Gegenüber der letzten Saison hat sich im Kader der Grizzlys nicht viel verändert. Erwähnenswert: Es kommt zur Rückkehr des letztjährigen GCK/ZSC-Spielers Kris Foucault in die Schweiz.<br><br>
-<b>Wichtige Neuzugänge:</b> Kris Foucault, Jeremy Dehner<br>
-<b>Wichtige Abgänge:</b> Tim Hambly, Marco Rosa]]></string>
-    <string name="topscorer_15_16">Topscorer 15/16</string>
     <string name="desc_news_picture">News Picture</string>
     <string name="placeholder_title">TITLE</string>
     <string name="placeholder_date">20. Aug</string>
@@ -93,4 +62,6 @@ Gegenüber der letzten Saison hat sich im Kader der Grizzlys nicht viel verände
     <string name="team_nlb">NLB 2016/17</string>
     <string name="gaa">GAA</string>
     <string name="svs">SVS</string>
+    <string name="live_placehoder">1. Drittel</string>
+    <string name="live">live</string>
 </resources>

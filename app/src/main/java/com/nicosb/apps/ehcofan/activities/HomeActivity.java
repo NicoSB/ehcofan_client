@@ -101,8 +101,7 @@ public class HomeActivity extends AppCompatActivity
         LinearLayout container = (LinearLayout) findViewById(R.id.container_last_match);
 
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
-        String where = "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") < datetime('now') AND (" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM +
-                " = 'EHC Olten' OR " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM + " = 'EHC Olten')";
+        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " LIKE '%Ende%'";
 
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
@@ -129,9 +128,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayNextMatch() throws ParseException {
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
-        String where = "datetime(" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + ") > datetime('now') AND (" + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_HOME_TEAM +
-                " = 'EHC Olten' OR " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_AWAY_TEAM + " = 'EHC Olten')";
-
+        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " != 'Ende'";
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
@@ -145,6 +142,9 @@ public class HomeActivity extends AppCompatActivity
         if (c.getCount() > 0) {
             c.moveToFirst();
             Match match = Match.populateMatch(c);
+            if(!match.getStatus().equals("Ende") && !match.getStatus().equals("_")){
+
+            }
             LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
             displayMatch(container, match, R.id.card_next_match);
         }
