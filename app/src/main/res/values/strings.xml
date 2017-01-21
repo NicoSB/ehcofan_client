@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">grüen-wiiss</string>
-    <!--<string name="rest_interface">https://ehcofan.herokuapp.com/</string>-->
+    <string name="rest_interface">https://ehcofan.herokuapp.com/</string>
     <!--<string name="rest_interface">http://10.0.2.2:3000/</string>-->
-    <string name="rest_interface">http://192.168.0.108:3000/</string>
+    <!--<string name="rest_interface">http://192.168.0.108:3000/</string>-->
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
     <string name="text_placeholder">LOREMIPSUMDOLORET</string>
@@ -64,4 +64,6 @@
     <string name="svs">SVS</string>
     <string name="live_placehoder">1. Drittel</string>
     <string name="live">live</string>
+    <string name="playoff_viertelfinale">Playoff Viertelfinale</string>
+    <string name="date_placeholder">19.\n03.</string>
 </resources>

@@ -2,11 +2,13 @@ package com.nicosb.apps.ehcofan.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -24,12 +26,15 @@ import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
 import com.nicosb.apps.ehcofan.models.Article;
 import com.nicosb.apps.ehcofan.models.Match;
+import com.nicosb.apps.ehcofan.models.POMatchup;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
+import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.MatchView;
+import com.nicosb.apps.ehcofan.views.PlayoffView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -40,6 +45,9 @@ public class HomeActivity extends AppCompatActivity
     private String TAG = "HomeActivity";
     private DrawerLayout drawerLayout;
     private boolean showPB = true;
+    private boolean isPlayoff = false;
+    public static final String PREF_IS_PO = "po";
+    private PlayoffView view_po;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,31 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FirebaseHandler.signIn(this);
+        SharedPreferences sp = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+        isPlayoff = sp.getBoolean(PREF_IS_PO, false);
+        if(isPlayoff){
+            CardView cv_PO = (CardView)findViewById(R.id.card_playoffs);
+            cv_PO.setVisibility(View.VISIBLE);
+
+            LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
+
+            int[] ids = {1,2,3,4,46,47,48};
+            POMatchup po = new POMatchup("Playoff Viertelfinale", "EHC Olten", "TBA", ids, this);
+
+            view_po = new PlayoffView(this, po);
+            container_playoff.addView(view_po);
+            isPlayoff = true;
+        }
+        else
+        {
+            CardView cv_lastMatch = (CardView)findViewById(R.id.card_last_match);
+            CardView cv_nextMatch = (CardView)findViewById(R.id.card_next_match);
+            CardView nlb = (CardView)findViewById(R.id.card_nlb);
+
+            cv_lastMatch.setVisibility(View.VISIBLE);
+            cv_nextMatch.setVisibility(View.VISIBLE);
+            nlb.setVisibility(View.VISIBLE);
+        }
 
         drawerLayout = ToolbarHelper.loadToolbar(this);
     }
@@ -66,8 +99,17 @@ public class HomeActivity extends AppCompatActivity
             Toast.makeText(this, "Keine Verbindung zum Internet!", Toast.LENGTH_LONG).show();
         }
         fetchSchedule();
-        fetchStandingsTeam();
-        drawerLayout.closeDrawer(Gravity.LEFT, false);
+        if(isPlayoff) {
+            fetchPlayoffs();
+        }
+        else {
+            fetchStandingsTeam();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START, false);
+    }
+
+    private void fetchPlayoffs() {
+
     }
 
     private void fetchStandingsTeam() {
@@ -128,7 +170,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayNextMatch() throws ParseException {
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
-        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " != 'Ende'";
+        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " IS NULL";
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
@@ -142,9 +184,6 @@ public class HomeActivity extends AppCompatActivity
         if (c.getCount() > 0) {
             c.moveToFirst();
             Match match = Match.populateMatch(c);
-            if(!match.getStatus().equals("Ende") && !match.getStatus().equals("_")){
-
-            }
             LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
             displayMatch(container, match, R.id.card_next_match);
         }
@@ -152,7 +191,7 @@ public class HomeActivity extends AppCompatActivity
         c.close();
     }
 
-    private void displayMatch(LinearLayout container, Match nextMatch, int card_next_match) {
+    private void displayMatch(LinearLayout container, Match match, int matchCard) {
         container.removeAllViews();
 
         if(!container.hasOnClickListeners()) {
@@ -165,10 +204,8 @@ public class HomeActivity extends AppCompatActivity
             });
         }
 
-        MatchView mv = new MatchView(this, nextMatch, true);
+        MatchView mv = new MatchView(this, match, true);
         container.addView(mv);
-        CardView cardView = (CardView) findViewById(card_next_match);
-        cardView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -274,5 +311,9 @@ public class HomeActivity extends AppCompatActivity
         FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(this);
         fetchStandingsTask.setOnTeamsFetchedListener(this);
         fetchStandingsTask.execute("NLB%2016/17" );
+    }
+
+    public void switchGame(View view){
+        view_po.changeGame(view);
     }
 }

@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mProgress;
     private int mProgressStatus = 0;
     private final String PREF_DB_DUMP = "db_dump";
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,9 +46,9 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
-        SharedPreferences prefs;
         prefs = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+
+        mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
         String lastDumped = prefs.getString(PREF_DB_DUMP, "" );
         Calendar now = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity
             fetchTeams();
             fetchSchedule();
             fetchPlayers();
+            fetchIsPO();
         } else {
             Toast.makeText(this, "Keine Verbindung zum Internet", Toast.LENGTH_SHORT).show();
             updateProgressStatus(100);
@@ -107,6 +109,13 @@ public class MainActivity extends AppCompatActivity
         FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(this);
         fetchStandingsTask.setOnTeamsFetchedListener(this);
         fetchStandingsTask.execute("NLB%2016/17" );
+    }
+
+    private void fetchIsPO(){
+        // TODO implement
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(HomeActivity.PREF_IS_PO, true);
+        editor.apply();
     }
 
     @Override
