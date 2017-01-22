@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -21,6 +23,7 @@ import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
+import com.nicosb.apps.ehcofan.tasks.IsPlayoffLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +36,7 @@ import java.util.GregorianCalendar;
  * Created by Nico on 17.09.2016.
  */
 public class MainActivity extends AppCompatActivity
-        implements FetchStandingsTask.OnTeamsFetchedListener, FetchMatchesTask.OnScheduleFetchedListener, FetchPlayersTask.OnPlayersFetchedListener {
+        implements FetchStandingsTask.OnTeamsFetchedListener, FetchMatchesTask.OnScheduleFetchedListener, FetchPlayersTask.OnPlayersFetchedListener{
 
     private ProgressBar mProgress;
     private int mProgressStatus = 0;
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity
             fetchTeams();
             fetchSchedule();
             fetchPlayers();
-            fetchIsPO();
+            fetchIsPO(savedInstanceState);
         } else {
             Toast.makeText(this, "Keine Verbindung zum Internet", Toast.LENGTH_SHORT).show();
             updateProgressStatus(100);
@@ -111,26 +114,38 @@ public class MainActivity extends AppCompatActivity
         fetchStandingsTask.execute("NLB%2016/17" );
     }
 
-    private void fetchIsPO(){
-        // TODO implement
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(HomeActivity.PREF_IS_PO, true);
-        editor.apply();
+    private void fetchIsPO(Bundle bundle){
+        getSupportLoaderManager().initLoader(1, bundle, new LoaderManager.LoaderCallbacks<Void>() {
+            @Override
+            public Loader<Void> onCreateLoader(int id, Bundle args) {
+                return new IsPlayoffLoader(MainActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Void> loader, Void data) {
+                updateProgressStatus(25);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Void> loader) {
+
+            }
+        }).forceLoad();
     }
 
     @Override
     public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
-        updateProgressStatus(33);
+        updateProgressStatus(25);
     }
 
     @Override
     public void onScheduleFetched(ArrayList<Match> matches) {
-        updateProgressStatus(34);
+        updateProgressStatus(25);
     }
 
     @Override
     public void onPlayersFetched(ArrayList<Player> players) {
-        updateProgressStatus(33);
+        updateProgressStatus(25);
     }
 
     private void updateProgressStatus(int step) {

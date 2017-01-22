@@ -54,8 +54,7 @@
                     card_view:cardCornerRadius="1dp"
                     card_view:cardElevation="2sp"
                     card_view:cardUseCompatPadding="true"
-                    android:minHeight="120dp"
-                    android:visibility="gone">
+                    android:minHeight="120dp">
                     <LinearLayout
                         android:id="@+id/container_latest_news"
                         android:layout_width="match_parent"

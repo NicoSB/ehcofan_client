@@ -125,9 +125,8 @@ public class PlayoffView extends RelativeLayout {
             else if(((home && score_a > score_h) || (!home && score_a < score_h))){
                 pb_a.setProgress(pb_a.getProgress() + 25);
             }
-            else{
-                if(nextGame == 6)  nextGame = i-1;
-            }
+
+            if(!m.getStatus().equals("Ende") && nextGame == 6) nextGame = i;
             i++;
         }
     }
@@ -137,7 +136,7 @@ public class PlayoffView extends RelativeLayout {
 
         for(int i=0; i<3&& col == -1 ; i++){
             for(int j=0; j<7;j++){
-                if(colIds[i][j]==view.getId()){
+                if(colIds[i][j] == view.getId()){
                     col = j;
                     break;
                 }

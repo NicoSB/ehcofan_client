@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity
 
             LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
 
-            int[] ids = {1,2,3,4,46,47,48};
+            int[] ids = {1,2,3,40,46,47,48};
             POMatchup po = new POMatchup("Playoff Viertelfinale", "EHC Olten", "TBA", ids, this);
 
             view_po = new PlayoffView(this, po);

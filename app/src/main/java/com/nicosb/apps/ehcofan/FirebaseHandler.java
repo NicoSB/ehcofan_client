@@ -44,18 +44,22 @@ public class FirebaseHandler {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseMessaging.getInstance().subscribeToTopic("testnews" );
+                                FirebaseMessaging.getInstance().subscribeToTopic("news2" );
+                                // TODO remove before push
+                                FirebaseMessaging.getInstance().subscribeToTopic("news" );
+                                FirebaseMessaging.getInstance().subscribeToTopic("testgoals" );
                             }
                         }
                     });
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("testgoals" );
 
     }
 
     private static void signOut() {
-        //FirebaseMessaging.getInstance().unsubscribeFromTopic("testgoals" );
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("testnews" );
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("testgoals" );
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("news2" );
+        // TODO REMOVE BEFORE PUSH
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("news" );
     }
 
     static void sign(Activity activity, boolean signIn) {
