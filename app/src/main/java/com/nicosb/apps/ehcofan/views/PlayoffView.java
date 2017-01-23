@@ -62,27 +62,7 @@ public class PlayoffView extends RelativeLayout {
         this(context);
         this.matchup = matchup;
 
-        TextView txt_title = (TextView)findViewById(R.id.po_title);
-        txt_title.setText(matchup.getTitle());
-
-        TextView txt_team1 = (TextView)findViewById(R.id.po_team1);
-        txt_team1.setText(matchup.getTeam1());
-
-        TextView txt_team2 = (TextView)findViewById(R.id.po_team2);
-        txt_team2.setText(matchup.getTeam2());
-
-        if(matchup.getTeam1().equals("EHC Olten")){
-            txt_team1.setTextColor(getResources().getColor(R.color.mainGreen));
-            txt_team1.setTypeface(null, Typeface.BOLD);
-        }
-        if(matchup.getTeam2().equals("EHC Olten")){
-            txt_team2.setTextColor(getResources().getColor(R.color.mainGreen));
-            txt_team2.setTypeface(null, Typeface.BOLD);
-        }
-
-        extractDates();
-        extractScores();
-        changeGame(findViewById(dateIds[nextGame]));
+        refresh();
     }
 
     private void extractDates() {
@@ -92,6 +72,9 @@ public class PlayoffView extends RelativeLayout {
             if(m != null && m.getDatetime() != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.\nMMM");
                 tv.setText(sdf.format(m.getDatetime().getTime()));
+                if(m.getStatus().length() > 4){
+                    tv.setTypeface(Typeface.DEFAULT_BOLD);
+                }
             }
             else{
                 tv.setText("tba");
@@ -109,7 +92,7 @@ public class PlayoffView extends RelativeLayout {
         for(Match m: matchup.getMatches()) {
             TextView tv = (TextView) findViewById(colIds[1][i]);
             TextView tv2 = (TextView) findViewById(colIds[2][i]);
-            if(m != null) {
+            if(m != null && m.getStatus().equals("Ende")) {
                 boolean home = false;
                 int score_h = m.getScores_home()[0] + m.getScores_home()[1] + m.getScores_home()[2] + m.getScores_home()[3];
                 int score_a = m.getScores_away()[0] + m.getScores_away()[1] + m.getScores_away()[2] + m.getScores_away()[3];
@@ -121,20 +104,17 @@ public class PlayoffView extends RelativeLayout {
                     tv2.setText(String.valueOf(score_h));
                     tv.setText(String.valueOf(score_a));
                 }
-
                 if ((home && score_h > score_a) || (!home && score_h < score_a)) {
                     pb_h.setProgress(pb_h.getProgress() + 25);
                 } else if (((home && score_a > score_h) || (!home && score_a < score_h))) {
                     pb_a.setProgress(pb_a.getProgress() + 25);
-                }
-                else if(m.getStatus().length() < 4){
+                } else if (m.getStatus().length() < 4) {
                     tv.setText("-");
                     tv2.setText("-");
                 }
-                if (!m.getStatus().equals("Ende") && nextGame == 6) nextGame = i;
             }
             else{
-                if(nextGame==6) nextGame = i;
+                if(nextGame == 6 && i > 0) nextGame = i-1;
                 tv.setText("-");
                 tv2.setText("-");
             }
@@ -173,5 +153,32 @@ public class PlayoffView extends RelativeLayout {
         if (matchup.getMatch(highlightedCol) != null){
             ll.addView(new MatchView(getContext(), matchup.getMatch(highlightedCol), true));
         }
+    }
+
+    public void refresh(){
+        matchup.getMatches();
+
+        TextView txt_title = (TextView)findViewById(R.id.po_title);
+        txt_title.setText(matchup.getTitle());
+
+        TextView txt_team1 = (TextView)findViewById(R.id.po_team1);
+        txt_team1.setText(matchup.getTeam1());
+
+        TextView txt_team2 = (TextView)findViewById(R.id.po_team2);
+        txt_team2.setText(matchup.getTeam2());
+
+        if(matchup.getTeam1().equals("EHC Olten")){
+            txt_team1.setTextColor(getResources().getColor(R.color.mainGreen));
+            txt_team1.setTypeface(null, Typeface.BOLD);
+        }
+        if(matchup.getTeam2().equals("EHC Olten")){
+            txt_team2.setTextColor(getResources().getColor(R.color.mainGreen));
+            txt_team2.setTypeface(null, Typeface.BOLD);
+        }
+
+        extractDates();
+        extractScores();
+        changeGame(findViewById(dateIds[nextGame]));
+
     }
 }

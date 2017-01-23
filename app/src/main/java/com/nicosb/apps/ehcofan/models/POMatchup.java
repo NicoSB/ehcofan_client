@@ -14,37 +14,18 @@ import java.text.ParseException;
 public class POMatchup {
     private Match[] matches = new Match[7];
     private int[][] scores = new int[7][2];
+    private int[] matchIds;
+    private Context context;
     private String team1;
     private String team2;
     private String title;
 
-    public POMatchup(String title, String team1, String team2, int[] matchIds, Context context){
-        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
-
+    POMatchup(String title, String team1, String team2, int[] matchIds, Context context){
         this.title = title;
         this.team1 = team1;
         this.team2 = team2;
-
-        String query =  "SELECT * FROM " + CacheDBHelper.TableColumns.MATCHES_TABLE_NAME + " WHERE " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID + " IN (";
-        for(int id: matchIds){
-            query = query + id + ",";
-        }
-        query = query.substring(0,query.length() - 1);
-        query = query + ") ORDER by " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + " ASC";
-
-        Cursor c = db.rawQuery(query, null);
-
-        int i = 0;
-        while (c.moveToNext()) {
-            try {
-                Match m = Match.populateMatch(c);
-                matches[i++] = m;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        c.close();
-        db.close();
+        this.matchIds = matchIds;
+        this.context = context;
     }
 
     public Match getMatch(int id){
@@ -69,6 +50,32 @@ public class POMatchup {
     }
 
     public Match[] getMatches() {
+        fillMatches();
         return matches;
+    }
+
+    private void fillMatches(){
+        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
+
+        String query =  "SELECT * FROM " + CacheDBHelper.TableColumns.MATCHES_TABLE_NAME + " WHERE " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID + " IN (";
+        for(int id: matchIds){
+            query = query + id + ",";
+        }
+        query = query.substring(0,query.length() - 1);
+        query = query + ") ORDER by " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_DATETIME + " ASC";
+
+        Cursor c = db.rawQuery(query, null);
+
+        int i = 0;
+        while (c.moveToNext()) {
+            try {
+                Match m = Match.populateMatch(c);
+                matches[i++] = m;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        c.close();
+        db.close();
     }
 }

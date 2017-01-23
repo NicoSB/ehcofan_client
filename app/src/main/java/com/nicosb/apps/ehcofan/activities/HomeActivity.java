@@ -53,11 +53,13 @@ public class HomeActivity extends AppCompatActivity
     private boolean isPlayoff = false;
     public static final String PREF_IS_PO = "po";
     private PlayoffView view_po;
+    private Bundle mBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mBundle = savedInstanceState;
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,7 +119,6 @@ public class HomeActivity extends AppCompatActivity
 
                 view_po = new PlayoffView(HomeActivity.this, data.toMatchup(HomeActivity.this));
                 container_playoff.addView(view_po);
-                isPlayoff = true;
             }
 
             @Override
@@ -280,6 +281,7 @@ public class HomeActivity extends AppCompatActivity
             if (matches.size() > 0) {
                 displayNextMatch();
                 displayLastMatch();
+                view_po.refresh();
             }
         } catch (ParseException e) {
             e.printStackTrace();
