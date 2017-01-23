@@ -56,8 +56,6 @@ public class PlayoffView extends RelativeLayout {
         colIds[0][6] = R.id.po_date_7;
         colIds[1][6] = R.id.po_h_7;
         colIds[2][6] = R.id.po_a_7;
-
-
     }
 
     public PlayoffView(Context context, POMatchup matchup) {
@@ -90,9 +88,14 @@ public class PlayoffView extends RelativeLayout {
     private void extractDates() {
         int i = 0;
         for(Match m: matchup.getMatches()){
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.\nMMM");
-            TextView tv = (TextView)findViewById(dateIds[i++]);
-            tv.setText(sdf.format(m.getDatetime().getTime()));
+            TextView tv = (TextView) findViewById(dateIds[i++]);
+            if(m != null && m.getDatetime() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.\nMMM");
+                tv.setText(sdf.format(m.getDatetime().getTime()));
+            }
+            else{
+                tv.setText("tba");
+            }
         }
     }
 
@@ -104,29 +107,37 @@ public class PlayoffView extends RelativeLayout {
         pb_a.setProgress(0);
 
         for(Match m: matchup.getMatches()) {
-            boolean home = false;
-            TextView tv = (TextView)findViewById(colIds[1][i]);
-            TextView tv2 = (TextView)findViewById(colIds[2][i]);
-            int score_h = m.getScores_home()[0] + m.getScores_home()[1] + m.getScores_home()[2] + m.getScores_home()[3];
-            int score_a = m.getScores_away()[0] + m.getScores_away()[1] + m.getScores_away()[2] + m.getScores_away()[3];
-            if (m.getHome_team().equals("EHC Olten")){
-                tv.setText(String.valueOf(score_h));
-                tv2.setText(String.valueOf(score_a));
-                home = true;
+            TextView tv = (TextView) findViewById(colIds[1][i]);
+            TextView tv2 = (TextView) findViewById(colIds[2][i]);
+            if(m != null) {
+                boolean home = false;
+                int score_h = m.getScores_home()[0] + m.getScores_home()[1] + m.getScores_home()[2] + m.getScores_home()[3];
+                int score_a = m.getScores_away()[0] + m.getScores_away()[1] + m.getScores_away()[2] + m.getScores_away()[3];
+                if (m.getHome_team().equals("EHC Olten")) {
+                    tv.setText(String.valueOf(score_h));
+                    tv2.setText(String.valueOf(score_a));
+                    home = true;
+                } else {
+                    tv2.setText(String.valueOf(score_h));
+                    tv.setText(String.valueOf(score_a));
+                }
+
+                if ((home && score_h > score_a) || (!home && score_h < score_a)) {
+                    pb_h.setProgress(pb_h.getProgress() + 25);
+                } else if (((home && score_a > score_h) || (!home && score_a < score_h))) {
+                    pb_a.setProgress(pb_a.getProgress() + 25);
+                }
+                else if(m.getStatus().length() < 4){
+                    tv.setText("-");
+                    tv2.setText("-");
+                }
+                if (!m.getStatus().equals("Ende") && nextGame == 6) nextGame = i;
             }
             else{
-                tv2.setText(String.valueOf(score_h));
-                tv.setText(String.valueOf(score_a));
+                if(nextGame==6) nextGame = i;
+                tv.setText("-");
+                tv2.setText("-");
             }
-
-            if((home && score_h > score_a) || (!home && score_h < score_a)){
-                pb_h.setProgress(pb_h.getProgress() + 25);
-            }
-            else if(((home && score_a > score_h) || (!home && score_a < score_h))){
-                pb_a.setProgress(pb_a.getProgress() + 25);
-            }
-
-            if(!m.getStatus().equals("Ende") && nextGame == 6) nextGame = i;
             i++;
         }
     }
@@ -155,10 +166,12 @@ public class PlayoffView extends RelativeLayout {
         highlightedCol = id;
     }
 
-    public void changeGame(View view){
+    public void changeGame(View view) {
         highlightCol(getColumn(view));
-        LinearLayout ll = (LinearLayout)findViewById(R.id.container_next_po_game);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.container_next_po_game);
         ll.removeAllViews();
-        ll.addView(new MatchView(getContext(), matchup.getMatch(highlightedCol), true));
+        if (matchup.getMatch(highlightedCol) != null){
+            ll.addView(new MatchView(getContext(), matchup.getMatch(highlightedCol), true));
+        }
     }
 }

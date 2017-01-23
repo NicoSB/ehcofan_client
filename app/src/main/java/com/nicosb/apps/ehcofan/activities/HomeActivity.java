@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +29,14 @@ import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
 import com.nicosb.apps.ehcofan.models.Article;
 import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.POMatchup;
+import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
+import com.nicosb.apps.ehcofan.tasks.IsPlayoffLoader;
+import com.nicosb.apps.ehcofan.tasks.PlayoffMatchupLoader;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.MatchView;
 import com.nicosb.apps.ehcofan.views.PlayoffView;
@@ -60,17 +65,7 @@ public class HomeActivity extends AppCompatActivity
         SharedPreferences sp = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
         isPlayoff = sp.getBoolean(PREF_IS_PO, false);
         if(isPlayoff){
-            CardView cv_PO = (CardView)findViewById(R.id.card_playoffs);
-            cv_PO.setVisibility(View.VISIBLE);
-
-            LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
-
-            int[] ids = {1,2,3,40,46,47,48};
-            POMatchup po = new POMatchup("Playoff Viertelfinale", "EHC Olten", "TBA", ids, this);
-
-            view_po = new PlayoffView(this, po);
-            container_playoff.addView(view_po);
-            isPlayoff = true;
+            fetchPlayoffs(savedInstanceState);
         }
         else
         {
@@ -99,17 +94,37 @@ public class HomeActivity extends AppCompatActivity
             Toast.makeText(this, "Keine Verbindung zum Internet!", Toast.LENGTH_LONG).show();
         }
         fetchSchedule();
-        if(isPlayoff) {
-            fetchPlayoffs();
-        }
-        else {
+        if(!isPlayoff) {
             fetchStandingsTeam();
         }
         drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
-    private void fetchPlayoffs() {
+    private void fetchPlayoffs(Bundle bundle) {
+        getSupportLoaderManager().initLoader(1, bundle, new LoaderManager.LoaderCallbacks<POMatchupWrapper>() {
 
+            @Override
+            public Loader<POMatchupWrapper> onCreateLoader(int id, Bundle args) {
+                return new PlayoffMatchupLoader(HomeActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<POMatchupWrapper> loader, POMatchupWrapper data) {
+                CardView cv_PO = (CardView)findViewById(R.id.card_playoffs);
+                cv_PO.setVisibility(View.VISIBLE);
+
+                LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
+
+                view_po = new PlayoffView(HomeActivity.this, data.toMatchup(HomeActivity.this));
+                container_playoff.addView(view_po);
+                isPlayoff = true;
+            }
+
+            @Override
+            public void onLoaderReset(Loader<POMatchupWrapper> loader) {
+
+            }
+        }).forceLoad();
     }
 
     private void fetchStandingsTeam() {
@@ -170,7 +185,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayNextMatch() throws ParseException {
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
-        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " IS NULL";
+        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " NOT LIKE '%ENDE%'";
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
