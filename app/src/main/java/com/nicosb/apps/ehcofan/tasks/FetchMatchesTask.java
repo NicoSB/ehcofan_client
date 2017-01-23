@@ -34,8 +34,7 @@ import java.util.GregorianCalendar;
  */
 public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>> {
     private static final String TAG = "FetchMatchesTask";
-    public static final String PREF_MATCH_UPDATE = "matchUpdate";
-    Context context;
+    private Context context;
     private OnScheduleFetchedListener onScheduleFetchedListener;
     private ArrayList<Match> matches = new ArrayList<>();
 
@@ -102,7 +101,7 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>> 
             SharedPreferences prefs;
             try {
                 prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
-                String lastUpdated = prefs.getString(PREF_MATCH_UPDATE, "" );
+                String lastUpdated = prefs.getString(context.getString(R.string.pref_match_update), "" );
                 String rest_url = context.getString(R.string.rest_interface) + "matches";
 
                 if (lastUpdated.length() > 0) {
@@ -149,7 +148,7 @@ public class FetchMatchesTask extends AsyncTask<String, Void, ArrayList<Match>> 
                     // update player update pref
                     prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_APPEND);
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString(PREF_MATCH_UPDATE, sdf.format(lastUpdate.getTime()));
+                    editor.putString(context.getString(R.string.pref_match_update), sdf.format(lastUpdate.getTime()));
                     editor.apply();
                 }
             } catch (IOException | ParseException ioe) {

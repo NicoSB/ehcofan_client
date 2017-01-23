@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity
 
     private ProgressBar mProgress;
     private int mProgressStatus = 0;
-    private final String PREF_DB_DUMP = "db_dump";
     private SharedPreferences prefs;
 
     @Override
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         prefs = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
 
         mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
-        String lastDumped = prefs.getString(PREF_DB_DUMP, "" );
+        String lastDumped = prefs.getString(getString(R.string.pref_db_dump), "" );
         Calendar now = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -89,9 +88,9 @@ public class MainActivity extends AppCompatActivity
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
         CacheDBHelper.truncateTables(db);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(FetchPlayersTask.PREF_PLAYER_UPDATE, "");
-        editor.putString(FetchMatchesTask.PREF_MATCH_UPDATE, "");
-        editor.putString(PREF_DB_DUMP, sdf.format(now.getTime()));
+        editor.putString(getString(R.string.pref_player_update), "");
+        editor.putString(getString(R.string.pref_match_update), "");
+        editor.putString(getString(R.string.pref_db_dump), sdf.format(now.getTime()));
         editor.apply();
         db.close();
     }

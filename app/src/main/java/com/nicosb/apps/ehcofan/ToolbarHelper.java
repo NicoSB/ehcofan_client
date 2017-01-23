@@ -18,6 +18,7 @@ import com.nicosb.apps.ehcofan.activities.HomeActivity;
 import com.nicosb.apps.ehcofan.activities.NewsActivity;
 import com.nicosb.apps.ehcofan.activities.RosterActivity;
 import com.nicosb.apps.ehcofan.activities.ScheduleActivity;
+import com.nicosb.apps.ehcofan.activities.SettingsActivity;
 import com.nicosb.apps.ehcofan.activities.StandingsActivity;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
@@ -77,27 +78,25 @@ public class ToolbarHelper {
             this.activity = (AppCompatActivity)activity;
         }
 
+//
+//        @Override
+//        public void onDrawerClosed(View drawerView) {
+//            Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
+//
+//            SharedPreferences sharedPreferences = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putBoolean(activity.getString(R.string.pref_article_notifications), notificationsSwitch.isChecked()).apply();
+//            super.onDrawerClosed(drawerView);
+//        }
 
-        @Override
-        public void onDrawerClosed(View drawerView) {
-            Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
-
-            FirebaseHandler.sign(activity, notificationsSwitch.isChecked());
-
-            SharedPreferences sharedPreferences = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(FirebaseHandler.PREF_NOTIFICATIONS, notificationsSwitch.isChecked()).apply();
-            super.onDrawerClosed(drawerView);
-        }
-
-        @Override
-        public void onDrawerOpened(View drawerView) {
-            super.onDrawerOpened(drawerView);
-
-            Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
-            SharedPreferences prefs = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
-            notificationsSwitch.setChecked(prefs.getBoolean(FirebaseHandler.PREF_NOTIFICATIONS, false));
-        }
+//        @Override
+//        public void onDrawerOpened(View drawerView) {
+//            super.onDrawerOpened(drawerView);
+//
+//            Switch notificationsSwitch = (Switch) drawerView.findViewById(R.id.switch_notifications);
+//            SharedPreferences prefs = activity.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+//            notificationsSwitch.setChecked(prefs.getBoolean(activity.getString(R.string.pref_article_notifications), false));
+//        }
 
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
@@ -117,6 +116,9 @@ public class ToolbarHelper {
                     break;
                 case R.id.standings:
                     newActivity = new Intent(activity, StandingsActivity.class);
+                    break;
+                case R.id.settings:
+                    newActivity = new Intent(activity, SettingsActivity.class);
                     break;
             }
             if (newActivity == null || activity.getClass().getName().equals(newActivity.getComponent().getClassName())) {

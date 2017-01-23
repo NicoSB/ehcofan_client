@@ -67,4 +67,15 @@
     <string name="live">live</string>
     <string name="playoff_viertelfinale">Playoff Viertelfinale</string>
     <string name="date_placeholder">19.\n03.</string>
+    <string name="pref_player_update">playerUpdate</string>
+    <string name="pref_match_update">matchUpdate</string>
+    <string name="pref_db_dump">db_dump</string>
+    <string name="pref_article_notifications">pref_notifications</string>
+    <string name="pref_article_summary">Erhalte eine Push-Nachricht für jede Neuigkeit auf der EHCO Website</string>
+    <string name="pref_matches_notifications">PREF_MATCHES</string>
+    <string name="notifications_title">Push-Nachrichten</string>
+    <string name="title_match_notifications">Live-Resultate</string>
+    <string name="title_article_notifications">Neuigkeiten</string>
+    <string name="pref_matches_summary">Erhalte eine Push-Nachricht bei jedem Tor</string>
+    <string name="title_activity_settings">Einstellungen</string>
 </resources>

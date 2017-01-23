@@ -29,13 +29,18 @@
             android:checked="false"
             android:icon="@drawable/ic_subject_white_48dp"
             android:title="@string/title_activity_standings" />
+        <item
+            android:id="@+id/settings"
+            android:checked="false"
+            android:icon="@drawable/ic_settings_white_48dp"
+            android:title="@string/title_activity_settings" />
 
     </group>
-    <group
-        android:id="@+id/group_settings"
-        android:checkableBehavior="single">
-        <item
-            android:title="@string/pref_notifications"
-            app:actionLayout="@layout/widget_switch"/>
-    </group>
+    <!--<group-->
+        <!--android:id="@+id/group_settings"-->
+        <!--android:checkableBehavior="single">-->
+        <!--<item-->
+            <!--android:title="@string/pref_notifications"-->
+            <!--app:actionLayout="@layout/widget_switch"/>-->
+    <!--</group>-->
 </menu>
