@@ -35,7 +35,6 @@ import java.util.Locale;
  */
 public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>> {
     public static final String CUSTOM_PREFS = "customPrefs";
-    public static final String PREF_PLAYER_UPDATE = "playerUpdate";
     private static final String TAG = "FetchPlayersTask";
     ArrayList<Player> players = new ArrayList<>();
     SharedPreferences prefs;
@@ -89,7 +88,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
         if (networkInfo != null && networkInfo.isConnected()) {
             try {
                 prefs = context.getSharedPreferences(CUSTOM_PREFS, Context.MODE_PRIVATE);
-                String lastUpdated = prefs.getString(PREF_PLAYER_UPDATE, "" );
+                String lastUpdated = prefs.getString(context.getString(R.string.pref_player_update), "" );
                 String rest_url = context.getString(R.string.rest_interface) + "players";
                 if (lastUpdated.length() > 0) {
                     rest_url = rest_url + "?updated_at=" + lastUpdated;
@@ -145,7 +144,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                             // update player update pref
                             prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_APPEND);
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString(PREF_PLAYER_UPDATE, lastUpdate);
+                            editor.putString(context.getString(R.string.pref_player_update), lastUpdate);
                             editor.apply();
                         }
                     }
