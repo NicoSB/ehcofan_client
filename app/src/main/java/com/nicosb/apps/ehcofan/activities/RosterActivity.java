@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class RosterActivity extends AppCompatActivity
         implements FetchPlayersTask.OnPlayersFetchedListener {
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
     private ProgressBar progressBar;
 
     @Override
@@ -70,7 +70,7 @@ public class RosterActivity extends AppCompatActivity
                 tv.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 tv.setBackgroundColor(getResources().getColor(R.color.mainGreen));
                 tv.setTextColor(getResources().getColor(R.color.white));
-                tv.setTextAppearance(this, Typeface.BOLD);
+                tv.setTypeface(Typeface.DEFAULT_BOLD);
                 tv.setText(position);
 
                 float scale = getResources().getDisplayMetrics().density;

@@ -19,14 +19,14 @@ public class ArticleWrapper implements Parcelable {
             return new ArticleWrapper[size];
         }
     };
-    int id;
-    String title;
-    String text;
-    String url;
-    String date;
-    String news_image_file_name;
+    private int id;
+    private String title;
+    private String text;
+    private String url;
+    private String date;
+    private String news_image_file_name;
 
-    protected ArticleWrapper(Parcel in) {
+    private ArticleWrapper(Parcel in) {
         id = in.readInt();
         title = in.readString();
         text = in.readString();

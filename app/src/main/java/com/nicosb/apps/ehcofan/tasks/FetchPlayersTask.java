@@ -21,7 +21,6 @@ import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,8 +35,8 @@ import java.util.Locale;
 public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>> {
     public static final String CUSTOM_PREFS = "customPrefs";
     private static final String TAG = "FetchPlayersTask";
-    ArrayList<Player> players = new ArrayList<>();
-    SharedPreferences prefs;
+    private ArrayList<Player> players = new ArrayList<>();
+    private SharedPreferences prefs;
     private Context context;
     private OnPlayersFetchedListener onPlayersFetchedListener;
 
@@ -109,7 +108,7 @@ public class FetchPlayersTask extends AsyncTask<String, Void, ArrayList<Player>>
                 String json = builder.toString();
                 Gson gson = new Gson();
                 PlayerWrapper playersArray[] = gson.fromJson(json, PlayerWrapper[].class);
-                String image_url = "";
+                String image_url;
                 String lastUpdate = "0";
 
                 // extract players and save them as well as pictures to local database

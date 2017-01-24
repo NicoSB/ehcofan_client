@@ -8,13 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.graphics.drawable.ColorDrawable;
-import android.support.test.espresso.intent.Checks;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.activities.HomeActivity;
 
@@ -22,7 +19,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 /**

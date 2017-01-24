@@ -35,12 +35,12 @@ import java.util.ArrayList;
 public class ArticlesFragment extends Fragment
         implements FetchArticlesTask.PostExecuteListener,
         BottomRefreshScrollView.ViewOnBottomListener {
-    ProgressBar progressBar;
-    ArrayList<Article> articles = new ArrayList<>();
-    SwipeRefreshLayout swipeContainer;
-    FetchArticlesTask fetchArticlesTask;
-    boolean allArticlesLoaded = false;
-    boolean fetching = false;
+    private ProgressBar progressBar;
+    private ArrayList<Article> articles = new ArrayList<>();
+    private SwipeRefreshLayout swipeContainer;
+    private FetchArticlesTask fetchArticlesTask;
+    private boolean allArticlesLoaded = false;
+    private boolean fetching = false;
 
     @Nullable
     @Override

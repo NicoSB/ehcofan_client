@@ -22,8 +22,8 @@ import com.nicosb.apps.ehcofan.models.Article;
  * Created by Nico on 01.07.2016.
  */
 public class ArticleFragment extends Fragment {
-    public static String ARGS_ARTICLE = "article";
-    Article article;
+    public static final String ARGS_ARTICLE = "article";
+    private Article article;
 
     @Nullable
     @Override

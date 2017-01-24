@@ -29,7 +29,7 @@ import java.util.Calendar;
 public class ScheduleFragment extends Fragment
         implements FetchMatchesTask.OnScheduleFetchedListener {
     private static final String TAG = "ScheduleFragment";
-    boolean inPager = false;
+    private boolean inPager = false;
     private ArrayList<Match> matches = new ArrayList<>();
     private Spinner spinner;
     private ProgressBar progressBar;

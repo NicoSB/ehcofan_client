@@ -64,7 +64,7 @@ public class FetchArticlesTask extends AsyncTask<Article, Void, ArrayList<Articl
                 return null;
             }
             ArticleWrapper[] wrappers = gson.fromJson(json, ArticleWrapper[].class);
-            String image_url = "";
+            String image_url;
             if (wrappers.length == 0) {
                 return null;
             }

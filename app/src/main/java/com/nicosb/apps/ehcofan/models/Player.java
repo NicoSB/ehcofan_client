@@ -40,7 +40,7 @@ public class Player implements Parcelable {
     private String birthdate;
     private Bitmap playerImage;
 
-    public Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, int games, int goals, int assists, int pim, String birthdate) {
+    Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, int games, int goals, int assists, int pim, String birthdate) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -58,7 +58,7 @@ public class Player implements Parcelable {
         this.birthdate = birthdate;
     }
 
-    public Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, int games, int goals, int assists, int pim, String birthdate, Bitmap playerImage) {
+    Player(int id, String name, String surname, String position, String contract, String nationality, int number, int weight, int height, int ep_id, int games, int goals, int assists, int pim, String birthdate, Bitmap playerImage) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -77,7 +77,7 @@ public class Player implements Parcelable {
         this.playerImage = playerImage;
     }
 
-    protected Player(Parcel in) {
+    private Player(Parcel in) {
         id = in.readInt();
         name = in.readString();
         surname = in.readString();

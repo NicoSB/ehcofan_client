@@ -16,8 +16,6 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Player;
 
-import org.w3c.dom.Text;
-
 
 /**
  * Created by Nico on 25.07.2016.

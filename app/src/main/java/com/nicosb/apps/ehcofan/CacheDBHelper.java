@@ -9,8 +9,8 @@ import android.provider.BaseColumns;
  * Created by Nico on 28.07.2016.
  */
 public class CacheDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 12;
-    public static final String DATABASE_NAME = "EHCOFan.db";
+    private static final int DATABASE_VERSION = 12;
+    private static final String DATABASE_NAME = "EHCOFan.db";
 
 
     public CacheDBHelper(Context context) {

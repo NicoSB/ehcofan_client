@@ -7,7 +7,6 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.google.gson.Gson;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.models.POMatchup;
 import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 
 import java.io.BufferedInputStream;

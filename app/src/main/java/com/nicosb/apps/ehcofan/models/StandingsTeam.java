@@ -20,7 +20,7 @@ public class StandingsTeam {
     private int goals_for;
     private int goals_against;
 
-    public StandingsTeam(int id, String name, String competition, String group, int wins, int ot_wins, int ot_losses, int losses, int goals_for, int goals_against) {
+    StandingsTeam(int id, String name, String competition, String group, int wins, int ot_wins, int ot_losses, int losses, int goals_for, int goals_against) {
         this.id = id;
         this.name = name;
         this.competition = competition;

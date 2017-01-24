@@ -10,7 +10,7 @@ import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.ScheduleFragment;
 
 public class ScheduleActivity extends AppCompatActivity {
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

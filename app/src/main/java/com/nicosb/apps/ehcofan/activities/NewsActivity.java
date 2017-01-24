@@ -15,7 +15,7 @@ import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import java.util.ArrayList;
 
 public class NewsActivity extends AppCompatActivity implements FetchArticlesTask.PostExecuteListener {
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
     private String TAG = "NewsActivity";
 
     @Override

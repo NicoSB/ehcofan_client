@@ -57,9 +57,4 @@ public class IsPlayoffLoader extends AsyncTaskLoader<Void> {
 
         return null;
     }
-
-    @Override
-    protected void onStartLoading() {
-        super.onStartLoading();
-    }
 }

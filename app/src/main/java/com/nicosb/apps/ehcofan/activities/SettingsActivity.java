@@ -1,8 +1,6 @@
 package com.nicosb.apps.ehcofan.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 

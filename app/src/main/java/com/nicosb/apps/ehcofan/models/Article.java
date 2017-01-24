@@ -19,11 +19,11 @@ public class Article implements Parcelable {
             return new Article[size];
         }
     };
-    String title;
-    String text;
-    String url;
-    String date;
-    Bitmap news_image;
+    private String title;
+    private String text;
+    private String url;
+    private String date;
+    private Bitmap news_image;
 
     public Article(String title, String text, String url, String date, Bitmap news_image) {
         this.title = title;
@@ -33,7 +33,7 @@ public class Article implements Parcelable {
         this.news_image = news_image;
     }
 
-    protected Article(Parcel in) {
+    private Article(Parcel in) {
         title = in.readString();
         text = in.readString();
         url = in.readString();

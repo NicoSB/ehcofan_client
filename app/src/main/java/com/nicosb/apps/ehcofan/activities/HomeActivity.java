@@ -15,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,14 +27,12 @@ import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
 import com.nicosb.apps.ehcofan.models.Article;
 import com.nicosb.apps.ehcofan.models.Match;
-import com.nicosb.apps.ehcofan.models.POMatchup;
 import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.tasks.FetchArticlesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
-import com.nicosb.apps.ehcofan.tasks.IsPlayoffLoader;
 import com.nicosb.apps.ehcofan.tasks.PlayoffMatchupLoader;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.MatchView;
@@ -240,7 +237,7 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    public void openNewsActivity(View view, Article article) {
+    private void openNewsActivity(View view, Article article) {
         Intent newsActivity = new Intent(this, NewsActivity.class);
         newsActivity.putExtra(ArticleFragment.ARGS_ARTICLE, article);
         startActivity(newsActivity);
@@ -281,7 +278,7 @@ public class HomeActivity extends AppCompatActivity
             if (matches.size() > 0) {
                 displayNextMatch();
                 displayLastMatch();
-                view_po.refresh();
+                if(isPlayoff) view_po.refresh();
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -317,17 +314,10 @@ public class HomeActivity extends AppCompatActivity
         startActivity(standingsActivity);
     }
 
-
     private void fetchSchedule() {
         FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
         fetchMatchesTask.setOnScheduleFetchedListener(this);
         fetchMatchesTask.execute("" );
-    }
-
-    private void fetchTeams() {
-        FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(this);
-        fetchStandingsTask.setOnTeamsFetchedListener(this);
-        fetchStandingsTask.execute("NLB%2016/17" );
     }
 
     public void switchGame(View view){
