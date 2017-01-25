@@ -55,7 +55,7 @@ public class POMatchup {
     }
 
     private void fillMatches(){
-        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
+        SQLiteDatabase db = CacheDBHelper.getInstance(context).getReadableDatabase();
 
         String query =  "SELECT * FROM " + CacheDBHelper.TableColumns.MATCHES_TABLE_NAME + " WHERE " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_ID + " IN (";
         for(int id: matchIds){

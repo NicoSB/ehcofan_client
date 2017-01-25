@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void flushTables(SharedPreferences prefs, SimpleDateFormat sdf, Calendar now) {
-        SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
+        SQLiteDatabase db = CacheDBHelper.getInstance(this).getReadableDatabase();
         CacheDBHelper.truncateTables(db);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(getString(R.string.pref_player_update), "");

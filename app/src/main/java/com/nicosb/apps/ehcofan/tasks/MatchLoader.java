@@ -12,12 +12,10 @@ import com.google.gson.GsonBuilder;
 import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.Cacher;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.activities.HomeActivity;
 import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.MatchWrapper;
 import com.nicosb.apps.ehcofan.retrofit.EHCOFanAPI;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,7 +63,7 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
         updateMatches();
 
         ArrayList<Match> matches = new ArrayList<>();
-        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
+        SQLiteDatabase db = CacheDBHelper.getInstance(context).getReadableDatabase();
         String where = null;
 
         if (competition.length() > 0) {

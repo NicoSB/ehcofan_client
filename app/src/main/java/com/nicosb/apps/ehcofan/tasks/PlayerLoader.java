@@ -66,7 +66,7 @@ public class PlayerLoader extends AsyncTaskLoader<ArrayList<Player>> implements 
         updatePlayers();
 
         ArrayList<Player> players = new ArrayList<>();
-        SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
+        SQLiteDatabase db = CacheDBHelper.getInstance(context).getReadableDatabase();
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.PLAYERS_TABLE_NAME,  // The table to query
                 null,                               // The columns to return

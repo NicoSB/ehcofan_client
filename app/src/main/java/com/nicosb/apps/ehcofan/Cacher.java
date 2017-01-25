@@ -62,39 +62,31 @@ public class Cacher {
     }
 
     public static void cachePlayer(Context context, Player player) {
-        CacheDBHelper helper = new CacheDBHelper(context);
-        SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
 
         sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.PLAYERS_TABLE_NAME, CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT, player.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
-
-        helper.close();
         sqLiteDatabase.close();
     }
 
     public static void cacheMatch(Context context, Match match) {
-        CacheDBHelper helper = new CacheDBHelper(context);
-        SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
 
         sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.MATCHES_TABLE_NAME, CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION, match.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
-        helper.close();
         sqLiteDatabase.close();
     }
 
     public static void cacheTeam(Context context, StandingsTeam team) {
-        CacheDBHelper helper = new CacheDBHelper(context);
-        SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
 
         sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.STANDINGSTEAMS_TABLE_NAME, CacheDBHelper.TableColumns.STANDINGSTEAMS_COLUMN_NAME_GROUP, team.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
 
-        helper.close();
         sqLiteDatabase.close();
     }
 
     public static void delete(Context context, String table, long id){
-        CacheDBHelper helper = new CacheDBHelper(context);
-        SQLiteDatabase sqLiteDatabase = helper.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
+
         Log.w("DELETE", ""+sqLiteDatabase.delete(table, "id="+id, null));
-        sqLiteDatabase.close();
     }
 }

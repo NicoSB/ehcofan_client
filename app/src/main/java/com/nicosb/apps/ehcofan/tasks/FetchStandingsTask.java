@@ -69,7 +69,7 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
 
             ArrayList<StandingsTeam> teams = new ArrayList<>();
 
-            SQLiteDatabase db = new CacheDBHelper(context).getReadableDatabase();
+            SQLiteDatabase db = CacheDBHelper.getInstance(context).getReadableDatabase();
             Cursor c = db.query(
                     CacheDBHelper.TableColumns.STANDINGSTEAMS_TABLE_NAME,  // The table to query
                     null,                               // The columns to return

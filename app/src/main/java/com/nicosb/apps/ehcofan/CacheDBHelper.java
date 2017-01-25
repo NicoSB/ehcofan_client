@@ -11,10 +11,17 @@ import android.provider.BaseColumns;
 public class CacheDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "EHCOFan.db";
+    private static CacheDBHelper sInstance;
 
-
-    public CacheDBHelper(Context context) {
+    private CacheDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized CacheDBHelper getInstance(Context context){
+        if(sInstance == null){
+            sInstance = new CacheDBHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     public static String encodeScores(int[] scores) {

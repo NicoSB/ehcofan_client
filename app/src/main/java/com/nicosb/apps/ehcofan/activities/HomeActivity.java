@@ -202,7 +202,7 @@ public class HomeActivity extends AppCompatActivity
     private void displayLastMatch() throws ParseException {
         LinearLayout container = (LinearLayout) findViewById(R.id.container_last_match);
 
-        SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
+        SQLiteDatabase db = CacheDBHelper.getInstance(this).getReadableDatabase();
         String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " LIKE '%Ende%'";
 
         Cursor c = db.query(
@@ -227,7 +227,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void displayNextMatch() throws ParseException {
-        SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
+        SQLiteDatabase db = CacheDBHelper.getInstance(this).getReadableDatabase();
         String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " NOT LIKE '%ENDE%' OR " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " IS NULL";
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
