@@ -9,9 +9,7 @@ import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.ArticleFragment;
 import com.nicosb.apps.ehcofan.fragments.ArticlesFragment;
-import com.nicosb.apps.ehcofan.models.Article;
 
-import java.util.ArrayList;
 
 public class NewsActivity extends AppCompatActivity{
     private DrawerLayout drawerLayout;

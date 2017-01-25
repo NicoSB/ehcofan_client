@@ -36,23 +36,17 @@ import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.retrofit.EHCOFanAPI;
 import com.nicosb.apps.ehcofan.tasks.ArticleImageLoader;
-import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
+import com.nicosb.apps.ehcofan.tasks.MatchLoader;
 import com.nicosb.apps.ehcofan.tasks.PlayoffMatchupLoader;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.MatchView;
 import com.nicosb.apps.ehcofan.views.PlayoffView;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +56,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity
-        implements FetchMatchesTask.OnScheduleFetchedListener, FetchStandingsTask.OnTeamsFetchedListener, Callback<List<MatchWrapper>> {
+        implements FetchStandingsTask.OnTeamsFetchedListener, Callback<List<MatchWrapper>> {
     private String TAG = "HomeActivity";
     private DrawerLayout drawerLayout;
     private boolean showPB = true;
@@ -130,7 +124,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void fetchPlayoffs(Bundle bundle) {
-        getSupportLoaderManager().initLoader(1, bundle, new LoaderManager.LoaderCallbacks<POMatchupWrapper>() {
+        getSupportLoaderManager().initLoader(2, bundle, new LoaderManager.LoaderCallbacks<POMatchupWrapper>() {
 
             @Override
             public Loader<POMatchupWrapper> onCreateLoader(int id, Bundle args) {
@@ -146,7 +140,7 @@ public class HomeActivity extends AppCompatActivity
 
                 view_po = new PlayoffView(HomeActivity.this, data.toMatchup(HomeActivity.this));
                 container_playoff.addView(view_po);
-                getLoaderManager().destroyLoader(2);
+                getSupportLoaderManager().destroyLoader(2);
             }
 
             @Override
@@ -225,11 +219,9 @@ public class HomeActivity extends AppCompatActivity
         if (c.getCount() > 0) {
             c.moveToFirst();
             Match match = Match.populateMatch(c);
-            displayMatch(container, match, R.id.card_last_match);
+            displayMatch(container, match);
         } else {
-            FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
-            fetchMatchesTask.setOnScheduleFetchedListener(this);
-            fetchMatchesTask.execute("" );
+            fetchSchedule();
         }
         db.close();
         c.close();
@@ -237,7 +229,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void displayNextMatch() throws ParseException {
         SQLiteDatabase db = new CacheDBHelper(this).getReadableDatabase();
-        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " NOT LIKE '%ENDE%'";
+        String where = CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " NOT LIKE '%ENDE%' OR " + CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_STATUS + " IS NULL";
         Cursor c = db.query(
                 CacheDBHelper.TableColumns.MATCHES_TABLE_NAME,  // The table to query
                 null,                               // The columns to return
@@ -252,13 +244,13 @@ public class HomeActivity extends AppCompatActivity
             c.moveToFirst();
             Match match = Match.populateMatch(c);
             LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
-            displayMatch(container, match, R.id.card_next_match);
+            displayMatch(container, match);
         }
         db.close();
         c.close();
     }
 
-    private void displayMatch(LinearLayout container, Match match, int matchCard) {
+    private void displayMatch(LinearLayout container, Match match) {
         container.removeAllViews();
 
         if(!container.hasOnClickListeners()) {
@@ -315,19 +307,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void onScheduleFetched(ArrayList<Match> matches) {
-        try {
-            if (matches.size() > 0) {
-                displayNextMatch();
-                displayLastMatch();
-                if(isPlayoff) view_po.refresh();
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
         int rank = 0;
         for (StandingsTeam st : standingsTeams) {
@@ -357,10 +336,30 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void fetchSchedule() {
-        FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
-        fetchMatchesTask.setOnScheduleFetchedListener(this);
-        fetchMatchesTask.execute("" );
+        getSupportLoaderManager().initLoader(1, getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Match>>() {
+            @Override
+            public Loader<ArrayList<Match>> onCreateLoader(int id, Bundle args) {
+                return new MatchLoader(HomeActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<ArrayList<Match>> loader, ArrayList<Match> data) {
+                try {
+                    displayNextMatch();
+                    displayLastMatch();
+                }catch (ParseException pe){
+                    pe.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<Match>> loader) {
+
+            }
+        }).forceLoad();
     }
+
+
 
     public void switchGame(View view){
         view_po.changeGame(view);

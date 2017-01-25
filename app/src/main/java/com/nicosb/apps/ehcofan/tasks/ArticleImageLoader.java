@@ -26,9 +26,9 @@ import java.util.Locale;
 
 public class ArticleImageLoader extends AsyncTaskLoader<ArrayList<Article>> {
     private static final String TAG = "ArticleImageLoader";
-    List<ArticleWrapper> wrappers;
-    Context context;
-    Article[] articles;
+    private List<ArticleWrapper> wrappers;
+    private Context context;
+    private Article[] articles;
     public ArticleImageLoader(Context context, Article[] articles, ArrayList<ArticleWrapper> wrappers) {
         super(context);
 
@@ -52,7 +52,6 @@ public class ArticleImageLoader extends AsyncTaskLoader<ArrayList<Article>> {
         for (ArticleWrapper aw : wrappers) {
             try {
 
-                Log.w(TAG, "article: " + aw.getTitle());
                 String rest = context.getString(R.string.aws_url);
                 String id = ("00" + aw.getId());
                 id = id.substring(id.length() - 3);

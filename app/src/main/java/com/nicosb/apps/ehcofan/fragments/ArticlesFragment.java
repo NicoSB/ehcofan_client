@@ -51,7 +51,6 @@ public class ArticlesFragment extends Fragment implements
         BottomRefreshScrollView.ViewOnBottomListener {
     private static final String TAG = "ArticlesFragment";
     private ProgressBar progressBar;
-    private int cntr = 0;
     private ArrayList<Article> articles = new ArrayList<>();
     private SwipeRefreshLayout swipeContainer;
     private boolean allArticlesLoaded = false;
@@ -122,12 +121,11 @@ public class ArticlesFragment extends Fragment implements
         tv.setVisibility(View.VISIBLE);
     }
 
-    private void fetchArticles(boolean showProgessbar) {
+    private void fetchArticles(boolean showProgressbar) {
         final Callback<ArrayList<ArticleWrapper>> articlesCB = new Callback<ArrayList<ArticleWrapper>>() {
             @Override
             public void onResponse(Call<ArrayList<ArticleWrapper>> call, final Response<ArrayList<ArticleWrapper>> response) {
-                Log.w(TAG, "onResponse" + response.body().get(0).getTitle());
-                getActivity().getSupportLoaderManager().initLoader(cntr, getActivity().getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Article>>() {
+                getActivity().getSupportLoaderManager().initLoader(3, getActivity().getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Article>>() {
                     @Override
                     public Loader<ArrayList<Article>> onCreateLoader(int id, Bundle args) {
                         return new ArticleImageLoader(getActivity(), articles, response.body());
@@ -139,7 +137,7 @@ public class ArticlesFragment extends Fragment implements
                         displayArticles();
                         fetching = false;
                         swipeContainer.setRefreshing(false);
-                        getLoaderManager().destroyLoader(cntr++);
+                        getActivity().getSupportLoaderManager().destroyLoader(3);
                     }
 
                     @Override
@@ -154,11 +152,11 @@ public class ArticlesFragment extends Fragment implements
         };
 
         LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.ll_articles);
-        if (showProgessbar) {
+        if (showProgressbar) {
             if (progressBar == null) {
                 progressBar = new ProgressBar(getActivity());
             }
-            ll.addView(progressBar);
+             ll.addView(progressBar);
         }
 
         Call<ArrayList<ArticleWrapper>> call = mApi.listArticles(5, articles.size());

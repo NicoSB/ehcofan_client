@@ -1,9 +1,10 @@
 package com.nicosb.apps.ehcofan.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -19,21 +19,18 @@ import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Match;
-import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
+import com.nicosb.apps.ehcofan.tasks.MatchLoader;
 import com.nicosb.apps.ehcofan.views.MatchView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class ScheduleFragment extends Fragment
-        implements FetchMatchesTask.OnScheduleFetchedListener {
+public class ScheduleFragment extends Fragment{
     private static final String TAG = "ScheduleFragment";
     private boolean inPager = false;
     private ArrayList<Match> matches = new ArrayList<>();
     private Spinner spinner;
-    private ProgressBar progressBar;
-    private FetchMatchesTask fetchMatchesTask;
     private String requestedCompetition = "";
     private MatchView lastMatchView;
 
@@ -79,65 +76,53 @@ public class ScheduleFragment extends Fragment
         }
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (fetchMatchesTask != null && fetchMatchesTask.getStatus() != AsyncTask.Status.FINISHED) {
-            fetchMatchesTask.cancel(true);
-        }
-    }
-
     private void fetchMatches() {
-        if (fetchMatchesTask != null && fetchMatchesTask.getStatus() != AsyncTask.Status.FINISHED) {
-            fetchMatchesTask.cancel(true);
-        }
-        fetchMatchesTask = new FetchMatchesTask(getContext());
-        fetchMatchesTask.setOnScheduleFetchedListener(this);
-        if (spinner == null || spinner.getSelectedItem().toString().equals("Alle" )) {
-            if (inPager) {
-                requestedCompetition = "EHCO Cup 2016";
-            } else {
-                requestedCompetition = "";
+        requestedCompetition = spinner.getSelectedItem().toString();
+        if(requestedCompetition.equals("Alle")) requestedCompetition = "";
+
+        getActivity().getSupportLoaderManager().initLoader(1, getActivity().getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Match>>() {
+            @Override
+            public Loader<ArrayList<Match>> onCreateLoader(int id, Bundle args) {
+                return new MatchLoader(getContext(), requestedCompetition);
             }
-        } else {
-            requestedCompetition = spinner.getSelectedItem().toString();
-        }
-        fetchMatchesTask.execute(requestedCompetition);
 
-        LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.container_schedule);
-        rl.removeAllViews();
+            @Override
+            public void onLoadFinished(Loader<ArrayList<Match>> loader, ArrayList<Match> data) {
+                matches = data;
+                displayMatches();
+                getActivity().getSupportLoaderManager().destroyLoader(1);
+            }
 
-        progressBar = new ProgressBar(getActivity());
-        TextView connectionMessage = (TextView) getActivity().findViewById(R.id.txt_schedule_noconnection);
-        connectionMessage.setVisibility(View.GONE);
-        rl.addView(progressBar);
+            @Override
+            public void onLoaderReset(Loader<ArrayList<Match>> loader) {
+
+            }
+        }).forceLoad();
     }
 
     private void displayMatches() {
         lastMatchView = null;
         LinearLayout container = (LinearLayout) getActivity().findViewById(R.id.container_schedule);
+        container.removeAllViews();
         TextView connectionMessage = (TextView) getActivity().findViewById(R.id.txt_schedule_noconnection);
         if (connectionMessage.getVisibility() == View.VISIBLE) {
             connectionMessage.setVisibility(View.GONE);
         }
-        if (container != null) {
-            if (matches.isEmpty()) {
-                TextView noMatchesMessage = new TextView(getContext());
-                noMatchesMessage.setText("Keine Spiele gefunden" );
-                noMatchesMessage.setGravity(Gravity.CENTER);
-                noMatchesMessage.setPadding(100, 100, 100, 100);
-                container.addView(noMatchesMessage);
-            }
-            for (Match m : matches) {
-                MatchView mv = new MatchView(getContext(), m, requestedCompetition.length() == 0);
-                container.addView(mv);
-                if (m.getDatetime().before(Calendar.getInstance())) {
-                    lastMatchView = mv;
-                }
+
+        if (matches.isEmpty()) {
+            TextView noMatchesMessage = new TextView(getContext());
+            noMatchesMessage.setText("Keine Spiele gefunden" );
+            noMatchesMessage.setGravity(Gravity.CENTER);
+            noMatchesMessage.setPadding(100, 100, 100, 100);
+            container.addView(noMatchesMessage);
+        }
+        for (Match m : matches) {
+            MatchView mv = new MatchView(getContext(), m, requestedCompetition.length() == 0);
+            container.addView(mv);
+            if (m.getDatetime().before(Calendar.getInstance())) {
+                lastMatchView = mv;
             }
         }
-
 
         if (lastMatchView != null) {
             final ScrollView sv = (ScrollView) getActivity().findViewById(R.id.schedule_scroll_view);
@@ -148,14 +133,6 @@ public class ScheduleFragment extends Fragment
                 }
             });
         }
-    }
-
-    @Override
-    public void onScheduleFetched(ArrayList<Match> matches) {
-        this.matches = matches;
-        LinearLayout rl = (LinearLayout) getActivity().findViewById(R.id.container_schedule);
-        rl.removeView(progressBar);
-        displayMatches();
     }
 
     private void displayNoConnectionMessage() {

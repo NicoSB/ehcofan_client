@@ -17,10 +17,7 @@ import retrofit2.http.Query;
 
 public interface EHCOFanAPI {
     @GET("matches")
-    Call<List<MatchWrapper>> listMatches();
-
-//    @GET("articles?offset={offset}")
-//    Call<List<ArticleWrapper>> listArticles(@Path("offset") int offset);
+    Call<ArrayList<MatchWrapper>> listMatches(@Query("updated_at") String updated_at);
 
     @GET("articles")
     Call<ArrayList<ArticleWrapper>> listArticles(@Query("limit") int limit);

@@ -19,10 +19,10 @@ import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Match;
 import com.nicosb.apps.ehcofan.models.Player;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
-import com.nicosb.apps.ehcofan.tasks.FetchMatchesTask;
 import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
 import com.nicosb.apps.ehcofan.tasks.IsPlayoffLoader;
+import com.nicosb.apps.ehcofan.tasks.MatchLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,11 +34,10 @@ import java.util.GregorianCalendar;
  * Created by Nico on 17.09.2016.
  */
 public class MainActivity extends AppCompatActivity
-        implements FetchStandingsTask.OnTeamsFetchedListener, FetchMatchesTask.OnScheduleFetchedListener, FetchPlayersTask.OnPlayersFetchedListener{
+        implements FetchStandingsTask.OnTeamsFetchedListener, FetchPlayersTask.OnPlayersFetchedListener{
 
     private ProgressBar mProgress;
     private int mProgressStatus = 0;
-    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        prefs = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
 
         mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
         String lastDumped = prefs.getString(getString(R.string.pref_db_dump), "" );
@@ -100,9 +99,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void fetchSchedule() {
-        FetchMatchesTask fetchMatchesTask = new FetchMatchesTask(this);
-        fetchMatchesTask.setOnScheduleFetchedListener(this);
-        fetchMatchesTask.execute("" );
+        final int loaderId = 100;
+        getSupportLoaderManager().initLoader(loaderId, getIntent().getExtras(), new LoaderManager.LoaderCallbacks()
+        {
+            @Override
+            public Loader onCreateLoader(int id, Bundle args) {
+                return new MatchLoader(MainActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader loader, Object data) {
+                updateProgressStatus(25);
+                getSupportLoaderManager().destroyLoader(loaderId);
+            }
+
+            @Override
+            public void onLoaderReset(Loader loader) {}
+        }).forceLoad();
     }
 
     private void fetchTeams() {
@@ -112,7 +125,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void fetchIsPO(Bundle bundle){
-        getSupportLoaderManager().initLoader(1, bundle, new LoaderManager.LoaderCallbacks<Void>() {
+        final int loaderId = 101;
+        getSupportLoaderManager().initLoader(loaderId, bundle, new LoaderManager.LoaderCallbacks<Void>() {
             @Override
             public Loader<Void> onCreateLoader(int id, Bundle args) {
                 return new IsPlayoffLoader(MainActivity.this);
@@ -121,6 +135,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onLoadFinished(Loader<Void> loader, Void data) {
                 updateProgressStatus(25);
+                getSupportLoaderManager().destroyLoader(loaderId);
             }
 
             @Override
@@ -132,11 +147,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
-        updateProgressStatus(25);
-    }
-
-    @Override
-    public void onScheduleFetched(ArrayList<Match> matches) {
         updateProgressStatus(25);
     }
 
