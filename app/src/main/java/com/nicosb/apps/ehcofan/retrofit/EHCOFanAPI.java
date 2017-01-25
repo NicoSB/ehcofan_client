@@ -2,6 +2,7 @@ package com.nicosb.apps.ehcofan.retrofit;
 
 import com.nicosb.apps.ehcofan.models.ArticleWrapper;
 import com.nicosb.apps.ehcofan.models.MatchWrapper;
+import com.nicosb.apps.ehcofan.models.PlayerWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,4 +25,7 @@ public interface EHCOFanAPI {
 
     @GET("articles")
     Call<ArrayList<ArticleWrapper>> listArticles(@Query("limit") int limit, @Query("offset") int offset);
+
+    @GET("articles")
+    Call<ArrayList<PlayerWrapper>> listPlayers(@Query("updated_at") String updated_at);
 }

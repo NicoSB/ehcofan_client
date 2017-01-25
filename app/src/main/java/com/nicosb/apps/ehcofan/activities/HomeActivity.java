@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
@@ -36,7 +37,6 @@ import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.retrofit.EHCOFanAPI;
 import com.nicosb.apps.ehcofan.tasks.ArticleImageLoader;
-import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
 import com.nicosb.apps.ehcofan.tasks.MatchLoader;
 import com.nicosb.apps.ehcofan.tasks.PlayoffMatchupLoader;
@@ -73,8 +73,8 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FirebaseHandler.signIn(this);
-        SharedPreferences sp = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
-        isPlayoff = sp.getBoolean(PREF_IS_PO, false);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        isPlayoff = prefs.getBoolean(getString(R.string.pref_playoff), false);
         if(isPlayoff){
             fetchPlayoffs(savedInstanceState);
         }
@@ -106,7 +106,6 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Log.w(TAG, "hrelllo");
         ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 

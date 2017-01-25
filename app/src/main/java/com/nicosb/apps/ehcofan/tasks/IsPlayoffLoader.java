@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.nicosb.apps.ehcofan.R;
@@ -50,9 +51,9 @@ public class IsPlayoffLoader extends AsyncTaskLoader<Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        SharedPreferences prefs = context.getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(HomeActivity.PREF_IS_PO, isPlayoff);
+        editor.putBoolean(context.getString(R.string.pref_playoff), isPlayoff);
         editor.apply();
 
         return null;

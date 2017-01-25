@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -16,13 +17,11 @@ import android.widget.Toast;
 
 import com.nicosb.apps.ehcofan.CacheDBHelper;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.models.Match;
-import com.nicosb.apps.ehcofan.models.Player;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
-import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
 import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
 import com.nicosb.apps.ehcofan.tasks.IsPlayoffLoader;
 import com.nicosb.apps.ehcofan.tasks.MatchLoader;
+import com.nicosb.apps.ehcofan.tasks.PlayerLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +33,7 @@ import java.util.GregorianCalendar;
  * Created by Nico on 17.09.2016.
  */
 public class MainActivity extends AppCompatActivity
-        implements FetchStandingsTask.OnTeamsFetchedListener, FetchPlayersTask.OnPlayersFetchedListener{
+        implements FetchStandingsTask.OnTeamsFetchedListener{
 
     private ProgressBar mProgress;
     private int mProgressStatus = 0;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = getSharedPreferences(FetchPlayersTask.CUSTOM_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
         String lastDumped = prefs.getString(getString(R.string.pref_db_dump), "" );
@@ -93,9 +92,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void fetchPlayers() {
-        FetchPlayersTask fetchPlayersTask = new FetchPlayersTask(this);
-        fetchPlayersTask.setOnPlayersFetchedListener(this);
-        fetchPlayersTask.execute("" );
+        final int loaderId = 110;
+
+        getSupportLoaderManager().initLoader(loaderId, getIntent().getExtras(), new LoaderManager.LoaderCallbacks() {
+            @Override
+            public Loader onCreateLoader(int id, Bundle args) {
+                return new PlayerLoader(MainActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader loader, Object data) {
+                updateProgressStatus(25);
+                getSupportLoaderManager().destroyLoader(loaderId);
+            }
+
+            @Override
+            public void onLoaderReset(Loader loader) {
+
+            }
+        }).forceLoad();
     }
 
     private void fetchSchedule() {
@@ -147,11 +162,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
-        updateProgressStatus(25);
-    }
-
-    @Override
-    public void onPlayersFetched(ArrayList<Player> players) {
         updateProgressStatus(25);
     }
 

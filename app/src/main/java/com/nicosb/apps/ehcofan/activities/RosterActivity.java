@@ -4,6 +4,8 @@ import android.app.DialogFragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +20,7 @@ import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.PlayerInfoFragment;
 import com.nicosb.apps.ehcofan.models.Player;
-import com.nicosb.apps.ehcofan.tasks.FetchPlayersTask;
+import com.nicosb.apps.ehcofan.tasks.PlayerLoader;
 import com.nicosb.apps.ehcofan.views.PlayerView;
 
 import java.util.ArrayList;
@@ -26,8 +28,7 @@ import java.util.ArrayList;
 /**
  * Created by Nico on 22.07.2016.
  */
-public class RosterActivity extends AppCompatActivity
-        implements FetchPlayersTask.OnPlayersFetchedListener {
+public class RosterActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ProgressBar progressBar;
 
@@ -35,9 +36,26 @@ public class RosterActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roster);
-        FetchPlayersTask fetchPlayersTask = new FetchPlayersTask(this);
-        fetchPlayersTask.setOnPlayersFetchedListener(this);
-        fetchPlayersTask.execute("" );
+
+        final int loaderId = 30;
+        getSupportLoaderManager().initLoader(loaderId, savedInstanceState, new LoaderManager.LoaderCallbacks<ArrayList<Player>>(){
+
+            @Override
+            public Loader<ArrayList<Player>> onCreateLoader(int id, Bundle args) {
+                return new PlayerLoader(RosterActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<ArrayList<Player>> loader, ArrayList<Player> data) {
+                processPlayers(data);
+                getSupportLoaderManager().destroyLoader(loaderId);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<Player>> loader) {
+
+            }
+        });
 
         progressBar = new ProgressBar(this);
         LinearLayout container = (LinearLayout) findViewById(R.id.container_roster);
@@ -46,8 +64,7 @@ public class RosterActivity extends AppCompatActivity
         drawerLayout = ToolbarHelper.loadToolbar(this);
     }
 
-    @Override
-    public void onPlayersFetched(ArrayList<Player> players) {
+    private void processPlayers(ArrayList<Player> players) {
         LinearLayout container = (LinearLayout) findViewById(R.id.container_roster);
         String position = "";
         for (final Player p : players) {
