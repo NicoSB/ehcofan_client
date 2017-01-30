@@ -93,7 +93,6 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
         }
         c.close();
 
-        Log.w(TAG, "loadInBackground");
         return matches;
     }
 

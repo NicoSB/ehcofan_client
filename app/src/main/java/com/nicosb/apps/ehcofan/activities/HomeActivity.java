@@ -337,26 +337,22 @@ public class HomeActivity extends AppCompatActivity
         getSupportLoaderManager().initLoader(SCHEDULE_LOADER_ID, getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Match>>() {
             @Override
             public Loader<ArrayList<Match>> onCreateLoader(int id, Bundle args) {
-                Log.w(TAG, "startloader");
                 return new MatchLoader(HomeActivity.this);
             }
 
             @Override
             public void onLoadFinished(Loader<ArrayList<Match>> loader, ArrayList<Match> data) {
                 try {
-                    Log.w(TAG, "onloadfinished");
                     displayNextMatch();
                     displayLastMatch();
-                    getSupportLoaderManager().destroyLoader(SCHEDULE_LOADER_ID);
-                    Log.w(TAG, "onloadfinished2");
                 }catch (ParseException pe){
                     pe.printStackTrace();
                 }
+                getSupportLoaderManager().destroyLoader(SCHEDULE_LOADER_ID);
             }
 
             @Override
             public void onLoaderReset(Loader<ArrayList<Match>> loader) {
-                Log.w(TAG, "onLoadererset");
             }
         }).startLoading();
     }
@@ -372,7 +368,6 @@ public class HomeActivity extends AppCompatActivity
     public void onResponse(Call<List<MatchWrapper>> call, Response<List<MatchWrapper>> response) {
             for(MatchWrapper mw: response.body()){
                 Match m = mw.toMatch();
-                Log.d(TAG, m.getHome_team());
             }
     }
 
