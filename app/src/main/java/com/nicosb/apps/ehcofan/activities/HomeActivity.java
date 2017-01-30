@@ -353,7 +353,7 @@ public class HomeActivity extends AppCompatActivity{
                     public void onLoadFinished(Loader<ArrayList<Article>> loader, ArrayList<Article> data) {
                         LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
                         ll_loading.setVisibility(View.GONE);
-                        displayArticle(data.get(0));
+                        if(data.size() > 0) displayArticle(data.get(0));
                         getSupportLoaderManager().destroyLoader(NEWS_LOADER_ID);
                     }
 

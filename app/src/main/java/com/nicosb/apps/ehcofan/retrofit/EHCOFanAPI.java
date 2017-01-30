@@ -27,7 +27,7 @@ public interface EHCOFanAPI {
     @GET("articles")
     Call<ArrayList<ArticleWrapper>> listArticles(@Query("limit") int limit, @Query("offset") int offset);
 
-    @GET("articles")
+    @GET("players")
     Call<ArrayList<PlayerWrapper>> listPlayers(@Query("updated_at") String updated_at);
 
     @GET("teams")

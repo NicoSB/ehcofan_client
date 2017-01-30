@@ -92,7 +92,6 @@ public class PlayerLoader extends AsyncTaskLoader<ArrayList<Player>> implements 
 
     @Override
     public void onResponse(Call<ArrayList<PlayerWrapper>> call, Response<ArrayList<PlayerWrapper>> response) {
-
         for (PlayerWrapper p : response.body()) {
             String image_url;
             String lastUpdate = mPrefs.getString(context.getString(R.string.pref_player_update), "");

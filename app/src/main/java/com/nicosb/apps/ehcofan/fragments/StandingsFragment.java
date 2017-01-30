@@ -79,9 +79,6 @@ public class StandingsFragment extends Fragment {
             if (standingsTeams.size() == 0) {
                 TextView txt_no_connection = (TextView) getActivity().findViewById(R.id.txt_noconnection);
                 txt_no_connection.setVisibility(View.VISIBLE);
-
-                LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.container_standings);
-                ll.setVisibility(View.GONE);
             }
             TableLayout container = (TableLayout) getActivity().findViewById(R.id.container_standings);
             int position = 1;
