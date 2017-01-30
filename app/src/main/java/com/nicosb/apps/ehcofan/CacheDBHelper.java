@@ -24,6 +24,14 @@ public class CacheDBHelper extends SQLiteOpenHelper {
         return sInstance;
     }
 
+    public static synchronized SQLiteDatabase getReadableDB(Context context){
+        return getInstance(context).getReadableDatabase();
+    }
+
+    public static synchronized SQLiteDatabase getWritableDB(Context context){
+        return getInstance(context).getWritableDatabase();
+    }
+
     public static String encodeScores(int[] scores) {
         String encoded = String.valueOf(scores[0]);
         for (int i = 1; i < scores.length; i++) {

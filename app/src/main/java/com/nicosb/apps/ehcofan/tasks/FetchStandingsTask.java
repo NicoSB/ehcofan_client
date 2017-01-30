@@ -36,6 +36,8 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
 
     @Override
     protected ArrayList<StandingsTeam> doInBackground(String... strings) {
+        SQLiteDatabase db = null;
+        Cursor c = null;
         try {
             if (!onlyOffline) {
                 String rest_url = context.getString(R.string.rest_interface) + "teams?competition=" + strings[0];
@@ -69,8 +71,8 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
 
             ArrayList<StandingsTeam> teams = new ArrayList<>();
 
-            SQLiteDatabase db = CacheDBHelper.getInstance(context).getReadableDatabase();
-            Cursor c = db.query(
+            db = CacheDBHelper.getReadableDB(context);
+            c = db.query(
                     CacheDBHelper.TableColumns.STANDINGSTEAMS_TABLE_NAME,  // The table to query
                     null,                               // The columns to return
                     null,                                // The columns for the WHERE clause
@@ -83,9 +85,6 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
             while (c.moveToNext()) {
                 teams.add(StandingsTeam.populateStandingsTeam(c));
             }
-
-            c.close();
-            db.close();
             return teams;
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,6 +92,8 @@ public class FetchStandingsTask extends AsyncTask<String, Void, ArrayList<Standi
             ArrayList<StandingsTeam> standingsTeams = new ArrayList<>();
             Collections.addAll(standingsTeams, teamsArray);
             return standingsTeams;
+        } finally {
+            if(c != null) c.close();
         }
     }
 

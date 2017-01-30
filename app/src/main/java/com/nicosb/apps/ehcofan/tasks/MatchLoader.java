@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,6 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
+    private static final String TAG = "MatchLoader";
     private Context context;
     private String competition;
     private EHCOFanAPI mApi;
@@ -63,7 +65,8 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
         updateMatches();
 
         ArrayList<Match> matches = new ArrayList<>();
-        SQLiteDatabase db = CacheDBHelper.getInstance(context).getReadableDatabase();
+        CacheDBHelper.getInstance(context);
+        SQLiteDatabase db = CacheDBHelper.getReadableDB(context);
         String where = null;
 
         if (competition.length() > 0) {
@@ -89,9 +92,15 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
             }
         }
         c.close();
-        db.close();
 
+        Log.w(TAG, "loadInBackground");
         return matches;
+    }
+
+    @Override
+    protected void onStartLoading() {
+        super.onStartLoading();
+        forceLoad();
     }
 
     private void updateMatches(){

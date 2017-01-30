@@ -219,8 +219,6 @@ public class HomeActivity extends AppCompatActivity
             c.moveToFirst();
             Match match = Match.populateMatch(c);
             displayMatch(container, match);
-        } else {
-            fetchSchedule();
         }
         db.close();
         c.close();
@@ -335,17 +333,22 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void fetchSchedule() {
-        getSupportLoaderManager().initLoader(1, getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Match>>() {
+        final int SCHEDULE_LOADER_ID = 322;
+        getSupportLoaderManager().initLoader(SCHEDULE_LOADER_ID, getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Match>>() {
             @Override
             public Loader<ArrayList<Match>> onCreateLoader(int id, Bundle args) {
+                Log.w(TAG, "startloader");
                 return new MatchLoader(HomeActivity.this);
             }
 
             @Override
             public void onLoadFinished(Loader<ArrayList<Match>> loader, ArrayList<Match> data) {
                 try {
+                    Log.w(TAG, "onloadfinished");
                     displayNextMatch();
                     displayLastMatch();
+                    getSupportLoaderManager().destroyLoader(SCHEDULE_LOADER_ID);
+                    Log.w(TAG, "onloadfinished2");
                 }catch (ParseException pe){
                     pe.printStackTrace();
                 }
@@ -353,9 +356,9 @@ public class HomeActivity extends AppCompatActivity
 
             @Override
             public void onLoaderReset(Loader<ArrayList<Match>> loader) {
-
+                Log.w(TAG, "onLoadererset");
             }
-        }).forceLoad();
+        }).startLoading();
     }
 
 

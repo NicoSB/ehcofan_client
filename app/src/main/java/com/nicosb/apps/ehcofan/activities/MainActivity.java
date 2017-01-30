@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
+        mProgressStatus = 0;
         String lastDumped = prefs.getString(getString(R.string.pref_db_dump), "" );
         Calendar now = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

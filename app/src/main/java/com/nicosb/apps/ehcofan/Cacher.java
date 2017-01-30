@@ -62,30 +62,25 @@ public class Cacher {
     }
 
     public static void cachePlayer(Context context, Player player) {
-        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getReadableDB(context);
 
         sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.PLAYERS_TABLE_NAME, CacheDBHelper.TableColumns.PLAYERS_COLUMN_NAME_WEIGHT, player.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
-        sqLiteDatabase.close();
     }
 
     public static void cacheMatch(Context context, Match match) {
-        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getReadableDB(context);
 
         sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.MATCHES_TABLE_NAME, CacheDBHelper.TableColumns.MATCHES_COLUMN_NAME_COMPETITION, match.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
-
-        sqLiteDatabase.close();
     }
 
     public static void cacheTeam(Context context, StandingsTeam team) {
-        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getWritableDB(context);
 
         sqLiteDatabase.insertWithOnConflict(CacheDBHelper.TableColumns.STANDINGSTEAMS_TABLE_NAME, CacheDBHelper.TableColumns.STANDINGSTEAMS_COLUMN_NAME_GROUP, team.getContentValues(), SQLiteDatabase.CONFLICT_REPLACE);
-
-        sqLiteDatabase.close();
     }
 
     public static void delete(Context context, String table, long id){
-        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getInstance(context).getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = CacheDBHelper.getReadableDB(context);
 
         Log.w("DELETE", ""+sqLiteDatabase.delete(table, "id="+id, null));
     }

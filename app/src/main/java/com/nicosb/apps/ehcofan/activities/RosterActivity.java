@@ -55,7 +55,7 @@ public class RosterActivity extends AppCompatActivity {
             public void onLoaderReset(Loader<ArrayList<Player>> loader) {
 
             }
-        });
+        }).forceLoad();
 
         progressBar = new ProgressBar(this);
         LinearLayout container = (LinearLayout) findViewById(R.id.container_roster);
