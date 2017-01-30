@@ -1,14 +1,13 @@
-package com.nicosb.apps.ehcofan.tasks;
+package com.nicosb.apps.ehcofan.loaders;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.google.gson.Gson;
 import com.nicosb.apps.ehcofan.R;
-import com.nicosb.apps.ehcofan.activities.HomeActivity;
+import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,40 +21,39 @@ import java.net.URL;
  * Created by Nico on 22.01.2017.
  */
 
-public class IsPlayoffLoader extends AsyncTaskLoader<Void> {
+public class PlayoffMatchupLoader extends AsyncTaskLoader<POMatchupWrapper> {
     private Context context;
 
-    public IsPlayoffLoader(Context context) {
+    public PlayoffMatchupLoader(Context context) {
         super(context);
         this.context = context;
     }
 
     @Override
-    public Void loadInBackground() {
-        boolean isPlayoff = false;
+    public POMatchupWrapper loadInBackground() {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         try {
             if (networkInfo != null && networkInfo.isConnected()) {
-                String rest_url = context.getString(R.string.rest_interface) + "playoffs?mode=run";
+                String rest_url = context.getString(R.string.rest_interface) + "playoffs.json?running=true";
                 URL restAddress = new URL(rest_url);
                 HttpURLConnection urlConnection = (HttpURLConnection) restAddress.openConnection();
                 InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line = reader.readLine();
-                if (line.equals("true")) {
-                    isPlayoff = true;
+                StringBuilder builder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line).append('\n');
                 }
+
+                String json = builder.toString();
+                Gson gson = new Gson();
+
+                return gson.fromJson(json, POMatchupWrapper[].class)[0];
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(context.getString(R.string.pref_playoff), isPlayoff);
-        editor.apply();
-
         return null;
     }
 }

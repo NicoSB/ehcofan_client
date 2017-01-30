@@ -1,10 +1,9 @@
-package com.nicosb.apps.ehcofan.tasks;
+package com.nicosb.apps.ehcofan.loaders;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Article;

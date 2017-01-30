@@ -16,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,10 +35,10 @@ import com.nicosb.apps.ehcofan.models.MatchWrapper;
 import com.nicosb.apps.ehcofan.models.POMatchupWrapper;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.retrofit.EHCOFanAPI;
-import com.nicosb.apps.ehcofan.tasks.ArticleImageLoader;
-import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
-import com.nicosb.apps.ehcofan.tasks.MatchLoader;
-import com.nicosb.apps.ehcofan.tasks.PlayoffMatchupLoader;
+import com.nicosb.apps.ehcofan.loaders.ArticleImageLoader;
+import com.nicosb.apps.ehcofan.loaders.MatchLoader;
+import com.nicosb.apps.ehcofan.loaders.PlayoffMatchupLoader;
+import com.nicosb.apps.ehcofan.loaders.StandingsLoader;
 import com.nicosb.apps.ehcofan.views.ArticleView;
 import com.nicosb.apps.ehcofan.views.MatchView;
 import com.nicosb.apps.ehcofan.views.PlayoffView;
@@ -55,8 +54,7 @@ import retrofit2.Retrofit;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeActivity extends AppCompatActivity
-        implements FetchStandingsTask.OnTeamsFetchedListener, Callback<List<MatchWrapper>> {
+public class HomeActivity extends AppCompatActivity{
     private String TAG = "HomeActivity";
     private DrawerLayout drawerLayout;
     private boolean showPB = true;
@@ -122,83 +120,24 @@ public class HomeActivity extends AppCompatActivity
         drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
-    private void fetchPlayoffs(Bundle bundle) {
-        getSupportLoaderManager().initLoader(2, bundle, new LoaderManager.LoaderCallbacks<POMatchupWrapper>() {
-
-            @Override
-            public Loader<POMatchupWrapper> onCreateLoader(int id, Bundle args) {
-                return new PlayoffMatchupLoader(HomeActivity.this);
-            }
-
-            @Override
-            public void onLoadFinished(Loader<POMatchupWrapper> loader, POMatchupWrapper data) {
-                CardView cv_PO = (CardView)findViewById(R.id.card_playoffs);
-                cv_PO.setVisibility(View.VISIBLE);
-
-                LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
-
-                view_po = new PlayoffView(HomeActivity.this, data.toMatchup(HomeActivity.this));
-                container_playoff.addView(view_po);
-                getSupportLoaderManager().destroyLoader(2);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<POMatchupWrapper> loader) {
-
-            }
-        }).forceLoad();
-    }
-
-    private void fetchStandingsTeam() {
-        FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(this);
-        fetchStandingsTask.setOnlyOffline(true);
-        fetchStandingsTask.setOnTeamsFetchedListener(this);
-        fetchStandingsTask.execute(""  );
-    }
-
-    private void fetchLatestNews(final Bundle savedInstanceState) {
-        LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
-        container.setVisibility(View.VISIBLE);
-
-        if(showPB) {
-            LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
-            ll_loading.setVisibility(View.VISIBLE);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseHandler.mAuth != null) {
+            FirebaseHandler.mAuth.addAuthStateListener(FirebaseHandler.mAuthListener);
         }
-
-        showPB = false;
-        final Callback<ArrayList<ArticleWrapper>> articles = new Callback<ArrayList<ArticleWrapper>>() {
-            @Override
-            public void onResponse(Call<ArrayList<ArticleWrapper>> call, final Response<ArrayList<ArticleWrapper>> response) {
-                getSupportLoaderManager().initLoader(2, savedInstanceState, new LoaderManager.LoaderCallbacks<ArrayList<Article>>() {
-                    @Override
-                    public Loader<ArrayList<Article>> onCreateLoader(int id, Bundle args) {
-                        return new ArticleImageLoader(HomeActivity.this, (Article[])null, response.body());
-                    }
-
-                    @Override
-                    public void onLoadFinished(Loader<ArrayList<Article>> loader, ArrayList<Article> data) {
-                        LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
-                        ll_loading.setVisibility(View.GONE);
-                        displayArticle(data.get(0));
-                    }
-
-                    @Override
-                    public void onLoaderReset(Loader<ArrayList<Article>> loader) {
-
-                    }
-                }).forceLoad();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<ArticleWrapper>> call, Throwable t) {
-
-            }
-        };
-
-        Call<ArrayList<ArticleWrapper>> call = mApi.listArticles(1);
-        call.enqueue(articles);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (FirebaseHandler.mAuthListener != null) {
+            FirebaseHandler.mAuth.removeAuthStateListener(FirebaseHandler.mAuthListener);
+        }
+    }
+
+
+    // SECTION DISPLAY
     private void displayLastMatch() throws ParseException {
         LinearLayout container = (LinearLayout) findViewById(R.id.container_last_match);
 
@@ -220,7 +159,6 @@ public class HomeActivity extends AppCompatActivity
             Match match = Match.populateMatch(c);
             displayMatch(container, match);
         }
-        db.close();
         c.close();
     }
 
@@ -243,7 +181,6 @@ public class HomeActivity extends AppCompatActivity
             LinearLayout container = (LinearLayout) findViewById(R.id.container_next_match);
             displayMatch(container, match);
         }
-        db.close();
         c.close();
     }
 
@@ -264,28 +201,6 @@ public class HomeActivity extends AppCompatActivity
         container.addView(mv);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (FirebaseHandler.mAuth != null) {
-            FirebaseHandler.mAuth.addAuthStateListener(FirebaseHandler.mAuthListener);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (FirebaseHandler.mAuthListener != null) {
-            FirebaseHandler.mAuth.removeAuthStateListener(FirebaseHandler.mAuthListener);
-        }
-    }
-
-    private void openNewsActivity(View view, Article article) {
-        Intent newsActivity = new Intent(this, NewsActivity.class);
-        newsActivity.putExtra(ArticleFragment.ARGS_ARTICLE, article);
-        startActivity(newsActivity);
-    }
-
     private void displayArticle(Article a) {
         final ArticleView av = new ArticleView(this, a);
 
@@ -303,19 +218,12 @@ public class HomeActivity extends AppCompatActivity
         cardView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
-        int rank = 0;
-        for (StandingsTeam st : standingsTeams) {
-            rank++;
-            if (st.getName().equals("EHC Olten" )) {
-                fillNLBCard(st, rank);
-                return;
-            }
-        }
-    }
-
     private void fillNLBCard(StandingsTeam st, int rank) {
+        int goal_diff = st.getGoals_for() - st.getGoals_against();
+        String goals = "";
+        if(goal_diff > 0) goals = "+";
+        goals = goals + goal_diff;
+
         TextView txt_rank = (TextView) findViewById(R.id.txt_team_placement);
         TextView txt_games = (TextView) findViewById(R.id.txt_team_games);
         TextView txt_points = (TextView) findViewById(R.id.txt_team_points);
@@ -324,7 +232,14 @@ public class HomeActivity extends AppCompatActivity
         txt_rank.setText(String.valueOf(rank));
         txt_games.setText(String.valueOf(st.getGames()));
         txt_points.setText(String.valueOf(st.getPoints()));
-        txt_goals.setText(String.valueOf(st.getGoals_for() - st.getGoals_against()));
+        txt_goals.setText(goals);
+    }
+
+    // SECTION ONCLICK
+    private void openNewsActivity(View view, Article article) {
+        Intent newsActivity = new Intent(this, NewsActivity.class);
+        newsActivity.putExtra(ArticleFragment.ARGS_ARTICLE, article);
+        startActivity(newsActivity);
     }
 
     public void startStandingsActivity(View view) {
@@ -332,6 +247,7 @@ public class HomeActivity extends AppCompatActivity
         startActivity(standingsActivity);
     }
 
+    // SECTION FETCH
     private void fetchSchedule() {
         final int SCHEDULE_LOADER_ID = 322;
         getSupportLoaderManager().initLoader(SCHEDULE_LOADER_ID, getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<Match>>() {
@@ -357,22 +273,108 @@ public class HomeActivity extends AppCompatActivity
         }).startLoading();
     }
 
+    private void fetchPlayoffs(Bundle bundle) {
+        final int PLAYOFF_LOADER_ID = 13;
+        getSupportLoaderManager().initLoader(PLAYOFF_LOADER_ID, bundle, new LoaderManager.LoaderCallbacks<POMatchupWrapper>() {
 
+            @Override
+            public Loader<POMatchupWrapper> onCreateLoader(int id, Bundle args) {
+                return new PlayoffMatchupLoader(HomeActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<POMatchupWrapper> loader, POMatchupWrapper data) {
+                CardView cv_PO = (CardView)findViewById(R.id.card_playoffs);
+                cv_PO.setVisibility(View.VISIBLE);
+
+                LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
+
+                view_po = new PlayoffView(HomeActivity.this, data.toMatchup(HomeActivity.this));
+                container_playoff.addView(view_po);
+                getSupportLoaderManager().destroyLoader(PLAYOFF_LOADER_ID);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<POMatchupWrapper> loader) {
+
+            }
+        }).forceLoad();
+    }
+
+    private void fetchStandingsTeam() {
+        final int SCHEDULE_LOADER_ID = 1934;
+        getSupportLoaderManager().initLoader(SCHEDULE_LOADER_ID, getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<StandingsTeam>>() {
+            @Override
+            public Loader<ArrayList<StandingsTeam>> onCreateLoader(int id, Bundle args) {
+                return new StandingsLoader(HomeActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<ArrayList<StandingsTeam>> loader, ArrayList<StandingsTeam> data) {
+                int rank = 0;
+                for (StandingsTeam st : data) {
+                    rank++;
+                    if (st.getName().equals("EHC Olten" )) {
+                        fillNLBCard(st, rank);
+                        return;
+                    }
+                }
+                getSupportLoaderManager().destroyLoader(SCHEDULE_LOADER_ID);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<StandingsTeam>> loader) {
+
+            }
+        }).forceLoad();
+    }
+
+    private void fetchLatestNews(final Bundle savedInstanceState) {
+        LinearLayout container = (LinearLayout) findViewById(R.id.container_latest_news);
+        container.setVisibility(View.VISIBLE);
+
+        if(showPB) {
+            LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
+            ll_loading.setVisibility(View.VISIBLE);
+        }
+
+        showPB = false;
+        final int NEWS_LOADER_ID = 2017;
+        final Callback<ArrayList<ArticleWrapper>> articles = new Callback<ArrayList<ArticleWrapper>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ArticleWrapper>> call, final Response<ArrayList<ArticleWrapper>> response) {
+                getSupportLoaderManager().initLoader(NEWS_LOADER_ID, savedInstanceState, new LoaderManager.LoaderCallbacks<ArrayList<Article>>() {
+                    @Override
+                    public Loader<ArrayList<Article>> onCreateLoader(int id, Bundle args) {
+                        return new ArticleImageLoader(HomeActivity.this, (Article[])null, response.body());
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<ArrayList<Article>> loader, ArrayList<Article> data) {
+                        LinearLayout ll_loading = (LinearLayout) findViewById(R.id.container_loading_news);
+                        ll_loading.setVisibility(View.GONE);
+                        displayArticle(data.get(0));
+                        getSupportLoaderManager().destroyLoader(NEWS_LOADER_ID);
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<ArrayList<Article>> loader) {
+
+                    }
+                }).forceLoad();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ArticleWrapper>> call, Throwable t) {
+
+            }
+        };
+
+        Call<ArrayList<ArticleWrapper>> call = mApi.listArticles(1);
+        call.enqueue(articles);
+    }
 
     public void switchGame(View view){
         view_po.changeGame(view);
-    }
-
-    // RETROFIT
-    @Override
-    public void onResponse(Call<List<MatchWrapper>> call, Response<List<MatchWrapper>> response) {
-            for(MatchWrapper mw: response.body()){
-                Match m = mw.toMatch();
-            }
-    }
-
-    @Override
-    public void onFailure(Call<List<MatchWrapper>> call, Throwable t) {
-
     }
 }

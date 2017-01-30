@@ -76,6 +76,5 @@ public class POMatchup {
             }
         }
         c.close();
-        db.close();
     }
 }

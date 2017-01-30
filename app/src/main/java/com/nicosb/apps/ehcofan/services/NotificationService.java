@@ -22,7 +22,6 @@ public class NotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, "CUSTOM NOTIFICATION SERVICE");
         Intent showNews = new Intent(this, NewsActivity.class);
         showNews.putExtra("fromNotification", true);
 

@@ -20,7 +20,7 @@ import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.ToolbarHelper;
 import com.nicosb.apps.ehcofan.fragments.PlayerInfoFragment;
 import com.nicosb.apps.ehcofan.models.Player;
-import com.nicosb.apps.ehcofan.tasks.PlayerLoader;
+import com.nicosb.apps.ehcofan.loaders.PlayerLoader;
 import com.nicosb.apps.ehcofan.views.PlayerView;
 
 import java.util.ArrayList;

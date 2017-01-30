@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.Match;
-import com.nicosb.apps.ehcofan.tasks.MatchLoader;
+import com.nicosb.apps.ehcofan.loaders.MatchLoader;
 import com.nicosb.apps.ehcofan.views.MatchView;
 
 import java.util.ArrayList;

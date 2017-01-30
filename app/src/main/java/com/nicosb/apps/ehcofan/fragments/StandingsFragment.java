@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,7 @@ import android.widget.TextView;
 
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
-import com.nicosb.apps.ehcofan.tasks.FetchStandingsTask;
+import com.nicosb.apps.ehcofan.loaders.StandingsLoader;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -25,8 +27,7 @@ import java.util.Locale;
 /**
  * Created by Nico on 17.08.2016.
  */
-public class StandingsFragment extends Fragment
-        implements FetchStandingsTask.OnTeamsFetchedListener {
+public class StandingsFragment extends Fragment {
     public static String KEY_COMPETITION = "competition";
     private ProgressBar progressBar;
     private boolean inPager = false;
@@ -37,9 +38,7 @@ public class StandingsFragment extends Fragment
 
         View v = inflater.inflate(R.layout.fragment_standings, container, false);
 
-        FetchStandingsTask fetchStandingsTask = new FetchStandingsTask(getActivity());
-        fetchStandingsTask.setOnTeamsFetchedListener(this);
-        fetchStandingsTask.execute(getArguments().getString(KEY_COMPETITION));
+        fetchTeams(getArguments().getString(KEY_COMPETITION));
 
         progressBar = new ProgressBar(getActivity());
         LinearLayout ll_container = (LinearLayout) v.findViewById(R.id.ll_standings);
@@ -54,8 +53,28 @@ public class StandingsFragment extends Fragment
         return v;
     }
 
-    @Override
-    public void onTeamsFetched(ArrayList<StandingsTeam> standingsTeams) {
+    private void fetchTeams(final String competition) {
+        final int STANDINGS_LOADER_ID = 9;
+        getActivity().getSupportLoaderManager().initLoader(STANDINGS_LOADER_ID, getActivity().getIntent().getExtras(), new LoaderManager.LoaderCallbacks<ArrayList<StandingsTeam>>() {
+            @Override
+            public Loader<ArrayList<StandingsTeam>> onCreateLoader(int id, Bundle args) {
+                return new StandingsLoader(getActivity(), competition);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<ArrayList<StandingsTeam>> loader, ArrayList<StandingsTeam> data) {
+                init(data);
+                getActivity().getSupportLoaderManager().destroyLoader(STANDINGS_LOADER_ID);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<StandingsTeam>> loader) {
+
+            }
+        }).forceLoad();
+    }
+
+    private void init(ArrayList<StandingsTeam> standingsTeams){
         if (getActivity() != null) {
             if (standingsTeams.size() == 0) {
                 TextView txt_no_connection = (TextView) getActivity().findViewById(R.id.txt_noconnection);
@@ -133,7 +152,6 @@ public class StandingsFragment extends Fragment
             ll_standings.removeView(progressBar);
         }
     }
-
     private View getLine() {
         View v = new View(getActivity());
         v.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));

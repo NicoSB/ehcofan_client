@@ -1,4 +1,4 @@
-package com.nicosb.apps.ehcofan.tasks;
+package com.nicosb.apps.ehcofan.loaders;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,7 +22,6 @@ import com.nicosb.apps.ehcofan.retrofit.EHCOFanAPI;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -83,7 +82,6 @@ public class PlayerLoader extends AsyncTaskLoader<ArrayList<Player>> implements 
             players.add(p);
         }
         c.close();
-        db.close();
         return players;
     }
 
@@ -136,7 +134,6 @@ public class PlayerLoader extends AsyncTaskLoader<ArrayList<Player>> implements 
                     String fileName = "player_" + player.getId();
                     File dir = context.getFilesDir();
                     File image = new File(dir, "player_" + player.getId());
-                    Log.w("delete", "successful: " + image.delete());
                 }
             }
         }
@@ -193,7 +190,6 @@ public class PlayerLoader extends AsyncTaskLoader<ArrayList<Player>> implements 
                     String fileName = "player_" + player.getId();
                     File dir = context.getFilesDir();
                     File image = new File(dir, "player_" + player.getId());
-                    Log.w("delete", "successful: " + image.delete());
                 }
             }
         }

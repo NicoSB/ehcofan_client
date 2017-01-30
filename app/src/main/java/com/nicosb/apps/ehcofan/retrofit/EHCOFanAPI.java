@@ -3,6 +3,7 @@ package com.nicosb.apps.ehcofan.retrofit;
 import com.nicosb.apps.ehcofan.models.ArticleWrapper;
 import com.nicosb.apps.ehcofan.models.MatchWrapper;
 import com.nicosb.apps.ehcofan.models.PlayerWrapper;
+import com.nicosb.apps.ehcofan.models.TeamWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,4 +29,13 @@ public interface EHCOFanAPI {
 
     @GET("articles")
     Call<ArrayList<PlayerWrapper>> listPlayers(@Query("updated_at") String updated_at);
+
+    @GET("teams")
+    Call<ArrayList<TeamWrapper>> listTeams();
+
+    @GET("teams")
+    Call<ArrayList<TeamWrapper>> listTeams(@Query("competition") String competition);
+
+    @GET("playoffs.json?mode=run")
+    Call<Boolean> isPlayoffs();
 }
