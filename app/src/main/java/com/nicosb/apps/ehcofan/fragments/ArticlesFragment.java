@@ -178,17 +178,17 @@ public class ArticlesFragment extends Fragment implements
         ArticleView av = (ArticleView) view;
         ArticleFragment af = new ArticleFragment();
         Bundle args = new Bundle();
-        args.putParcelable("article", av.getArticle());
+        args.putParcelable(ArticleFragment.ARGS_ARTICLE, av.getArticle());
         af.setArguments(args);
 
         allArticlesLoaded = false;
         fetching = false;
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, af);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        fm.beginTransaction()
+            .replace(R.id.content_frame, af)
+            .addToBackStack(null)
+            .commit();
     }
 
     @Override

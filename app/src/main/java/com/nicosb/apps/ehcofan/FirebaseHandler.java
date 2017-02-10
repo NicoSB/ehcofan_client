@@ -47,7 +47,7 @@ public class FirebaseHandler {
                                 FirebaseMessaging.getInstance().subscribeToTopic("news");
                             } else {
                                 FirebaseMessaging.getInstance().unsubscribeFromTopic("news2");
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("news" );
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
                             }
                             if (pref_matches) {
                                 FirebaseMessaging.getInstance().subscribeToTopic("testgoals");

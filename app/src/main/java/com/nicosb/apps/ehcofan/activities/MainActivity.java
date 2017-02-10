@@ -15,9 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nicosb.apps.ehcofan.BuildConfig;
 import com.nicosb.apps.ehcofan.CacheDBHelper;
+import com.nicosb.apps.ehcofan.FirebaseHandler;
 import com.nicosb.apps.ehcofan.R;
 import com.nicosb.apps.ehcofan.models.StandingsTeam;
 import com.nicosb.apps.ehcofan.loaders.MatchLoader;
@@ -25,6 +29,7 @@ import com.nicosb.apps.ehcofan.loaders.PlayerLoader;
 import com.nicosb.apps.ehcofan.loaders.StandingsLoader;
 import com.nicosb.apps.ehcofan.retrofit.EHCOFanAPI;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity{
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        checkVersion();
+
         mProgress = (ProgressBar) findViewById(R.id.main_progressbar);
         mProgressStatus = 0;
         String lastDumped = prefs.getString(getString(R.string.pref_db_dump), "" );
@@ -68,14 +75,14 @@ public class MainActivity extends AppCompatActivity{
                 gc.setTime(sdf.parse(lastDumped));
                 int datediff = now.get(Calendar.DAY_OF_YEAR) - gc.get(Calendar.DAY_OF_YEAR);
                 if(networkInfo != null && (networkInfo.getTypeName().equals("WIFI") && datediff >= 3 ) || datediff >= 14 || now.get(Calendar.YEAR) > gc.get(Calendar.YEAR)){
-                    flushTables(prefs, sdf, now);
+                    flushTables();
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
         else{
-            flushTables(prefs, sdf, now);
+            flushTables();
         }
         if (networkInfo != null && networkInfo.isConnected()) {
             fetchTeams();
@@ -88,7 +95,27 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void flushTables(SharedPreferences prefs, SimpleDateFormat sdf, Calendar now) {
+    private void checkVersion() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int storedVersion = prefs.getInt(getString(R.string.pref_version), 0);
+
+        if(storedVersion < BuildConfig.VERSION_CODE){
+            flushTables();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(getString(R.string.pref_version), BuildConfig.VERSION_CODE).apply();
+            try {
+                FirebaseInstanceId.getInstance().deleteInstanceId();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private void flushTables() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar now = Calendar.getInstance();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         SQLiteDatabase db = CacheDBHelper.getInstance(this).getReadableDatabase();
         CacheDBHelper.truncateTables(db);
         SharedPreferences.Editor editor = prefs.edit();

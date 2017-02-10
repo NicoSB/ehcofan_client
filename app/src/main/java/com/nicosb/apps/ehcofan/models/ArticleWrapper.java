@@ -73,4 +73,8 @@ public class ArticleWrapper implements Parcelable {
         parcel.writeString(date);
         parcel.writeString(news_image_file_name);
     }
+
+    public Article toNoPicArticle(){
+        return new Article(title, text, url, date, null);
+    }
 }

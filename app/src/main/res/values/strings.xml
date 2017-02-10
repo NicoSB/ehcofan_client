@@ -6,7 +6,7 @@
     <!--<string name="rest_interface">http://192.168.0.108:3000/</string>-->
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
-    <string name="text_placeholder">LOREMIPSUMDOLORET</string>
+    <string name="text_placeholder">wird geladen…</string>
     <string name="aws_url">https://s3.eu-central-1.amazonaws.com/ehcofan/</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_news">News</string>
@@ -79,4 +79,6 @@
     <string name="pref_matches_summary">Erhalte eine Push-Nachricht bei jedem Tor</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="pref_playoff">PREF_PLAYOFF</string>
+    <string name="pref_version">PREF_VERSION</string>
+    <string name="news_id">news_id</string>
 </resources>

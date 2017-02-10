@@ -19,6 +19,7 @@ public class NewsActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+        int news_id;
         if (getIntent().getExtras() == null) {
             ArticlesFragment af = new ArticlesFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commit();
@@ -30,13 +31,13 @@ public class NewsActivity extends AppCompatActivity{
 
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commit();
         }
-        else if(getIntent().getExtras().getBoolean("fromNotification", false)){
-            // TODO
-//            FetchArticlesTask fetchArticlesTask = new FetchArticlesTask(this);
-//            fetchArticlesTask.setLimited(true);
-//            fetchArticlesTask.setPostExecuteListener(this);
-//            Article[] dummy = new Article[0];
-//            fetchArticlesTask.execute(dummy);
+        else if((news_id  = getIntent().getExtras().getInt(getString(R.string.news_id), 0)) > 0){
+            ArticleFragment af = new ArticleFragment();
+            Bundle args = new Bundle();
+            args.putInt(getString(R.string.news_id), news_id);
+            af.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, af).commit();
         }
 
         drawerLayout = ToolbarHelper.loadToolbar(this);
