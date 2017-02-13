@@ -59,7 +59,6 @@ public class HomeActivity extends AppCompatActivity{
     private DrawerLayout drawerLayout;
     private boolean showPB = true;
     private boolean isPlayoff = false;
-    public static final String PREF_IS_PO = "po";
     private PlayoffView view_po;
     private EHCOFanAPI mApi;
 
@@ -259,8 +258,13 @@ public class HomeActivity extends AppCompatActivity{
             @Override
             public void onLoadFinished(Loader<ArrayList<Match>> loader, ArrayList<Match> data) {
                 try {
-                    displayNextMatch();
-                    displayLastMatch();
+                    if(isPlayoff && view_po != null){
+                        view_po.refresh();
+                    }
+                    else if(!isPlayoff){
+                        displayNextMatch();
+                        displayLastMatch();
+                    }
                 }catch (ParseException pe){
                     pe.printStackTrace();
                 }
@@ -288,6 +292,7 @@ public class HomeActivity extends AppCompatActivity{
                 cv_PO.setVisibility(View.VISIBLE);
 
                 LinearLayout container_playoff = (LinearLayout)findViewById(R.id.container_playoff);
+                container_playoff.removeAllViews();
 
                 view_po = new PlayoffView(HomeActivity.this, data.toMatchup(HomeActivity.this));
                 container_playoff.addView(view_po);

@@ -37,6 +37,7 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
     private Context context;
     private String competition;
     private EHCOFanAPI mApi;
+    private boolean mutex;
 
     public MatchLoader(Context context) {
         super(context);
@@ -61,8 +62,10 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
 
     @Override
     public ArrayList<Match> loadInBackground() {
+        mutex = true;
         updateMatches();
 
+        while(mutex){}
         ArrayList<Match> matches = new ArrayList<>();
         CacheDBHelper.getInstance(context);
         SQLiteDatabase db = CacheDBHelper.getReadableDB(context);
@@ -106,6 +109,7 @@ public class MatchLoader extends AsyncTaskLoader<ArrayList<Match>> {
             @Override
             public void onResponse(Call<ArrayList<MatchWrapper>> call, final Response<ArrayList<MatchWrapper>> response) {
                 processWrappers(response.body());
+                mutex = false;
             }
 
             @Override

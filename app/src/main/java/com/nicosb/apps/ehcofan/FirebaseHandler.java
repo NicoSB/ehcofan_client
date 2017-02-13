@@ -42,17 +42,14 @@ public class FirebaseHandler {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             if (pref_articles) {
-                                FirebaseMessaging.getInstance().subscribeToTopic("news2");
-                                // TODO remove before push
-                                FirebaseMessaging.getInstance().subscribeToTopic("news");
+                                FirebaseMessaging.getInstance().subscribeToTopic(activity.getString(R.string.TOPIC_NEWS2));
                             } else {
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("news2");
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic(activity.getString(R.string.TOPIC_NEWS2));
                             }
                             if (pref_matches) {
-                                FirebaseMessaging.getInstance().subscribeToTopic("testgoals");
+                                FirebaseMessaging.getInstance().subscribeToTopic(activity.getString(R.string.TOPIC_GOALS));
                             } else {
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("testgoals");
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic(activity.getString(R.string.TOPIC_GOALS));
                             }
                         }
                     }

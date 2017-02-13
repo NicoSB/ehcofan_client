@@ -3,6 +3,7 @@
     <string name="rest_interface">https://ehcofan.herokuapp.com/</string>
     <!--<string name="rest_interface">http://10.0.2.2:3000/</string>-->
     <!--<string name="rest_interface">http://192.168.43.133:3000/</string>-->
+    <!--<string name="rest_interface">http://192.168.0.73:3000/</string>-->
     <!--<string name="rest_interface">http://192.168.0.108:3000/</string>-->
     <string name="action_refresh">aktualisieren</string>
     <string name="title_placeholder">TITLE</string>
@@ -81,4 +82,10 @@
     <string name="pref_playoff">PREF_PLAYOFF</string>
     <string name="pref_version">PREF_VERSION</string>
     <string name="news_id">news_id</string>
+    <!--<string name="TOPIC_NEWS2">testnews2</string>-->
+    <string name="TOPIC_NEWS2">news2</string>
+    <!--<string name="TOPIC_NEWS">testnews</string>-->
+    <string name="TOPIC_NEWS">news</string>
+    <!--<string name="TOPIC_GOALS">testgoals</string>-->
+    <string name="TOPIC_GOALS">goals</string>
 </resources>

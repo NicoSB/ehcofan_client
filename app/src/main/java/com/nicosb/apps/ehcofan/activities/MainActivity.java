@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity{
             fetchSchedule();
             fetchPlayers();
             fetchIsPO();
+            FirebaseHandler.signIn(this);
         } else {
             Toast.makeText(this, "Keine Verbindung zum Internet", Toast.LENGTH_SHORT).show();
             updateProgressStatus(100);
@@ -103,11 +105,17 @@ public class MainActivity extends AppCompatActivity{
             flushTables();
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(getString(R.string.pref_version), BuildConfig.VERSION_CODE).apply();
-            try {
-                FirebaseInstanceId.getInstance().deleteInstanceId();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new AsyncTaskLoader<Void>(this) {
+                @Override
+                public Void loadInBackground() {
+                    try {
+                        FirebaseInstanceId.getInstance().deleteInstanceId();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.forceLoad();
 
         }
     }
