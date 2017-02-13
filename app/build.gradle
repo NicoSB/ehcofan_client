@@ -15,8 +15,8 @@ android {
         applicationId "com.nicosb.apps.ehcofan"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 9
-        versionName "0.43"
+        versionCode 10
+        versionName "0.44"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

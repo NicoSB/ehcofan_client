@@ -79,9 +79,9 @@ public class StandingsLoader extends AsyncTaskLoader<ArrayList<StandingsTeam>> i
 
     private void updateStandings() {
         Call<ArrayList<TeamWrapper>> matches;
-        if(competition.equals(""))  matches = mApi.listTeams();
-        else    matches = mApi.listTeams(competition);
-
+//        if(competition.equals(""))  matches = mApi.listTeams();
+//        else    matches = mApi.listTeams(competition);
+        matches = mApi.listTeams();
         matches.enqueue(this);
     }
 

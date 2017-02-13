@@ -168,12 +168,4 @@ public class StandingsFragment extends Fragment {
 
         container.addView(tv);
     }
-
-    public boolean isInPager() {
-        return inPager;
-    }
-
-    public void setInPager(boolean inPager) {
-        this.inPager = inPager;
-    }
 }
