@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    lintOptions {
+        warning 'InvalidPackage'
+    }
+
     signingConfigs {
         config {
             keyAlias 'androidKey'
